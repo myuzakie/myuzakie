@@ -8,8 +8,8 @@ interface Props {
 const { lang = "en" } = Astro.props;
 
 const i18nKeys: Record<string, { title: string; desc: string }> = {
-  "police-dashboard": { title: "policeTitle", desc: "policeDesc" },
-  "fintech-app": { title: "fintechTitle", desc: "fintechDesc" },
+  "web3-builder-journey": { title: "Web3 Builder Journey", desc: "Web3 Builder Journey Description" },
+  "fintech-app": { title: "Fintech App", desc: "Fintech App Description" },
 };
 
 const projects = getAllProjects().map((project) => {

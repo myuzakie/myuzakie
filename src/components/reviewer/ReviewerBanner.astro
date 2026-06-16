@@ -1,0 +1,80 @@
+---
+interface Props {
+  backHref?: string;
+}
+
+const { backHref = '/review/apple-academy' } = Astro.props;
+---
+
+<div class="reviewer-banner" role="status" aria-label="Apple Academy review mode">
+  <div class="reviewer-banner__content">
+    <span class="reviewer-banner__title">Apple Academy Review Mode</span>
+    <span class="reviewer-banner__subtitle">Guided explanation enabled</span>
+  </div>
+  <a href={backHref} class="reviewer-banner__link">Back to review index</a>
+</div>
+
+<style>
+  .reviewer-banner {
+    position: sticky;
+    top: calc(1rem + var(--safe-top, 0px));
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 2.5rem 1.5rem;
+    padding: 0.65rem 1rem;
+    border: 1px solid #262626;
+    border-radius: 999px;
+    background: rgba(11, 11, 11, 0.88);
+    backdrop-filter: blur(12px);
+    font-family: 'DM Mono', monospace;
+  }
+
+  html[data-theme='light'] .reviewer-banner {
+    background: rgba(244, 244, 244, 0.92);
+    border-color: #d4d4d4;
+  }
+
+  .reviewer-banner__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .reviewer-banner__title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #f0f0f0);
+  }
+
+  .reviewer-banner__subtitle {
+    font-size: 0.68rem;
+    color: var(--color-text-muted, #5e5e5e);
+  }
+
+  .reviewer-banner__link {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    color: var(--color-text-secondary, #9a9a9a);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+    transition: opacity 150ms ease;
+  }
+
+  .reviewer-banner__link:hover {
+    opacity: 0.75;
+  }
+
+  @media (max-width: 640px) {
+    .reviewer-banner {
+      flex-direction: column;
+      align-items: flex-start;
+      border-radius: 12px;
+      margin: 0 1.25rem 1.25rem;
+    }
+  }
+</style>

@@ -1,0 +1,78 @@
+---
+import ProjectLayout from '../../../../layouts/ProjectLayout.astro';
+import ProjectCaseI18n from '../../../../components/ProjectCaseI18n.astro';
+import ProjectCaseDetail from '../../../../components/ProjectCaseDetail.astro';
+import ReviewerBanner from '../../../../components/reviewer/ReviewerBanner.astro';
+import ReviewerNotes from '../../../../components/reviewer/ReviewerNotes.astro';
+import ReviewerOnboarding from '../../../../components/ReviewerOnboarding.astro';
+import {
+  getAllProjects,
+  getProjectBySlug,
+  getProjectIndex,
+  getProjectContent,
+  getProfile,
+  getProjectLabels,
+  getCaseI18nPayload,
+} from '../../../../lib/projects';
+import {
+  getReviewProjectBySlug,
+  getReviewStaticPaths,
+} from '../../../../lib/reviewProjects';
+
+export function getStaticPaths() {
+  return getReviewStaticPaths();
+}
+
+const { slug } = Astro.params;
+const stepParam = Astro.url.searchParams.get('step');
+const step = stepParam ? Number(stepParam) : 0;
+
+const project = slug ? getProjectBySlug(slug) : undefined;
+const reviewData = slug ? getReviewProjectBySlug(slug, 'en') : undefined;
+
+if (!project || !reviewData) {
+  return Astro.redirect('/404');
+}
+
+const lang = 'en' as const;
+const content = getProjectContent(project, lang);
+const profile = getProfile(lang);
+const labels = getProjectLabels(lang);
+const projectIndex = getProjectIndex(project.slug);
+const totalProjects = getAllProjects().length;
+const pageNumber = projectIndex + 1;
+const descriptionParagraphs = content.description.split('\n\n').filter(Boolean);
+const counterText = labels.counter
+  .replace('{current}', String(pageNumber))
+  .replace('{total}', String(totalProjects));
+const caseI18n = getCaseI18nPayload(project, pageNumber, totalProjects);
+---
+
+<ProjectLayout
+  title={`${content.title} — Apple Academy Review`}
+  description={descriptionParagraphs[0] ?? content.title}
+  lang={lang}
+  noindex
+>
+  <ReviewerBanner />
+
+  <ProjectCaseI18n payload={caseI18n} />
+
+  <ProjectCaseDetail
+    project={project}
+    content={content}
+    profile={profile}
+    labels={labels}
+    counterText={counterText}
+    descriptionParagraphs={descriptionParagraphs}
+    backHref="/review/apple-academy"
+    backLabel="← Back to review index"
+  >
+    <ReviewerNotes slot="appendix" notes={reviewData.reviewNotes} />
+  </ProjectCaseDetail>
+
+  <ReviewerOnboarding
+    projectSlug={project.slug}
+    initialStep={Number.isFinite(step) ? step : 0}
+  />
+</ProjectLayout>

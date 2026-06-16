@@ -1,0 +1,344 @@
+---
+interface Props {
+  projectSlug: string;
+  initialStep?: number;
+}
+
+const { projectSlug, initialStep = 0 } = Astro.props;
+---
+
+<div
+  class="reviewer-onboarding-root"
+  data-project-slug={projectSlug}
+  data-initial-step={initialStep}
+  hidden
+>
+  <div class="tour-layer" aria-live="polite" hidden>
+    <div class="tour-backdrop"></div>
+    <div class="tour-highlight"></div>
+
+    <article class="tour-card">
+      <p class="tour-step"></p>
+      <h2 class="tour-title"></h2>
+      <p class="tour-description"></p>
+
+      <div class="tour-actions">
+        <button type="button" class="tour-skip ghost">Skip</button>
+        <div class="tour-nav">
+          <button type="button" class="tour-back">Back</button>
+          <button type="button" class="tour-next primary">Next</button>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <button type="button" class="restart-tour" hidden>Review guide</button>
+</div>
+
+<script>
+  function initReviewerOnboarding(root: HTMLElement) {
+    const projectSlug = root.dataset.projectSlug ?? '';
+    const initialStep = Number(root.dataset.initialStep ?? '0');
+
+    const steps = [
+      {
+        target: 'project-metadata',
+        title: 'Project Information',
+        description:
+          'This area summarizes the project title, year, role, and publication link.',
+      },
+      {
+        target: 'project-role',
+        title: 'Your Role',
+        description:
+          'This section shows your contribution and position in the project team.',
+      },
+      {
+        target: 'project-publication-link',
+        title: 'Publication Link',
+        description:
+          'This link points to the live prototype or case study for further exploration.',
+      },
+      {
+        target: 'project-description',
+        title: 'Project Context',
+        description:
+          'This section explains the problem, purpose, and design direction of the project.',
+      },
+      {
+        target: 'project-preview',
+        title: 'Interface Preview',
+        description:
+          'This preview shows the main interface and the visual system used in the project.',
+      },
+      {
+        target: 'review-notes',
+        title: 'Reviewer Notes',
+        description:
+          'This section explains the design reasoning, technical approach, and project value.',
+      },
+    ];
+
+    const storageKey = `review-onboarding-${projectSlug}`;
+    const layer = root.querySelector('.tour-layer') as HTMLElement;
+    const highlight = root.querySelector('.tour-highlight') as HTMLElement;
+    const card = root.querySelector('.tour-card') as HTMLElement;
+    const stepEl = root.querySelector('.tour-step') as HTMLElement;
+    const titleEl = root.querySelector('.tour-title') as HTMLElement;
+    const descriptionEl = root.querySelector('.tour-description') as HTMLElement;
+    const skipBtn = root.querySelector('.tour-skip') as HTMLButtonElement;
+    const backBtn = root.querySelector('.tour-back') as HTMLButtonElement;
+    const nextBtn = root.querySelector('.tour-next') as HTMLButtonElement;
+    const restartBtn = root.querySelector('.restart-tour') as HTMLButtonElement;
+
+    let currentStep = Math.min(Math.max(initialStep, 0), steps.length - 1);
+    let isOpen = true;
+
+    function readStepFromUrl(): number | null {
+      const value = new URLSearchParams(window.location.search).get('step');
+      if (value === null) return null;
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+
+    function syncUrl() {
+      const url = new URL(window.location.href);
+      url.searchParams.set('step', String(currentStep));
+      window.history.replaceState({}, '', url);
+    }
+
+    function updateHighlight() {
+      const current = steps[currentStep];
+      if (!current || !isOpen) return;
+
+      const element = document.querySelector(`[data-tour="${current.target}"]`) as HTMLElement | null;
+
+      if (!element) {
+        highlight.style.cssText = '';
+        card.style.cssText = '';
+        return;
+      }
+
+      const rect = element.getBoundingClientRect();
+      const padding = 12;
+      const top = Math.max(rect.top - padding, 16);
+      const left = Math.max(rect.left - padding, 16);
+      const width = rect.width + padding * 2;
+      const height = rect.height + padding * 2;
+
+      highlight.style.top = `${top}px`;
+      highlight.style.left = `${left}px`;
+      highlight.style.width = `${width}px`;
+      highlight.style.height = `${height}px`;
+
+      const cardTop = Math.min(window.innerHeight - 260, Math.max(24, rect.bottom + 20));
+      const cardLeft = Math.min(window.innerWidth - 420, Math.max(24, rect.left));
+
+      card.style.top = `${cardTop}px`;
+      card.style.left = `${cardLeft}px`;
+
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function renderStep() {
+      const current = steps[currentStep];
+      if (!current) return;
+
+      stepEl.textContent = `Step ${currentStep + 1} of ${steps.length}`;
+      titleEl.textContent = current.title;
+      descriptionEl.textContent = current.description;
+      backBtn.disabled = currentStep === 0;
+      nextBtn.textContent = currentStep === steps.length - 1 ? 'Finish' : 'Next';
+      updateHighlight();
+    }
+
+    function setOpen(open: boolean) {
+      isOpen = open;
+      layer.hidden = !open;
+      restartBtn.hidden = open;
+      root.hidden = false;
+
+      if (open) {
+        renderStep();
+      }
+    }
+
+    function finish() {
+      localStorage.setItem(storageKey, 'completed');
+      setOpen(false);
+    }
+
+    function next() {
+      if (currentStep < steps.length - 1) {
+        currentStep += 1;
+        syncUrl();
+        renderStep();
+        return;
+      }
+      finish();
+    }
+
+    function previous() {
+      if (currentStep > 0) {
+        currentStep -= 1;
+        syncUrl();
+        renderStep();
+      }
+    }
+
+    function restart() {
+      currentStep = 0;
+      localStorage.removeItem(storageKey);
+      syncUrl();
+      setOpen(true);
+    }
+
+    skipBtn.addEventListener('click', finish);
+    backBtn.addEventListener('click', previous);
+    nextBtn.addEventListener('click', next);
+    restartBtn.addEventListener('click', restart);
+
+    window.addEventListener('resize', updateHighlight, { passive: true });
+    window.addEventListener('scroll', updateHighlight, { passive: true });
+
+    const urlStep = readStepFromUrl();
+    if (urlStep !== null) {
+      currentStep = Math.min(Math.max(urlStep, 0), steps.length - 1);
+    }
+
+    if (localStorage.getItem(storageKey) === 'completed') {
+      setOpen(false);
+    } else {
+      setOpen(true);
+      syncUrl();
+    }
+  }
+
+  document.querySelectorAll('.reviewer-onboarding-root').forEach((root) => {
+    initReviewerOnboarding(root as HTMLElement);
+  });
+</script>
+
+<style>
+  .reviewer-onboarding-root {
+    display: contents;
+  }
+
+  .tour-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  .tour-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.58);
+  }
+
+  .tour-highlight {
+    position: fixed;
+    z-index: 2;
+    border: 2px solid white;
+    border-radius: 24px;
+    box-shadow:
+      0 0 0 9999px rgba(0, 0, 0, 0.58),
+      0 16px 48px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    transition: all 180ms ease;
+  }
+
+  .tour-card {
+    position: fixed;
+    z-index: 3;
+    width: min(392px, calc(100vw - 32px));
+    padding: 22px;
+    border-radius: 24px;
+    background: white;
+    color: black;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    pointer-events: auto;
+    transition: all 180ms ease;
+  }
+
+  .tour-step {
+    margin: 0 0 8px;
+    font-size: 13px;
+    opacity: 0.65;
+  }
+
+  .tour-card :global(.tour-title) {
+    margin: 0 0 10px;
+    font-size: 22px;
+  }
+
+  .tour-description {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .tour-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .tour-nav {
+    display: flex;
+    gap: 8px;
+  }
+
+  .reviewer-onboarding-root :global(button) {
+    padding: 10px 14px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .reviewer-onboarding-root :global(button:disabled) {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .reviewer-onboarding-root :global(.primary) {
+    background: black;
+    color: white;
+  }
+
+  .reviewer-onboarding-root :global(.ghost) {
+    opacity: 0.7;
+  }
+
+  .restart-tour {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 100;
+    background: black !important;
+    color: white !important;
+    border-color: black !important;
+  }
+
+  @media (max-width: 640px) {
+    .tour-card {
+      left: 16px !important;
+      right: 16px;
+      top: auto !important;
+      bottom: 16px;
+      width: auto;
+    }
+
+    .tour-actions {
+      flex-direction: column;
+    }
+
+    .tour-nav {
+      justify-content: space-between;
+    }
+  }
+</style>
