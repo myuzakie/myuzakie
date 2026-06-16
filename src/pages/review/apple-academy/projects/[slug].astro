@@ -68,7 +68,7 @@ const caseI18n = getCaseI18nPayload(project, pageNumber, totalProjects);
     backHref="/review/apple-academy"
     backLabel="← Back to review index"
   >
-    <ReviewerNotes slot="appendix" notes={reviewData.reviewNotes} />
+    <ReviewerNotes slot="appendix" notes={reviewData.reviewNotes} data-tour="project-footer"/>
   </ProjectCaseDetail>
 
   <ReviewerOnboarding

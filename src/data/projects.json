@@ -29,7 +29,7 @@
       "back": "← Back to Projects",
       "counter": "Project {current} of {total}",
       "footerName": "Your name",
-      "footerUniversity": "Your university/school name (Student or Alumni)",
+      "footerUniversity": "Student Of Cakrwala Student",
       "footerContact": "Your contact information"
     },
     "id": {
@@ -64,19 +64,22 @@
       "thumbnail": "/images/project-1-thumbnail.webp",
       "heroImage": "/images/project-1-thumbnail.webp",
       "media": [
-        "01.webp",
-        "02.gif",
-        "03.webp",
-        "04.gif"
+        "1.png",
+        "2.png",
+        "3.png",
+        "4.png",
+        "5.png",
+        "6.png",
+        "7.png"
       ],
       "i18n": {
         "en": {
           "title": "Web3 Builder Journey",
-          "year": "2024",
-          "role": "Product Designer & Web3 Builder",
+          "year": "2025",
+          "role": "Full-stack Developer",
           "publicationLink": "https://github.com/myuzakie",
           "publicationLabel": "View on GitHub",
-          "description": "A hands-on journey through blockchain product design and development. Starting from BlockDevId's offline Web3 bootcamp, I collaborated with a team to design and build LiquidArena — a DeFi battle platform where users connect wallets, select LP positions, and compete in liquidity battles.\n\nThe project pushed me to translate abstract blockchain mechanics into a clear, step-by-step user flow: connect wallet → select LP position → create or join battle → approve transfer → monitor battle → resolve winner. A second product, Relynk, was also prototyped as part of the same hackathon sprint."
+          "description": "A hands-on journey through blockchain product design and development. Starting from BlockDevId's offline Web3 bootcamp, I collaborated with a team to design and build LiquidArena — a DeFi battle platform where users connect wallets, select LP positions, and compete in liquidity battles.\n\nThe project pushed me to translate abstract blockchain mechanics into a clear, step-by-step user flow: connect wallet → select LP position → create or join battle → approve transfer → monitor battle → resolve winner."
         },
         "id": {
           "title": "Web3 Builder Journey",

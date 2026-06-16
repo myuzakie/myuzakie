@@ -3,12 +3,13 @@ import type { ReviewNote } from '../../lib/reviewProjects';
 
 interface Props {
   notes: ReviewNote[];
+  'data-tour'?: string;
 }
 
-const { notes } = Astro.props;
+const { notes, 'data-tour': dataTour = 'review-notes' } = Astro.props;
 ---
 
-<section class="reviewer-notes" data-tour="review-notes" aria-label="Reviewer notes">
+<section class="reviewer-notes" data-tour={dataTour} aria-label="Reviewer notes">
   <p class="reviewer-notes__label">Reviewer Notes</p>
   <h2 class="reviewer-notes__title">Project explanation</h2>
 

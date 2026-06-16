@@ -5,340 +5,1034 @@ interface Props {
 }
 
 const { projectSlug, initialStep = 0 } = Astro.props;
+
+type TourTemplateStep = {
+  target: string;
+  focusLabel: string;
+  title: string;
+};
+
+type ProjectGuideStep = {
+  at: number; // seconds from the beginning of the single guide video
+  title?: string;
+  focusLabel?: string;
+};
+
+type ProjectGuideConfig = {
+  video: string;
+  steps: ProjectGuideStep[];
+};
+
+type TourStep = TourTemplateStep & {
+  at: number;
+};
+
+const caseTourTemplate: TourTemplateStep[] = [
+  {
+    target: '[data-tour="project-metadata"]',
+    focusLabel: 'Sidebar metadata',
+    title: 'Project Context',
+  },
+  {
+    target: '[data-tour="project-main"]',
+    focusLabel: 'Main case content',
+    title: 'Case Narrative',
+  },
+  {
+    target: '[data-tour="project-preview"]',
+    focusLabel: 'Media gallery',
+    title: 'Product Preview',
+  },
+  {
+    target: '[data-tour="project-footer"]',
+    focusLabel: 'Footer profile',
+    title: 'Closing Details',
+  },
+];
+
+// One guide video per project. Set each `at` value to the second where the UI focus should change.
+const projectGuides: Record<string, ProjectGuideConfig> = {
+  'web3-builder-journey': {
+    video: `/projects/web3-builder-journey/guide_01.mp4`,
+    steps: [
+      { at: 0, title: 'Web3 Bootcamp Context' },
+      { at: 15, title: 'LiquidArena - Product Case' },
+      { at: 32, title: 'User Flow & Product Preview' },
+      { at: 50, title: 'Reflection & Closing' },
+    ],
+  },
+  'fintech-app': {
+    video: `/projects/fintech-app/guide/guide.mp4`,
+    steps: [
+      { at: 0, title: 'The Problem' },
+      { at: 14, title: 'Design Direction' },
+      { at: 28, title: 'SwiftUI Implementation' },
+      { at: 42, title: 'Closing Details' },
+    ],
+  },
+};
+
+const guide = projectGuides[projectSlug];
+const videoSrc = guide?.video ?? '';
+const steps: TourStep[] = guide
+  ? caseTourTemplate.map((template, index) => {
+      const step = guide.steps[index] ?? { at: index * 15 };
+
+      return {
+        ...template,
+        at: Math.max(0, step.at ?? index * 15),
+        title: step.title ?? template.title,
+        focusLabel: step.focusLabel ?? template.focusLabel,
+      };
+    })
+  : [];
+const hasGuide = Boolean(guide && steps.length > 0);
 ---
 
-<div
-  class="reviewer-onboarding-root"
-  data-project-slug={projectSlug}
-  data-initial-step={initialStep}
-  hidden
->
-  <div class="tour-layer" aria-live="polite" hidden>
-    <div class="tour-backdrop"></div>
-    <div class="tour-highlight"></div>
+{hasGuide && (
+  <div
+    class="rog-root"
+    id={`rog-${projectSlug}`}
+    data-project-slug={projectSlug}
+    data-initial-step={initialStep}
+    data-video={videoSrc}
+    data-steps={JSON.stringify(steps)}
+  >
+    <button type="button" class="rog-trigger" id={`rog-trigger-${projectSlug}`} hidden aria-label="Open project guide">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>Project guide</span>
+    </button>
 
-    <article class="tour-card">
-      <p class="tour-step"></p>
-      <h2 class="tour-title"></h2>
-      <p class="tour-description"></p>
+    <div class="rog-choice" role="dialog" aria-modal="true" aria-label="Choose guide mode" hidden>
+      <div class="rog-choice-backdrop" aria-hidden="true"></div>
+      <article class="rog-choice-card">
+        <span class="rog-choice-kicker">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v18"/>
+            <path d="m17 8-5-5-5 5"/>
+            <path d="m17 16-5 5-5-5"/>
+          </svg>
+          Review mode
+        </span>
+        <h2>How do you want to explore this project?</h2>
+        <p>Start the timed walkthrough now, or keep the page clean and open the guide later.</p>
+        <div class="rog-choice-actions">
+          <button type="button" class="rog-choice-btn rog-choice-btn--primary rog-choice-auto">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <polygon points="9 7 18 12 9 17 9 7" fill="currentColor"/>
+            </svg>
+            Auto guide tour
+          </button>
+          <button type="button" class="rog-choice-btn rog-choice-manual">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 5v14"/>
+              <path d="m19 12-7 7-7-7"/>
+            </svg>
+            Manual
+          </button>
+        </div>
+      </article>
+    </div>
 
-      <div class="tour-actions">
-        <button type="button" class="tour-skip ghost">Skip</button>
-        <div class="tour-nav">
-          <button type="button" class="tour-back">Back</button>
-          <button type="button" class="tour-next primary">Next</button>
+    <div class="rog-panel" id={`rog-panel-${projectSlug}`} role="dialog" aria-modal="false" aria-label="Project video guide" hidden>
+      <header class="rog-header">
+        <div class="rog-header-left">
+          <span class="rog-badge">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+            Project Guide
+          </span>
+          <span class="rog-step-label" id={`rog-step-${projectSlug}`}>Step 1 / {steps.length}</span>
+        </div>
+        <button type="button" class="rog-close" aria-label="Close guide">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </header>
+
+      <div class="rog-video-wrap">
+        <video
+          class="rog-video"
+          id={`rog-video-${projectSlug}`}
+          playsinline
+          preload="metadata"
+          tabindex="0"
+          role="button"
+          aria-label="Play or pause project guide video"
+        >
+          <source src={videoSrc} type="video/mp4" />
+          Your browser does not support video.
+        </video>
+
+        <div class="rog-video-badge">
+          <span id={`rog-video-step-${projectSlug}`}>1</span> / {steps.length}
+        </div>
+
+        <div class="rog-video-controls" aria-label="Project guide video controls">
+          <button type="button" class="rog-control-btn rog-prev-step" aria-label="Previous guide step" title="Previous step">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="19 20 9 12 19 4 19 20" fill="currentColor" stroke="none"/>
+              <line x1="5" x2="5" y1="19" y2="5"/>
+            </svg>
+          </button>
+
+          <button type="button" class="rog-control-btn rog-skip-back" aria-label="Back 5 seconds" title="Back 5 seconds">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 8H3V4"/>
+              <path d="M3.05 11A9 9 0 1 0 6 4.35"/>
+              <path d="M10.6 15.4h2.1a1.4 1.4 0 0 0 0-2.8h-2.1V9.8h3.6"/>
+            </svg>
+          </button>
+
+          <button type="button" class="rog-control-btn rog-control-btn--primary rog-play-toggle" aria-label="Play video" title="Play">
+            <svg class="rog-icon rog-icon-play" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <polygon points="9 7 18 12 9 17 9 7" fill="currentColor"/>
+            </svg>
+            <svg class="rog-icon rog-icon-stop" width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="7" y="7" width="10" height="10" rx="1.8" fill="currentColor"/>
+            </svg>
+          </button>
+
+          <button type="button" class="rog-control-btn rog-skip-forward" aria-label="Forward 5 seconds" title="Forward 5 seconds">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M17 8h4V4"/>
+              <path d="M20.95 11A9 9 0 1 1 18 4.35"/>
+              <path d="M10.6 15.4h2.1a1.4 1.4 0 0 0 0-2.8h-2.1V9.8h3.6"/>
+            </svg>
+          </button>
+
+          <button type="button" class="rog-control-btn rog-next-step" aria-label="Next guide step" title="Next step">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="5 4 15 12 5 20 5 4" fill="currentColor" stroke="none"/>
+              <line x1="19" x2="19" y1="5" y2="19"/>
+            </svg>
+          </button>
         </div>
       </div>
-    </article>
-  </div>
 
-  <button type="button" class="restart-tour" hidden>Review guide</button>
-</div>
+      <div class="rog-progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={0}>
+        <div class="rog-progress-fill" id={`rog-progress-${projectSlug}`}></div>
+      </div>
+
+      <div class="rog-info">
+        <p class="rog-focus-label">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span class="rog-focus-text" id={`rog-focus-${projectSlug}`}>{steps[0]?.focusLabel}</span>
+        </p>
+        <h3 class="rog-title" id={`rog-title-${projectSlug}`}>{steps[0]?.title}</h3>
+      </div>
+
+      <div class="rog-dots" aria-label="Guide progress steps">
+        {steps.map((_, i) => (
+          <span
+            class={`rog-dot${i === 0 ? ' rog-dot--active' : ''}`}
+            aria-hidden="true"
+            data-step-index={i}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+)}
 
 <script>
-  function initReviewerOnboarding(root: HTMLElement) {
-    const projectSlug = root.dataset.projectSlug ?? '';
-    const initialStep = Number(root.dataset.initialStep ?? '0');
+  function initROG(root: HTMLElement) {
+    if (root.dataset.rogReady === 'true') return;
+    root.dataset.rogReady = 'true';
 
-    const steps = [
-      {
-        target: 'project-metadata',
-        title: 'Project Information',
-        description:
-          'This area summarizes the project title, year, role, and publication link.',
-      },
-      {
-        target: 'project-role',
-        title: 'Your Role',
-        description:
-          'This section shows your contribution and position in the project team.',
-      },
-      {
-        target: 'project-publication-link',
-        title: 'Publication Link',
-        description:
-          'This link points to the live prototype or case study for further exploration.',
-      },
-      {
-        target: 'project-description',
-        title: 'Project Context',
-        description:
-          'This section explains the problem, purpose, and design direction of the project.',
-      },
-      {
-        target: 'project-preview',
-        title: 'Interface Preview',
-        description:
-          'This preview shows the main interface and the visual system used in the project.',
-      },
-      {
-        target: 'review-notes',
-        title: 'Reviewer Notes',
-        description:
-          'This section explains the design reasoning, technical approach, and project value.',
-      },
-    ];
+    const slug = root.dataset.projectSlug ?? '';
+    const stepsRaw = root.dataset.steps ?? '[]';
+    const steps: Array<{
+      at: number;
+      title: string;
+      target?: string;
+      focusLabel?: string;
+    }> = JSON.parse(stepsRaw);
 
-    const storageKey = `review-onboarding-${projectSlug}`;
-    const layer = root.querySelector('.tour-layer') as HTMLElement;
-    const highlight = root.querySelector('.tour-highlight') as HTMLElement;
-    const card = root.querySelector('.tour-card') as HTMLElement;
-    const stepEl = root.querySelector('.tour-step') as HTMLElement;
-    const titleEl = root.querySelector('.tour-title') as HTMLElement;
-    const descriptionEl = root.querySelector('.tour-description') as HTMLElement;
-    const skipBtn = root.querySelector('.tour-skip') as HTMLButtonElement;
-    const backBtn = root.querySelector('.tour-back') as HTMLButtonElement;
-    const nextBtn = root.querySelector('.tour-next') as HTMLButtonElement;
-    const restartBtn = root.querySelector('.restart-tour') as HTMLButtonElement;
+    if (steps.length === 0) return;
 
-    let currentStep = Math.min(Math.max(initialStep, 0), steps.length - 1);
-    let isOpen = true;
+    const panel = root.querySelector('.rog-panel') as HTMLElement;
+    const trigger = root.querySelector('.rog-trigger') as HTMLButtonElement;
+    const choice = root.querySelector('.rog-choice') as HTMLElement;
+    const choiceAuto = root.querySelector('.rog-choice-auto') as HTMLButtonElement;
+    const choiceManual = root.querySelector('.rog-choice-manual') as HTMLButtonElement;
+    const closeBtn = root.querySelector('.rog-close') as HTMLButtonElement;
+    const videoWrap = root.querySelector('.rog-video-wrap') as HTMLElement;
+    const video = root.querySelector('.rog-video') as HTMLVideoElement;
+    const playToggle = root.querySelector('.rog-play-toggle') as HTMLButtonElement;
+    const prevStepBtn = root.querySelector('.rog-prev-step') as HTMLButtonElement;
+    const nextStepBtn = root.querySelector('.rog-next-step') as HTMLButtonElement;
+    const skipBackBtn = root.querySelector('.rog-skip-back') as HTMLButtonElement;
+    const skipForwardBtn = root.querySelector('.rog-skip-forward') as HTMLButtonElement;
+    const progressFill = root.querySelector('.rog-progress-fill') as HTMLElement;
+    const progressTrack = root.querySelector('.rog-progress-track') as HTMLElement;
+    const stepLabel = root.querySelector('.rog-step-label') as HTMLElement;
+    const videoStepBadge = root.querySelector('[id^="rog-video-step"]') as HTMLElement;
+    const focusLabelEl = root.querySelector('.rog-focus-text') as HTMLElement;
+    const titleEl = root.querySelector('.rog-title') as HTMLElement;
+    const dots = root.querySelectorAll<HTMLElement>('.rog-dot');
 
-    function readStepFromUrl(): number | null {
-      const value = new URLSearchParams(window.location.search).get('step');
-      if (value === null) return null;
-      const parsed = Number(value);
-      return Number.isFinite(parsed) ? parsed : null;
+    function clampStep(index: number): number {
+      return Math.max(0, Math.min(steps.length - 1, Number.isFinite(index) ? index : 0));
     }
 
-    function syncUrl() {
-      const url = new URL(window.location.href);
-      url.searchParams.set('step', String(currentStep));
-      window.history.replaceState({}, '', url);
+    function stepIndexForTime(time: number): number {
+      let nextIndex = 0;
+
+      steps.forEach((step, index) => {
+        if (time >= step.at) nextIndex = index;
+      });
+
+      return clampStep(nextIndex);
     }
 
-    function updateHighlight() {
-      const current = steps[currentStep];
-      if (!current || !isOpen) return;
+    let current = clampStep(Number(root.dataset.initialStep ?? 0));
+    let activeTarget: HTMLElement | null = null;
+    let isPlaying = false;
+    let tourActive = false;
+    let controlsTimer = 0;
+    const skipSeconds = 5;
 
-      const element = document.querySelector(`[data-tour="${current.target}"]`) as HTMLElement | null;
-
-      if (!element) {
-        highlight.style.cssText = '';
-        card.style.cssText = '';
-        return;
-      }
-
-      const rect = element.getBoundingClientRect();
-      const padding = 12;
-      const top = Math.max(rect.top - padding, 16);
-      const left = Math.max(rect.left - padding, 16);
-      const width = rect.width + padding * 2;
-      const height = rect.height + padding * 2;
-
-      highlight.style.top = `${top}px`;
-      highlight.style.left = `${left}px`;
-      highlight.style.width = `${width}px`;
-      highlight.style.height = `${height}px`;
-
-      const cardTop = Math.min(window.innerHeight - 260, Math.max(24, rect.bottom + 20));
-      const cardLeft = Math.min(window.innerWidth - 420, Math.max(24, rect.left));
-
-      card.style.top = `${cardTop}px`;
-      card.style.left = `${cardLeft}px`;
-
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    function clearFocusTarget() {
+      if (!activeTarget) return;
+      activeTarget.classList.remove('rog-tour-focus');
+      activeTarget.removeAttribute('data-tour-active');
+      activeTarget = null;
     }
 
-    function renderStep() {
-      const current = steps[currentStep];
-      if (!current) return;
+    function focusStepTarget(step: { target?: string }) {
+      clearFocusTarget();
+      if (!step.target) return;
 
-      stepEl.textContent = `Step ${currentStep + 1} of ${steps.length}`;
-      titleEl.textContent = current.title;
-      descriptionEl.textContent = current.description;
-      backBtn.disabled = currentStep === 0;
-      nextBtn.textContent = currentStep === steps.length - 1 ? 'Finish' : 'Next';
-      updateHighlight();
+      const target = document.querySelector<HTMLElement>(step.target);
+      if (!target) return;
+
+      activeTarget = target;
+      target.classList.add('rog-tour-focus');
+      target.setAttribute('data-tour-active', 'true');
+      target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
     }
 
-    function setOpen(open: boolean) {
-      isOpen = open;
-      layer.hidden = !open;
-      restartBtn.hidden = open;
-      root.hidden = false;
+    function renderStep(index: number, shouldFocus = tourActive) {
+      const step = steps[index];
+      if (!step) return;
 
-      if (open) {
-        renderStep();
+      titleEl.textContent = step.title;
+      if (focusLabelEl) focusLabelEl.textContent = step.focusLabel ?? 'Project section';
+      stepLabel.textContent = `Step ${index + 1} / ${steps.length}`;
+      if (videoStepBadge) videoStepBadge.textContent = String(index + 1);
+
+      dots.forEach((dot, dotIndex) => {
+        dot.classList.toggle('rog-dot--active', dotIndex === index);
+      });
+
+      prevStepBtn.disabled = index === 0;
+      nextStepBtn.disabled = index === steps.length - 1;
+
+      if (shouldFocus) {
+        focusStepTarget(step);
+      } else {
+        clearFocusTarget();
       }
     }
 
-    function finish() {
-      localStorage.setItem(storageKey, 'completed');
-      setOpen(false);
+    function syncStepFromVideo(force = false) {
+      const next = stepIndexForTime(video.currentTime || 0);
+      if (!force && next === current) return;
+
+      current = next;
+      renderStep(current);
     }
 
-    function next() {
-      if (currentStep < steps.length - 1) {
-        currentStep += 1;
-        syncUrl();
-        renderStep();
-        return;
-      }
-      finish();
+    function updateProgress() {
+      const duration = Number.isFinite(video.duration) && video.duration > 0
+        ? video.duration
+        : Math.max(steps[steps.length - 1]?.at ?? 0, 1);
+      const pct = Math.min(((video.currentTime || 0) / duration) * 100, 100);
+
+      progressFill.style.width = `${pct}%`;
+      progressTrack.setAttribute('aria-valuenow', String(Math.round(pct)));
     }
 
-    function previous() {
-      if (currentStep > 0) {
-        currentStep -= 1;
-        syncUrl();
-        renderStep();
-      }
+    function seekToStep(index: number) {
+      const safeIndex = clampStep(index);
+      const step = steps[safeIndex];
+      if (!step) return;
+
+      const duration = Number.isFinite(video.duration) && video.duration > 0 ? video.duration : null;
+      video.currentTime = duration ? Math.min(step.at, Math.max(duration - 0.05, 0)) : step.at;
+      current = safeIndex;
+      renderStep(current);
+      updateProgress();
     }
 
-    function restart() {
-      currentStep = 0;
-      localStorage.removeItem(storageKey);
-      syncUrl();
-      setOpen(true);
+    function setPlaying(playing: boolean) {
+      isPlaying = playing;
+      video.classList.toggle('rog-video--paused', !playing);
+      videoWrap.classList.toggle('rog-video-wrap--playing', playing);
+      video.setAttribute('aria-pressed', playing ? 'true' : 'false');
+      playToggle.setAttribute('aria-label', playing ? 'Stop video' : 'Play video');
+      playToggle.setAttribute('title', playing ? 'Stop' : 'Play');
     }
 
-    skipBtn.addEventListener('click', finish);
-    backBtn.addEventListener('click', previous);
-    nextBtn.addEventListener('click', next);
-    restartBtn.addEventListener('click', restart);
-
-    window.addEventListener('resize', updateHighlight, { passive: true });
-    window.addEventListener('scroll', updateHighlight, { passive: true });
-
-    const urlStep = readStepFromUrl();
-    if (urlStep !== null) {
-      currentStep = Math.min(Math.max(urlStep, 0), steps.length - 1);
+    function play() {
+      setPlaying(true);
+      video.play().catch(() => setPlaying(false));
     }
 
-    if (localStorage.getItem(storageKey) === 'completed') {
-      setOpen(false);
+    function pause() {
+      video.pause();
+      setPlaying(false);
+    }
+
+    function togglePlayback() {
+      if (isPlaying) pause();
+      else play();
+      showVideoControls();
+    }
+
+    function seekBy(seconds: number) {
+      const duration = Number.isFinite(video.duration) && video.duration > 0 ? video.duration : null;
+      const maxTime = duration ? Math.max(duration - 0.05, 0) : Number.POSITIVE_INFINITY;
+      video.currentTime = Math.max(0, Math.min((video.currentTime || 0) + seconds, maxTime));
+      syncStepFromVideo(true);
+      updateProgress();
+      showVideoControls();
+    }
+
+    function goToStep(delta: number) {
+      seekToStep(current + delta);
+      showVideoControls();
+    }
+
+    function hideChoice() {
+      choice.setAttribute('hidden', '');
+    }
+
+    function showChoice() {
+      tourActive = false;
+      panel.setAttribute('hidden', '');
+      trigger.hidden = true;
+      pause();
+      clearFocusTarget();
+      choice.removeAttribute('hidden');
+      choiceAuto.focus({ preventScroll: true });
+    }
+
+    function chooseManualMode() {
+      localStorage.setItem(storageKey, 'manual');
+      hideChoice();
+      tourActive = false;
+      panel.setAttribute('hidden', '');
+      trigger.hidden = false;
+      renderStep(current, false);
+      updateProgress();
+    }
+
+    function chooseAutoMode() {
+      localStorage.setItem(storageKey, 'auto');
+      hideChoice();
+      openPanel();
+    }
+
+    function hideVideoControls() {
+      window.clearTimeout(controlsTimer);
+      if (videoWrap.contains(document.activeElement)) return;
+      videoWrap.classList.add('rog-controls-hidden');
+    }
+
+    function showVideoControls(keepVisible = false) {
+      window.clearTimeout(controlsTimer);
+      videoWrap.classList.remove('rog-controls-hidden');
+
+      if (keepVisible) return;
+
+      controlsTimer = window.setTimeout(() => {
+        if (videoWrap.contains(document.activeElement)) return;
+        videoWrap.classList.add('rog-controls-hidden');
+      }, 1000);
+    }
+
+    playToggle.addEventListener('click', togglePlayback);
+    prevStepBtn.addEventListener('click', () => goToStep(-1));
+    nextStepBtn.addEventListener('click', () => goToStep(1));
+    skipBackBtn.addEventListener('click', () => seekBy(-skipSeconds));
+    skipForwardBtn.addEventListener('click', () => seekBy(skipSeconds));
+
+    videoWrap.addEventListener('mouseenter', () => showVideoControls());
+    videoWrap.addEventListener('mousemove', () => showVideoControls());
+    videoWrap.addEventListener('touchstart', () => showVideoControls(), { passive: true });
+    videoWrap.addEventListener('focusin', () => showVideoControls(true));
+    videoWrap.addEventListener('focusout', () => showVideoControls());
+    videoWrap.addEventListener('mouseleave', hideVideoControls);
+
+    video.addEventListener('click', togglePlayback);
+    video.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      togglePlayback();
+    });
+
+    video.addEventListener('loadedmetadata', () => {
+      seekToStep(current);
+      syncStepFromVideo(true);
+      updateProgress();
+    });
+
+    video.addEventListener('timeupdate', () => {
+      syncStepFromVideo();
+      updateProgress();
+    });
+
+    video.addEventListener('pause', () => setPlaying(false));
+    video.addEventListener('play', () => setPlaying(true));
+    video.addEventListener('ended', () => {
+      setPlaying(false);
+      updateProgress();
+    });
+
+    function openPanel() {
+      tourActive = true;
+      panel.removeAttribute('hidden');
+      trigger.hidden = true;
+      current = clampStep(Number(root.dataset.initialStep ?? 0));
+      seekToStep(current);
+      showVideoControls();
+      play();
+    }
+
+    function closePanel() {
+      panel.setAttribute('hidden', '');
+      trigger.hidden = false;
+      tourActive = false;
+      window.clearTimeout(controlsTimer);
+      pause();
+      clearFocusTarget();
+    }
+
+    choiceAuto.addEventListener('click', chooseAutoMode);
+    choiceManual.addEventListener('click', chooseManualMode);
+    closeBtn.addEventListener('click', closePanel);
+    trigger.addEventListener('click', openPanel);
+
+    const storageKey = `rog-guide-choice-v2-${slug}`;
+    const guideChoice = localStorage.getItem(storageKey);
+
+    renderStep(current, false);
+    updateProgress();
+
+    if (!guideChoice) {
+      showChoice();
     } else {
-      setOpen(true);
-      syncUrl();
+      panel.setAttribute('hidden', '');
+      trigger.hidden = false;
+      clearFocusTarget();
     }
   }
 
-  document.querySelectorAll('.reviewer-onboarding-root').forEach((root) => {
-    initReviewerOnboarding(root as HTMLElement);
-  });
+  function initAll() {
+    document.querySelectorAll<HTMLElement>('.rog-root').forEach(initROG);
+  }
+
+  document.addEventListener('DOMContentLoaded', initAll);
+  document.addEventListener('astro:after-swap', initAll);
 </script>
 
 <style>
-  .reviewer-onboarding-root {
+  .rog-root {
     display: contents;
   }
 
-  .tour-layer {
+  .rog-trigger {
     position: fixed;
-    inset: 0;
-    z-index: 9999;
-    pointer-events: none;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9000;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: none;
+    background: #1d1d1f;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
 
-  .tour-backdrop {
+  .rog-trigger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+  }
+
+  .rog-choice {
+    position: fixed;
+    inset: 0;
+    z-index: 9800;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+  }
+
+  .rog-choice[hidden] {
+    display: none;
+  }
+
+  .rog-choice-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.58);
+    background: rgba(5,5,6,0.66);
+    backdrop-filter: blur(10px);
   }
 
-  .tour-highlight {
-    position: fixed;
-    z-index: 2;
-    border: 2px solid white;
-    border-radius: 24px;
-    box-shadow:
-      0 0 0 9999px rgba(0, 0, 0, 0.58),
-      0 16px 48px rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-    transition: all 180ms ease;
-  }
-
-  .tour-card {
-    position: fixed;
-    z-index: 3;
-    width: min(392px, calc(100vw - 32px));
+  .rog-choice-card {
+    position: relative;
+    width: min(430px, calc(100vw - 32px));
     padding: 22px;
-    border-radius: 24px;
-    background: white;
-    color: black;
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
-    pointer-events: auto;
-    transition: all 180ms ease;
+    border: 1px solid rgba(255,255,255,0.68);
+    border-radius: 18px;
+    background: #fff;
+    color: #1d1d1f;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.05),
+      0 28px 90px rgba(0,0,0,0.36);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
   }
 
-  .tour-step {
-    margin: 0 0 8px;
-    font-size: 13px;
-    opacity: 0.65;
-  }
-
-  .tour-card :global(.tour-title) {
-    margin: 0 0 10px;
-    font-size: 22px;
-  }
-
-  .tour-description {
-    margin: 0;
-    line-height: 1.6;
-  }
-
-  .tour-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 22px;
-  }
-
-  .tour-nav {
-    display: flex;
-    gap: 8px;
-  }
-
-  .reviewer-onboarding-root :global(button) {
-    padding: 10px 14px;
-    border: 1px solid currentColor;
+  .rog-choice-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    padding: 4px 9px;
     border-radius: 999px;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-    font: inherit;
+    background: rgba(0,113,227,0.1);
+    color: #0071e3;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0;
   }
 
-  .reviewer-onboarding-root :global(button:disabled) {
-    opacity: 0.4;
+  .rog-choice-card h2 {
+    margin: 0;
+    max-width: 340px;
+    color: #1d1d1f;
+    font-size: 21px;
+    font-weight: 720;
+    line-height: 1.16;
+    letter-spacing: 0;
+  }
+
+  .rog-choice-card p {
+    margin: 10px 0 0;
+    max-width: 360px;
+    color: rgba(29,29,31,0.62);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .rog-choice-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .rog-choice-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    gap: 7px;
+    padding: 0 14px;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 999px;
+    background: #fff;
+    color: #1d1d1f;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 680;
+    letter-spacing: 0;
+    cursor: pointer;
+    transition: transform 0.14s ease, background 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+  }
+
+  .rog-choice-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(0,0,0,0.22);
+    background: #f7f7f7;
+  }
+
+  .rog-choice-btn:focus-visible {
+    outline: 2px solid #0071e3;
+    outline-offset: 3px;
+  }
+
+  .rog-choice-btn--primary {
+    border-color: #0071e3;
+    background: #0071e3;
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(0,113,227,0.26);
+  }
+
+  .rog-choice-btn--primary:hover {
+    border-color: #0068d1;
+    background: #0068d1;
+  }
+
+  .rog-panel {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9500;
+    width: min(400px, calc(100vw - 32px));
+    overflow: hidden;
+    border-radius: 20px;
+    background: #fff;
+    color: #1d1d1f;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.06),
+      0 24px 80px rgba(0,0,0,0.28);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .rog-panel[hidden] {
+    display: none;
+  }
+
+  .rog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+
+  .rog-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .rog-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.06);
+    color: #1d1d1f;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .rog-step-label {
+    color: rgba(29,29,31,0.45);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  .rog-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.06);
+    color: #1d1d1f;
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+
+  .rog-close:hover {
+    background: rgba(0,0,0,0.1);
+  }
+
+  .rog-video-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .rog-video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    object-fit: cover;
+  }
+
+  .rog-video:focus-visible {
+    outline: 2px solid #0071e3;
+    outline-offset: -4px;
+  }
+
+  .rog-video-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(0,0,0,0.5);
+    color: rgba(255,255,255,0.9);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .rog-video-controls {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 8px;
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 999px;
+    background: rgba(16,16,18,0.72);
+    color: #fff;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.35);
+    transform: translateX(-50%);
+    backdrop-filter: blur(14px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .rog-controls-hidden .rog-video-badge {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  .rog-controls-hidden .rog-video-controls {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(8px);
+  }
+
+  .rog-control-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 auto;
+    padding: 0;
+    border: none;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.94);
+    cursor: pointer;
+    transition: background 0.14s ease, color 0.14s ease, opacity 0.14s ease, transform 0.14s ease;
+  }
+
+  .rog-control-btn:hover:not(:disabled) {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-1px);
+  }
+
+  .rog-control-btn:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.95);
+    outline-offset: 2px;
+  }
+
+  .rog-control-btn:disabled {
+    opacity: 0.35;
     cursor: not-allowed;
   }
 
-  .reviewer-onboarding-root :global(.primary) {
-    background: black;
-    color: white;
+  .rog-control-btn--primary {
+    width: 44px;
+    height: 44px;
+    background: #fff;
+    color: #1d1d1f;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.22);
   }
 
-  .reviewer-onboarding-root :global(.ghost) {
-    opacity: 0.7;
+  .rog-control-btn--primary:hover:not(:disabled) {
+    background: rgba(255,255,255,0.9);
   }
 
-  .restart-tour {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 100;
-    background: black !important;
-    color: white !important;
-    border-color: black !important;
+  .rog-icon-stop {
+    display: none;
   }
 
-  @media (max-width: 640px) {
-    .tour-card {
-      left: 16px !important;
-      right: 16px;
-      top: auto !important;
-      bottom: 16px;
+  .rog-video-wrap--playing .rog-icon-play {
+    display: none;
+  }
+
+  .rog-video-wrap--playing .rog-icon-stop {
+    display: block;
+  }
+
+  .rog-progress-track {
+    width: 100%;
+    height: 3px;
+    background: rgba(0,0,0,0.08);
+  }
+
+  .rog-progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: 0 2px 2px 0;
+    background: #0071e3;
+    transition: width 0.08s linear;
+  }
+
+  .rog-info {
+    padding: 14px 16px 10px;
+  }
+
+  .rog-focus-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 7px;
+    color: #0071e3;
+    font-size: 11px;
+    font-weight: 650;
+    letter-spacing: 0;
+  }
+
+  .rog-focus-text {
+    min-width: 0;
+  }
+
+  .rog-title {
+    margin: 0;
+    color: #1d1d1f;
+    font-size: 16px;
+    font-weight: 680;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+
+  .rog-dots {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 0 12px 14px;
+  }
+
+  .rog-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.18);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .rog-dot--active {
+    background: #1d1d1f;
+    transform: scale(1.3);
+  }
+
+  :global([data-tour]) {
+    scroll-margin-block: 120px;
+  }
+
+  :global(.rog-tour-focus) {
+    position: relative;
+    z-index: 60;
+    border-radius: 14px;
+    outline: 2px solid rgba(0,113,227,0.92);
+    outline-offset: 8px;
+    box-shadow:
+      0 0 0 9999px rgba(0,0,0,0.24),
+      0 16px 48px rgba(0,113,227,0.24);
+    transition: outline-color 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  :global(.project-case-main.rog-tour-focus),
+  :global(.project-case-footer.rog-tour-focus) {
+    border-radius: 18px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rog-choice-btn,
+    .rog-progress-fill,
+    .rog-video-badge,
+    .rog-video-controls,
+    .rog-control-btn,
+    .rog-dot,
+    :global(.rog-tour-focus) {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .rog-choice-card {
+      padding: 18px;
+      border-radius: 16px;
+    }
+
+    .rog-choice-card h2 {
+      font-size: 19px;
+    }
+
+    .rog-choice-actions {
+      grid-template-columns: 1fr;
+    }
+
+    .rog-panel {
+      right: 12px;
+      bottom: 12px;
+      left: 12px;
       width: auto;
     }
 
-    .tour-actions {
-      flex-direction: column;
+    .rog-trigger {
+      right: 16px;
+      bottom: 16px;
     }
 
-    .tour-nav {
-      justify-content: space-between;
+    .rog-video-controls {
+      bottom: 10px;
+      gap: 6px;
+      padding: 7px;
+    }
+
+    .rog-control-btn {
+      width: 34px;
+      height: 34px;
+    }
+
+    .rog-control-btn--primary {
+      width: 42px;
+      height: 42px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .rog-video-controls {
+      gap: 4px;
+      padding: 6px;
+    }
+
+    .rog-control-btn {
+      width: 31px;
+      height: 31px;
+    }
+
+    .rog-control-btn--primary {
+      width: 38px;
+      height: 38px;
     }
   }
 </style>
