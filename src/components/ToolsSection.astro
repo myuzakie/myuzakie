@@ -1,0 +1,301 @@
+---
+import Icon from "./Icon.astro";
+import { getTranslation } from "../i18n/translations";
+
+interface Props {
+  lang?: "en" | "id" | "de";
+}
+const { lang = "en" } = Astro.props;
+const t = getTranslation(lang as any);
+
+const sideProjects = [
+  { name: "Project 1", image: "/images/project-1.png", href: "#" },
+  { name: "Project 2", image: "/images/project-2.gif", href: "#" },
+  { name: "Project 3", image: "/images/project-3.jpg", href: "#" },
+  { name: "Eleven Project", image: "/images/project-4.gif", href: "#" },
+];
+
+const stackCategories = [
+  {
+    label: "Framework",
+    items: [
+      { name: "React",    color: "#61DAFB", icon: "react"    as const },
+      { name: "Webflow",  color: "#4353FF", icon: "webflow"  as const },
+    ],
+  },
+  {
+    label: "Language",
+    items: [
+      { name: "TypeScript", color: "#3178C6", icon: "vscode"  as const },
+      { name: "VS Code",    color: "#007ACC", icon: "vscode"  as const },
+    ],
+  },
+  {
+    label: "Design",
+    items: [
+      { name: "Figma",  color: "#F24E1E", icon: "figma"   as const },
+    ],
+  },
+  {
+    label: "Cloud",
+    items: [
+      { name: "Notion", color: "#FFFFFF", icon: "notion"  as const },
+      { name: "Claude", color: "#D4A27F", icon: "claude"  as const },
+    ],
+  },
+  {
+    label: "Database",
+    items: [
+      { name: "Notion", color: "#FFFFFF", icon: "notion"  as const },
+    ],
+  },
+  {
+    label: "Workspace",
+    items: [
+      { name: "Notion", color: "#FFFFFF", icon: "notion"  as const },
+      { name: "Claude", color: "#D4A27F", icon: "claude"  as const },
+    ],
+  },
+];
+
+// Serialise to JSON for the client script
+const categoriesJson = JSON.stringify(
+  stackCategories.map((c) => ({ label: c.label, names: c.items.map((i) => i.name) }))
+);
+
+// Flat deduplicated list – every possible icon rendered once per category slot
+const allIcons = stackCategories.flatMap((cat, catIdx) =>
+  cat.items.map((item, itemIdx) => ({ ...item, catIdx, itemIdx, catLabel: cat.label }))
+);
+---
+
+<section
+  class="flex flex-col sm:flex-row sm:justify-between gap-6 sm:gap-14 px-gutter py-1.5 pb-7 max-w-site flex-wrap relative z-[1] mx-auto w-full"
+>
+  <!-- Side Projects -->
+  <div class="flex flex-col gap-2.5">
+    <h2
+      class="font-mono text-[0.68rem] font-normal text-text-muted uppercase tracking-[0.1em]"
+      data-i18n-tools="sideProjects"
+    >
+      {t.tools.sideProjects}
+    </h2>
+    <div class="flex gap-2 flex-wrap">
+      {
+        sideProjects.map((p) => (
+          <a
+            href={p.href}
+            class="w-[46px] h-[46px] rounded-md flex items-center justify-center border border-border transition-transform duration-fast overflow-hidden flex-shrink-0 hover:-translate-y-0.5 hover:border-border-light"
+            title={p.name}
+          >
+            <img src={p.image} alt={p.name} class="w-full h-full object-cover" />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Stack used -->
+  <div class="flex flex-col gap-2.5">
+    <h2
+      class="font-mono text-[0.68rem] font-normal text-text-muted uppercase tracking-[0.1em]"
+      data-i18n-tools="stackUsed"
+    >
+      {t.tools.stackUsed}
+      <span class="stack-sep"> - </span>
+      <span class="stack-cat-slider" aria-live="polite">
+        <span class="stack-cat-track">
+          {stackCategories.map((c) => (
+            <span class="stack-cat-item">{c.label}</span>
+          ))}
+        </span>
+      </span>
+    </h2>
+
+    <!-- Icon container: all icons pre-rendered, JS shows/hides by category -->
+    <div class="stack-icons-wrap" id="stack-icons">
+      {
+        allIcons.map((s) => (
+          <div
+            class="stack-icon"
+            data-cat={s.catIdx}
+            title={s.name}
+            style={`--i: ${s.itemIdx}`}
+          >
+            <Icon icon={s.icon} color={s.color} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ── Category label slider ── */
+  .stack-sep { opacity: 0.4; }
+
+  .stack-cat-slider {
+    display: inline-block;
+    height: 1em;
+    overflow: hidden;
+    vertical-align: middle;
+    position: relative;
+    top: -0.05em;
+  }
+
+  .stack-cat-track {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .stack-cat-item {
+    display: block;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--color-text-muted, #888);
+  }
+
+  /* ── Icon grid ── */
+  .stack-icons-wrap {
+    display: flex;
+    gap: 0.5rem;
+    min-height: 46px;
+    position: relative;
+  }
+
+  .stack-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-border, #2a2a2a);
+    background: var(--color-surface2, #1a1a1a);
+    overflow: hidden;
+    flex-shrink: 0;
+    cursor: default;
+
+    /* hidden by default; JS reveals the active category */
+    display: none;
+
+    /* bounce */
+    animation: float-bounce 3s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.18s);
+
+    transition:
+      border-color 0.15s ease,
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  /* JS adds this class to show icons */
+  .stack-icon.visible {
+    display: flex;
+  }
+
+  /* entering: slide up from below */
+  .stack-icon.enter {
+    animation:
+      icon-enter 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+      float-bounce 3s ease-in-out calc(0.3s + var(--i) * 0.18s) infinite;
+  }
+
+  /* leaving: slide up and fade */
+  .stack-icon.leave {
+    animation: icon-leave 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+    pointer-events: none;
+  }
+
+  @keyframes icon-enter {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes icon-leave {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-10px); }
+  }
+
+  @keyframes float-bounce {
+    0%   { transform: translateY(0px); }
+    50%  { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+  }
+
+  .stack-icon:hover {
+    border-color: var(--color-border-light, #444);
+    transform: translateY(-3px) !important;
+  }
+
+  .stack-icon :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+</style>
+
+<script define:vars={{ categoriesJson }}>
+  const categories = JSON.parse(categoriesJson);
+  const totalCats  = categories.length;
+
+  const track    = document.querySelector(".stack-cat-track");
+  const slider   = document.querySelector(".stack-cat-slider");
+  const firstLbl = track?.querySelector(".stack-cat-item");
+  const allIcons = document.querySelectorAll(".stack-icon");
+
+  if (!track || !slider || !firstLbl || !allIcons.length) return;
+
+  // Fix slider height to one line
+  slider.style.height = firstLbl.offsetHeight + "px";
+
+  let current = 0;
+
+  function showCategory(idx) {
+    // 1. Slide the label track
+    slider.style.height = firstLbl.offsetHeight + "px";
+    track.style.transform = `translateY(-${idx * firstLbl.offsetHeight}px)`;
+
+    // 2. Animate old icons out
+    allIcons.forEach((el) => {
+      if (el.classList.contains("visible")) {
+        el.classList.remove("enter");
+        el.classList.add("leave");
+        el.addEventListener(
+          "animationend",
+          () => {
+            el.classList.remove("visible", "leave");
+            el.style.display = "";
+          },
+          { once: true }
+        );
+      }
+    });
+
+    // 3. After leave duration, bring in new icons
+    setTimeout(() => {
+      let slot = 0;
+      allIcons.forEach((el) => {
+        if (parseInt(el.dataset.cat) === idx) {
+          el.style.setProperty("--i", slot);
+          slot++;
+          el.classList.remove("leave");
+          el.classList.add("visible", "enter");
+          el.addEventListener(
+            "animationend",
+            () => el.classList.remove("enter"),
+            { once: true }
+          );
+        }
+      });
+    }, 260);
+  }
+
+  // Init with first category
+  showCategory(0);
+
+  setInterval(() => {
+    current = (current + 1) % totalCats;
+    showCategory(current);
+  }, 2500);
+</script>

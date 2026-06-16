@@ -1,0 +1,126 @@
+{
+  "profile": {
+    "en": {
+      "name": "Farhan Muzaki",
+      "university": "Apple Developer Academy Indonesia · Alumni",
+      "contact": "farhanmuzaki@gmail.com · linkedin.com/in/farhanmuzaki",
+      "footerNote": "Portfolio Submission for Apple Developer Academy Indonesia"
+    },
+    "id": {
+      "name": "Farhan Muzaki",
+      "university": "Apple Developer Academy Indonesia · Alumni",
+      "contact": "farhanmuzaki@gmail.com · linkedin.com/in/farhanmuzaki",
+      "footerNote": "Portofolio untuk Apple Developer Academy Indonesia"
+    },
+    "de": {
+      "name": "Farhan Muzaki",
+      "university": "Apple Developer Academy Indonesia · Alumni",
+      "contact": "farhanmuzaki@gmail.com · linkedin.com/in/farhanmuzaki",
+      "footerNote": "Portfolio-Einreichung für Apple Developer Academy Indonesia"
+    }
+  },
+  "labels": {
+    "en": {
+      "title": "Artwork/Project Title",
+      "year": "Year Accomplished",
+      "role": "Role/Position",
+      "link": "Publication Link",
+      "description": "Artwork/project Description",
+      "back": "← Back to Projects",
+      "counter": "Project {current} of {total}",
+      "footerName": "Your name",
+      "footerUniversity": "Your university/school name (Student or Alumni)",
+      "footerContact": "Your contact information"
+    },
+    "id": {
+      "title": "Judul Karya/Proyek",
+      "year": "Tahun Diselesaikan",
+      "role": "Peran/Posisi",
+      "link": "Tautan Publikasi",
+      "description": "Deskripsi Karya/Proyek",
+      "back": "← Kembali ke Proyek",
+      "counter": "Proyek {current} dari {total}",
+      "footerName": "Nama Anda",
+      "footerUniversity": "Nama universitas/sekolah (Mahasiswa atau Alumni)",
+      "footerContact": "Informasi kontak Anda"
+    },
+    "de": {
+      "title": "Kunstwerk/Projekttitel",
+      "year": "Abschlussjahr",
+      "role": "Rolle/Position",
+      "link": "Veröffentlichungslink",
+      "description": "Kunstwerk/Projektbeschreibung",
+      "back": "← Zurück zu Projekten",
+      "counter": "Projekt {current} von {total}",
+      "footerName": "Ihr Name",
+      "footerUniversity": "Name Ihrer Universität/Schule (Student oder Alumni)",
+      "footerContact": "Ihre Kontaktinformationen"
+    }
+  },
+  "projects": [
+    {
+      "slug": "police-dashboard",
+      "theme": "dark",
+      "thumbnail": "/images/project-1-thumbnail.webp",
+      "heroImage": "/images/project-1-thumbnail.webp",
+      "i18n": {
+        "en": {
+          "title": "Police Station Dashboard",
+          "year": "2024",
+          "role": "UI/UX Designer & Frontend Developer",
+          "publicationLink": "https://example.com/police-dashboard",
+          "publicationLabel": "View live prototype",
+          "description": "A control panel for law enforcement analytics and daily operations. The dashboard consolidates incident reports, officer assignments, and real-time district metrics into a single interface designed for clarity under pressure.\n\nThe project focused on information hierarchy, accessible color systems, and responsive layouts that work across desktop command centers and field tablets."
+        },
+        "id": {
+          "title": "Dasbor Kantor Polisi",
+          "year": "2024",
+          "role": "Desainer UI/UX & Frontend Developer",
+          "publicationLink": "https://example.com/police-dashboard",
+          "publicationLabel": "Lihat prototipe",
+          "description": "Panel kontrol untuk analitik penegakan hukum dan operasi harian. Dasbor ini menggabungkan laporan insiden, penugasan petugas, dan metrik distrik secara real-time dalam satu antarmuka yang dirancang untuk kejelasan di bawah tekanan.\n\nProyek ini berfokus pada hierarki informasi, sistem warna yang aksesibel, dan tata letak responsif yang berfungsi di pusat komando desktop maupun tablet lapangan."
+        },
+        "de": {
+          "title": "Polizeistation-Dashboard",
+          "year": "2024",
+          "role": "UI/UX-Designer & Frontend-Entwickler",
+          "publicationLink": "https://example.com/police-dashboard",
+          "publicationLabel": "Live-Prototyp ansehen",
+          "description": "Ein Kontrollpanel für Strafverfolgungsanalysen und tägliche Einsätze. Das Dashboard bündelt Vorfallberichte, Einsatzplanung und Echtzeit-Bezirkskennzahlen in einer Oberfläche, die unter Druck Klarheit schafft.\n\nDer Schwerpunkt lag auf Informationshierarchie, barrierefreien Farbsystemen und responsiven Layouts für Desktop-Leitstellen und Feldtablets."
+        }
+      }
+    },
+    {
+      "slug": "fintech-app",
+      "theme": "light",
+      "thumbnail": "/images/project-2-thumbnail.webp",
+      "heroImage": "/images/project-2-thumbnail.webp",
+      "i18n": {
+        "en": {
+          "title": "Fintech Mobile App",
+          "year": "2025",
+          "role": "Product Designer & iOS Developer",
+          "publicationLink": "https://example.com/fintech-app",
+          "publicationLabel": "View case study",
+          "description": "A savings and stock portfolio app for modern banking. Users can track balances, set recurring goals, and explore market trends through a calm, finance-first interface built for daily check-ins.\n\nDesign decisions prioritized legibility of numbers, progressive disclosure of complex data, and motion that reinforces trust rather than distraction."
+        },
+        "id": {
+          "title": "Aplikasi Fintech Seluler",
+          "year": "2025",
+          "role": "Product Designer & iOS Developer",
+          "publicationLink": "https://example.com/fintech-app",
+          "publicationLabel": "Lihat studi kasus",
+          "description": "Aplikasi tabungan dan portofolio saham untuk perbankan modern. Pengguna dapat melacak saldo, menetapkan target berulang, dan mengeksplorasi tren pasar melalui antarmuka yang tenang dan berfokus pada keuangan.\n\nKeputusan desain mengutamakan keterbacaan angka, pengungkapan data kompleks secara bertahap, dan animasi yang memperkuat kepercayaan."
+        },
+        "de": {
+          "title": "Fintech-Mobile-App",
+          "year": "2025",
+          "role": "Produktdesigner & iOS-Entwickler",
+          "publicationLink": "https://example.com/fintech-app",
+          "publicationLabel": "Fallstudie ansehen",
+          "description": "Eine Spar- und Aktienportfolio-App für modernes Banking. Nutzer verfolgen Kontostände, setzen wiederkehrende Ziele und erkunden Markttrends über eine ruhige, finanzorientierte Oberfläche für den täglichen Check-in.\n\nIm Design standen Lesbarkeit von Zahlen, schrittweise Offenlegung komplexer Daten und Bewegungen im Vordergrund, die Vertrauen stärken."
+        }
+      }
+    }
+  ]
+}

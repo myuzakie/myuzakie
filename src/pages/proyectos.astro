@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Footer from '../components/Footer.astro';
+
+const allProjects = [
+  {
+    title: 'Police Station Dashboard',
+    description: 'Control panel for law enforcement analytics & operations.',
+    image: '/images/project-police.jpg',
+    href: '/proyectos/police-dashboard',
+    theme: 'dark' as const,
+    tags: ['Dashboard', 'SaaS'],
+  },
+  {
+    title: 'Fintech Mobile App',
+    description: 'Savings & stock portfolio for modern banking.',
+    image: '/images/project-fintech.jpg',
+    href: '/proyectos/fintech-app',
+    theme: 'light' as const,
+    tags: ['Mobile', 'Fintech'],
+  },
+  {
+    title: 'Factorial Design System',
+    description: 'Component library & design tokens for Factorial.',
+    image: '/images/project-factorial.jpg',
+    href: '/proyectos/factorial-ds',
+    theme: 'dark' as const,
+    tags: ['Design System', 'Figma'],
+  },
+  {
+    title: 'SaaS Analytics Platform',
+    description: 'End-to-end analytics dashboard for B2B SaaS.',
+    image: '/images/project-analytics.jpg',
+    href: '/proyectos/analytics',
+    theme: 'dark' as const,
+    tags: ['Analytics', 'Dashboard'],
+  },
+];
+---
+
+<BaseLayout
+  title="Proyectos — Jordi Espinosa"
+  description="Proyectos de diseño de producto SaaS por Jordi Espinosa."
+>
+  <div class="layout-shell layout-page">
+    <Nav active="proyectos" />
+    <main class="layout-content">
+      <div class="pt-6 sm:pt-10 pb-6 sm:pb-8 border-b border-border mb-6 sm:mb-8">
+        <h1 class="font-display text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-[-0.02em] text-text-primary mb-2">Proyectos</h1>
+        <p class="font-mono text-[0.85rem] text-text-muted">Una selección de los trabajos más recientes.</p>
+      </div>
+
+      <div class="flex flex-col gap-4 pb-12">
+        {allProjects.map(p => (
+          <ProjectCard
+            title={p.title}
+            description={p.description}
+            image={p.image}
+            href={p.href}
+            theme={p.theme}
+            tags={p.tags}
+          />
+        ))}
+      </div>
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>

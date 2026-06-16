@@ -1,0 +1,80 @@
+---
+interface Props {
+  payload: {
+    labels: Record<string, Record<string, string>>;
+    profile: Record<string, Record<string, string>>;
+    content: Record<string, Record<string, string>>;
+    pageNumber: number;
+    totalProjects: number;
+  };
+}
+
+const { payload } = Astro.props;
+---
+
+<script is:inline define:vars={{ caseI18n: payload }}>
+  window.__CASE_I18N__ = caseI18n;
+
+  window.applyProjectCaseLanguage = function (lang) {
+    const data = window.__CASE_I18N__;
+    if (!data) return;
+
+    const labels = data.labels[lang];
+    const profile = data.profile[lang];
+    const content = data.content[lang];
+    if (!labels || !profile || !content) return;
+
+    document.querySelectorAll('[data-i18n-case-label]').forEach(function (el) {
+      const key = el.getAttribute('data-i18n-case-label');
+      if (key && labels[key] !== undefined) el.textContent = labels[key];
+    });
+
+    document.querySelectorAll('[data-i18n-case-value]').forEach(function (el) {
+      const key = el.getAttribute('data-i18n-case-value');
+      if (!key) return;
+
+      if (key === 'description') {
+        const paragraphs = (content.description || '').split('\n\n').filter(Boolean);
+        el.innerHTML = paragraphs.map(function (p) {
+          return '<p>' + p + '</p>';
+        }).join('');
+        return;
+      }
+
+      if (key === 'counter') {
+        el.textContent = (labels.counter || '')
+          .replace('{current}', String(data.pageNumber))
+          .replace('{total}', String(data.totalProjects));
+        return;
+      }
+
+      if (key === 'name') {
+        el.textContent = profile.name;
+        return;
+      }
+
+      if (key === 'university') {
+        el.textContent = profile.university;
+        return;
+      }
+
+      if (key === 'contact') {
+        el.textContent = profile.contact;
+        return;
+      }
+
+      if (key === 'footerNote') {
+        el.textContent = profile.footerNote;
+        return;
+      }
+
+      if (content[key] !== undefined) {
+        if (el.tagName === 'A') {
+          el.textContent = content[key];
+        } else {
+          el.textContent = content[key];
+        }
+      }
+    });
+  };
+</script>

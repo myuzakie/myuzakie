@@ -1,0 +1,202 @@
+<script is:inline define:vars={{
+  translations: {
+    en: {
+      nav: { home: 'Home', projects: 'Projects', gallery: 'Gallery', store: 'Store', newsletter: 'Newsletter', photography: 'Photography' },
+      hero: { greeting: "Hi! I'm", role: 'SaaS Product Designer', based: 'based from', working: 'Currently working at' },
+      tools: { sideProjects: 'Side Projects', stackUsed: 'Stack used' },
+      projects: { policeTitle: 'Police Station Dashboard', policeDesc: 'Control panel for law enforcement analytics & operations.', fintechTitle: 'Fintech Mobile App', fintechDesc: 'Savings & stock portfolio for modern banking.' },
+      footer: { theme: 'Theme', location: 'Location', contact: 'Contact' },
+      copyright: 'Made with ♥ in Barcelona.',
+    },
+    id: {
+      nav: { home: 'Beranda', projects: 'Proyek', gallery: 'Galeri', store: 'Toko', newsletter: 'Surat Berita', photography: 'Fotografi' },
+      hero: { greeting: 'Halo! Saya', role: 'Desainer Produk SaaS', based: 'berbasis dari', working: 'Saat ini bekerja di' },
+      tools: { sideProjects: 'Proyek Sampingan', stackUsed: 'Stack yang Digunakan' },
+      projects: { policeTitle: 'Dasbor Kantor Polisi', policeDesc: 'Panel kontrol untuk analitik dan operasi penegakan hukum.', fintechTitle: 'Aplikasi Fintech Seluler', fintechDesc: 'Tabungan & portofolio saham untuk perbankan modern.' },
+      footer: { theme: 'Tema', location: 'Lokasi', contact: 'Kontak' },
+      copyright: 'Dibuat dengan ♥ di Barcelona.',
+    },
+    de: {
+      nav: { home: 'Startseite', projects: 'Projekte', gallery: 'Galerie', store: 'Shop', newsletter: 'Newsletter', photography: 'Fotografie' },
+      hero: { greeting: 'Hallo! Ich bin', role: 'SaaS-Produktdesigner', based: 'ansässig in', working: 'Derzeit tätig bei' },
+      tools: { sideProjects: 'Nebenprojekte', stackUsed: 'Verwendeter Stack' },
+      projects: { policeTitle: 'Polizeistation-Dashboard', policeDesc: 'Kontrollpanel für Analytik und Operationen der Strafverfolgung.', fintechTitle: 'Fintech-Mobile-App', fintechDesc: 'Sparen & Aktienportfolio für modernes Banking.' },
+      footer: { theme: 'Design', location: 'Standort', contact: 'Kontakt' },
+      copyright: 'Gemacht mit ♥ in Barcelona.',
+    }
+  }
+}}>
+  // ─── Styles for active lang button (injected once) ───────────────────────
+  (function injectLangBtnStyles() {
+    if (document.getElementById('lang-btn-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'lang-btn-styles';
+    style.textContent = `
+      .lang-switch-btn[aria-current="page"] {
+        background: #1b1b1b;
+        color: #f0f0f0;
+        border-color: #2f2f2f;
+      }
+      .lang-switch-btn:not([aria-current="page"]):hover {
+        color: #f0f0f0;
+      }
+    `;
+    document.head.appendChild(style);
+  })();
+
+  // ─── Core: update all translatable text ─────────────────────────────────
+  function needsServerReload() {
+    const path = window.location.pathname;
+    return path === '/resume' || path === '/projects' || path.startsWith('/projects/');
+  }
+
+  window.applyLanguage = function(lang) {
+    const t = translations[lang];
+    if (!t) return;
+
+    if (needsServerReload()) {
+      const url = new URL(window.location.href);
+      if (lang === 'en') {
+        url.searchParams.delete('lang');
+      } else {
+        url.searchParams.set('lang', lang);
+      }
+      try { localStorage.setItem('preferred-language', lang); } catch(e) {}
+      window.location.assign(url.toString());
+      return;
+    }
+
+    const mainContent = document.getElementById('main-content');
+
+    // Smooth fade out
+    if (mainContent) {
+      mainContent.style.transition = 'opacity 120ms ease';
+      mainContent.style.opacity = '0';
+    }
+
+    // Wait for fade, then batch-update all content
+    setTimeout(function() {
+      // Nav links
+      document.querySelectorAll('[data-i18n-nav]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n-nav');
+        if (t.nav[key] !== undefined) el.textContent = t.nav[key];
+      });
+
+      // Hero text
+      document.querySelectorAll('[data-i18n-hero]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n-hero');
+        if (t.hero[key] !== undefined) el.textContent = t.hero[key];
+      });
+
+      // Tools labels
+      document.querySelectorAll('[data-i18n-tools]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n-tools');
+        if (t.tools[key] !== undefined) el.textContent = t.tools[key];
+      });
+
+      // Project titles/descriptions
+      document.querySelectorAll('[data-i18n-project]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n-project');
+        if (t.projects[key] !== undefined) el.textContent = t.projects[key];
+      });
+
+      // Footer tooltips
+      document.querySelectorAll('[data-i18n-footer]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n-footer');
+        if (t.footer[key] !== undefined) el.setAttribute('title', t.footer[key]);
+      });
+
+      // Project case study page
+      if (typeof window.applyProjectCaseLanguage === 'function') {
+        window.applyProjectCaseLanguage(lang);
+      }
+
+      // Copyright
+      const copyright = document.querySelector('[data-i18n-copyright]');
+      if (copyright) {
+        const year = new Date().getFullYear();
+        copyright.innerHTML = `\u00A9 ${year} Jordi Espinosa. ${t.copyright.replace('\u2665', '<span class="mc-heart">\u2665</span>')}`;
+      }
+
+      // Update active lang button — uses aria-current for both styling and semantics
+      document.querySelectorAll('.lang-switch-btn').forEach(function(btn) {
+        if (btn.getAttribute('data-lang') === lang) {
+          btn.setAttribute('aria-current', 'page');
+        } else {
+          btn.removeAttribute('aria-current');
+        }
+      });
+
+      // Update URL without reload
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', lang);
+      window.history.replaceState({ lang }, '', url.toString());
+
+      // Store preference
+      try { localStorage.setItem('preferred-language', lang); } catch(e) {}
+
+      // Fade back in
+      if (mainContent) {
+        mainContent.style.opacity = '1';
+      }
+    }, 100);
+  };
+
+  // ─── Get current language from URL or localStorage ──────────────────────
+  function getCurrentLanguage() {
+    const params = new URLSearchParams(window.location.search);
+    const urlLang = params.get('lang');
+    if (urlLang && ['en', 'id', 'de'].includes(urlLang)) return urlLang;
+
+    try {
+      const stored = localStorage.getItem('preferred-language');
+      if (stored && ['en', 'id', 'de'].includes(stored)) return stored;
+    } catch(e) {}
+
+    return 'en';
+  }
+
+  // ─── Init ────────────────────────────────────────────────────────────────
+  function init() {
+    const currentLang = getCurrentLanguage();
+
+    if (needsServerReload()) {
+      document.querySelectorAll('.lang-switch-btn').forEach(function(btn) {
+        if (btn.getAttribute('data-lang') === currentLang) {
+          btn.setAttribute('aria-current', 'page');
+        } else {
+          btn.removeAttribute('aria-current');
+        }
+      });
+    } else if (currentLang !== 'en') {
+      window.applyLanguage(currentLang);
+    } else if (typeof window.applyProjectCaseLanguage === 'function') {
+      window.applyProjectCaseLanguage('en');
+    } else {
+      // Still set aria-current correctly for 'en' buttons
+      document.querySelectorAll('.lang-switch-btn').forEach(function(btn) {
+        if (btn.getAttribute('data-lang') === 'en') {
+          btn.setAttribute('aria-current', 'page');
+        } else {
+          btn.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    // Attach click handlers to all lang buttons
+    document.querySelectorAll('.lang-switch-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const selectedLang = btn.getAttribute('data-lang');
+        if (selectedLang && selectedLang !== getCurrentLanguage()) {
+          window.applyLanguage(selectedLang);
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

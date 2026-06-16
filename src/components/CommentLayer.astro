@@ -1,0 +1,460 @@
+---
+// CommentLayer.astro
+// Renders the fixed overlay, loads comments from Supabase,
+// and handles all comment mode interactivity via client-side JS.
+---
+
+<!--
+  COMMENT LAYER — fixed overlay covering 100vw × 100vh
+  position: fixed escapes body width constraint (650px)
+  so clicks work anywhere on the full screen.
+  Markers store document coords and are converted to viewport coords on render.
+-->
+<div
+  id="comment-layer"
+  class="fixed top-0 left-0 w-screen h-screen z-[200] pointer-events-none"
+  aria-label="Comment markers"
+>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     COMMENT FORM — floating popover that appears on click
+═══════════════════════════════════════════════════════════ -->
+<div
+  id="comment-form-container"
+  class="hidden fixed z-[300] pointer-events-auto"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Add comment"
+>
+  <div
+    class="w-[280px] bg-[#1a1a1a] border border-[#2f2f2f] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] overflow-hidden"
+  >
+    <!-- Form textarea -->
+    <textarea
+      id="comment-textarea"
+      placeholder="Write a comment..."
+      maxlength="300"
+      rows="4"
+      class="w-full bg-transparent text-[#f0f0f0] text-[0.82rem] font-mono placeholder-[#5e5e5e] resize-none p-4 pb-2 outline-none leading-relaxed"
+    ></textarea>
+
+    <!-- Footer bar -->
+    <div
+      class="flex items-center justify-between px-4 py-3 border-t border-[#262626]"
+    >
+      <span
+        id="comment-char-count"
+        class="font-mono text-[0.65rem] text-[#5e5e5e]">0/300</span
+      >
+      <div class="flex gap-2">
+        <button
+          id="comment-cancel"
+          class="px-3 py-1.5 rounded-lg font-mono text-[0.72rem] text-[#9a9a9a] hover:text-[#f0f0f0] transition-colors duration-150"
+        >
+          Cancel
+        </button>
+        <button
+          id="comment-submit"
+          class="px-3 py-1.5 rounded-lg bg-[#f0f0f0] text-[#0b0b0b] font-mono text-[0.72rem] font-semibold hover:bg-white transition-colors duration-150 disabled:opacity-40 disabled:cursor-not-allowed"
+          disabled
+        >
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Anchor triangle pointing down -->
+  <div class="flex justify-center">
+    <div
+      class="w-0 h-0"
+      style="border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #2f2f2f;margin-top:-1px"
+    >
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     COMMENT MODE HINT — shown when mode is active
+═══════════════════════════════════════════════════════════ -->
+<div
+  id="comment-mode-hint"
+  class="hidden fixed bottom-24 left-1/2 -translate-x-1/2 z-[250] pointer-events-none"
+>
+  <div
+    class="bg-[#1a1a1a]/90 backdrop-blur-xl border border-[#2f2f2f] rounded-full px-4 py-2 shadow-lg"
+  >
+    <p class="font-mono text-[0.7rem] text-[#9a9a9a] whitespace-nowrap">
+      Click anywhere to comment · <kbd class="text-[#f0f0f0]">C</kbd> or <kbd
+        class="text-[#f0f0f0]">Esc</kbd
+      > to exit
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TOOLTIP — reused for all markers
+═══════════════════════════════════════════════════════════ -->
+<div
+  id="comment-tooltip"
+  class="hidden fixed z-[400] pointer-events-none max-w-[220px]"
+>
+  <div
+    class="bg-[#1e1e1e] border border-[#2f2f2f] rounded-xl px-3.5 py-3 shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
+  >
+    <p
+      id="comment-tooltip-text"
+      class="font-mono text-[0.75rem] text-[#f0f0f0] leading-relaxed mb-1.5 break-words"
+    >
+    </p>
+    <p
+      id="comment-tooltip-time"
+      class="font-mono text-[0.62rem] text-[#5e5e5e]"
+    >
+    </p>
+  </div>
+  <!-- Anchor bottom-center triangle -->
+  <div class="flex justify-center mt-[-1px]">
+    <div
+      class="w-0 h-0"
+      style="border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #2f2f2f"
+    >
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─── Types ────────────────────────────────────────────────────────────────
+  interface Comment {
+    id: string;
+    comment: string;
+    x: number;
+    y: number;
+    created_at: string;
+  }
+
+  // ─── State ────────────────────────────────────────────────────────────────
+  let commentMode = false;
+  let pendingX = 0;
+  let pendingY = 0;
+  let comments: Comment[] = [];
+  let activeTooltipMarkerId: string | null = null;
+
+  // ─── DOM refs ─────────────────────────────────────────────────────────────
+  const layer = document.getElementById("comment-layer")!;
+  const formContainer = document.getElementById("comment-form-container")!;
+  const textarea = document.getElementById(
+    "comment-textarea",
+  ) as HTMLTextAreaElement;
+  const charCount = document.getElementById("comment-char-count")!;
+  const cancelBtn = document.getElementById("comment-cancel")!;
+  const submitBtn = document.getElementById(
+    "comment-submit",
+  ) as HTMLButtonElement;
+  const hint = document.getElementById("comment-mode-hint")!;
+  const tooltip = document.getElementById("comment-tooltip")!;
+  const tooltipText = document.getElementById("comment-tooltip-text")!;
+  const tooltipTime = document.getElementById("comment-tooltip-time")!;
+
+  // ─── Supabase credentials (injected via BaseLayout) ────────────────────avoid build issues with inline script) ──
+  // We call Supabase REST API directly via fetch to avoid module import issues
+  // in inline scripts
+  const SUPABASE_URL = (window as any).__SUPABASE_URL__ as string;
+  const SUPABASE_KEY = (window as any).__SUPABASE_KEY__ as string;
+
+  async function fetchComments(): Promise<Comment[]> {
+    if (!SUPABASE_URL || SUPABASE_URL.includes("YOUR_PROJECT")) return [];
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/comments?select=*&order=created_at.desc`,
+        {
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: `Bearer ${SUPABASE_KEY}`,
+          },
+        },
+      );
+      if (!res.ok) return [];
+      return await res.json();
+    } catch {
+      return [];
+    }
+  }
+
+  async function insertComment(
+    comment: string,
+    x: number,
+    y: number,
+  ): Promise<Comment | null> {
+    if (!SUPABASE_URL || SUPABASE_URL.includes("YOUR_PROJECT")) {
+      // Demo mode: generate local comment
+      return {
+        id: crypto.randomUUID(),
+        comment,
+        x,
+        y,
+        created_at: new Date().toISOString(),
+      };
+    }
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/comments`, {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+        },
+        body: JSON.stringify({ comment, x, y }),
+      });
+      if (!res.ok) return null;
+      const data = await res.json();
+      return Array.isArray(data) ? data[0] : data;
+    } catch {
+      return null;
+    }
+  }
+
+  // ─── Relative time ────────────────────────────────────────────────────────
+  function relativeTime(iso: string): string {
+    const diff = Date.now() - new Date(iso).getTime();
+    const sec = Math.floor(diff / 1000);
+    if (sec < 60) return "Just now";
+    const min = Math.floor(sec / 60);
+    if (min < 60) return `${min}m ago`;
+    const hr = Math.floor(min / 60);
+    if (hr < 24) return `${hr}h ago`;
+    const day = Math.floor(hr / 24);
+    if (day === 1) return "Yesterday";
+    return `${day}d ago`;
+  }
+
+  // ─── Render a single marker ───────────────────────────────────────────────
+  function createMarkerEl(c: Comment): HTMLElement {
+    const wrap = document.createElement("button");
+    wrap.dataset.commentId = c.id;
+    wrap.dataset.docX = String(c.x);
+    wrap.dataset.docY = String(c.y);
+    wrap.className =
+      "comment-marker fixed pointer-events-auto focus:outline-none group";
+    wrap.style.left = `${c.x - window.scrollX}px`;
+    wrap.style.top = `${c.y - window.scrollY}px`;
+    wrap.style.transform = "translate(-50%, -50%)";
+    wrap.setAttribute("aria-label", "View comment");
+
+    // Pin shape: circle + tail
+   wrap.innerHTML = `
+ <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-circle-dashed-icon lucide-message-circle-dashed"><path d="M10.1 2.182a10 10 0 0 1 3.8 0"/><path d="M13.9 21.818a10 10 0 0 1-3.8 0"/><path d="M17.609 3.72a10 10 0 0 1 2.69 2.7"/><path d="M2.182 13.9a10 10 0 0 1 0-3.8"/><path d="M20.28 17.61a10 10 0 0 1-2.7 2.69"/><path d="M21.818 10.1a10 10 0 0 1 0 3.8"/><path d="M3.721 6.391a10 10 0 0 1 2.7-2.69"/><path d="m6.163 21.117-2.906.85a1 1 0 0 1-1.236-1.169l.965-2.98"/></svg>
+`;
+
+    // Hover: show tooltip
+    wrap.addEventListener("mouseenter", (e) => {
+      activeTooltipMarkerId = c.id;
+      showTooltip(c, e as MouseEvent);
+    });
+    wrap.addEventListener("mousemove", (e) => {
+      if (activeTooltipMarkerId === c.id) positionTooltip(e as MouseEvent);
+    });
+    wrap.addEventListener("mouseleave", () => {
+      activeTooltipMarkerId = null;
+      tooltip.classList.add("hidden");
+    });
+
+    // Prevent click from propagating to comment layer (which would open a new comment)
+    wrap.addEventListener("click", (e) => e.stopPropagation());
+
+    return wrap;
+  }
+
+  function showTooltip(c: Comment, e: MouseEvent) {
+    tooltipText.textContent = c.comment;
+    tooltipTime.textContent = relativeTime(c.created_at);
+    tooltip.classList.remove("hidden");
+    positionTooltip(e);
+  }
+
+  function positionTooltip(e: MouseEvent) {
+    const tw = tooltip.offsetWidth || 220;
+    const th = tooltip.offsetHeight || 80;
+    let left = e.clientX - tw / 2;
+    let top = e.clientY - th - 16;
+
+    // Keep inside viewport
+    left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+    top = top < 8 ? e.clientY + 24 : top;
+
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
+  }
+
+  // ─── Render all markers ───────────────────────────────────────────────────
+  function renderMarkers() {
+    layer.innerHTML = "";
+    comments.forEach((c) => layer.appendChild(createMarkerEl(c)));
+  }
+
+  function updateMarkerPositions() {
+    document.querySelectorAll<HTMLElement>(".comment-marker").forEach((el) => {
+      const docX = parseFloat(el.dataset.docX ?? "0");
+      const docY = parseFloat(el.dataset.docY ?? "0");
+      el.style.left = `${docX - window.scrollX}px`;
+      el.style.top = `${docY - window.scrollY}px`;
+    });
+  }
+
+  // ─── Toggle comment mode ──────────────────────────────────────────────────
+  function setCommentMode(active: boolean) {
+    commentMode = active;
+
+    // Update chat button appearance
+    const chatBtn = document.getElementById("chat-comment-btn");
+    if (chatBtn) {
+      if (active) {
+        chatBtn.classList.add("bg-[#f0f0f0]", "text-[#0b0b0b]");
+        chatBtn.classList.remove("text-text-secondary");
+      } else {
+        chatBtn.classList.remove("bg-[#f0f0f0]", "text-[#0b0b0b]");
+        chatBtn.classList.add("text-text-secondary");
+      }
+    }
+
+    // Change cursor
+    document.body.style.cursor = active ? "crosshair" : "";
+
+    // Layer click interactivity
+    layer.style.pointerEvents = active ? "auto" : "none";
+
+    // Hint pill
+    if (active) {
+      hint.classList.remove("hidden");
+    } else {
+      hint.classList.add("hidden");
+      closeForm();
+    }
+  }
+
+  // ─── Comment form ─────────────────────────────────────────────────────────
+  function openForm(
+    clientX: number,
+    clientY: number,
+    xPct: number,
+    yPct: number,
+  ) {
+    pendingX = xPct;
+    pendingY = yPct;
+    textarea.value = "";
+    charCount.textContent = "0/300";
+    submitBtn.disabled = true;
+
+    // Position form above click point
+    const fw = 280;
+    const fh = 160;
+    let left = clientX - fw / 2;
+    let top = clientY - fh - 16;
+
+    left = Math.max(8, Math.min(left, window.innerWidth - fw - 8));
+    top = top < 8 ? clientY + 24 : top;
+
+    formContainer.style.left = `${left}px`;
+    formContainer.style.top = `${top}px`;
+    formContainer.classList.remove("hidden");
+    textarea.focus();
+  }
+
+  function closeForm() {
+    formContainer.classList.add("hidden");
+    textarea.value = "";
+  }
+
+  // ─── Submit ───────────────────────────────────────────────────────────────
+  async function handleSubmit() {
+    const text = textarea.value.trim();
+    if (text.length < 3) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "...";
+
+    const newComment = await insertComment(text, pendingX, pendingY);
+
+    if (newComment) {
+      comments.unshift(newComment);
+      layer.prepend(createMarkerEl(newComment));
+    }
+
+    closeForm();
+    submitBtn.textContent = "Send";
+  }
+
+  // ─── Event wiring ─────────────────────────────────────────────────────────
+  // Layer click → open form
+  // position:fixed layer covers the viewport, so clicks work anywhere.
+  // Coords are document-relative pixels so markers stay anchored while scrolling.
+  layer.addEventListener("click", (e) => {
+    if (!commentMode) return;
+    if ((e.target as HTMLElement).closest(".comment-marker")) return;
+
+    const docX = e.clientX + window.scrollX;
+    const docY = e.clientY + window.scrollY;
+    openForm(e.clientX, e.clientY, docX, docY);
+  });
+
+  // Textarea char count + enable/disable submit
+  textarea.addEventListener("input", () => {
+    const len = textarea.value.length;
+    charCount.textContent = `${len}/300`;
+    submitBtn.disabled = textarea.value.trim().length < 3;
+  });
+
+  // Submit on button click
+  submitBtn.addEventListener("click", handleSubmit);
+
+  // Submit on Ctrl/Cmd + Enter
+  textarea.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") handleSubmit();
+    if (e.key === "Escape") closeForm();
+  });
+
+  // Cancel
+  cancelBtn.addEventListener("click", closeForm);
+
+  // Keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    // Ignore if user is typing in an input
+    if (
+      e.target instanceof HTMLTextAreaElement ||
+      e.target instanceof HTMLInputElement
+    )
+      return;
+
+    if (e.key === "c" || e.key === "C") setCommentMode(!commentMode);
+    if (e.key === "Escape") {
+      if (!formContainer.classList.contains("hidden")) {
+        closeForm();
+      } else {
+        setCommentMode(false);
+      }
+    }
+  });
+
+  // Wire up the chat button in footer (added id="chat-comment-btn")
+  document.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest("#chat-comment-btn");
+    if (btn) setCommentMode(!commentMode);
+  });
+
+  // ─── Init: load comments ──────────────────────────────────────────────────
+  async function init() {
+    comments = await fetchComments();
+    renderMarkers();
+    updateMarkerPositions();
+
+    window.addEventListener("scroll", updateMarkerPositions, { passive: true });
+    window.addEventListener("resize", updateMarkerPositions);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+</script>

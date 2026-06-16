@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Footer from '../components/Footer.astro';
+import { getAllProjects, getProjectContent, buildProjectHref } from '../lib/projects';
+
+const langParam = Astro.url.searchParams.get('lang');
+const lang = langParam === 'id' || langParam === 'de' ? langParam : 'en';
+
+const allProjects = getAllProjects().map((project) => {
+  const content = getProjectContent(project, lang);
+  return {
+    title: content.title,
+    description: content.description.split('\n\n')[0] ?? content.title,
+    image: project.thumbnail,
+    href: buildProjectHref(project.slug, lang),
+    theme: project.theme,
+    tags: [] as string[],
+  };
+});
+---
+
+<BaseLayout
+  title="Projects — Farhan Muzaki"
+  description="A curated selection of product design and development work."
+  lang={lang}
+>
+  <Nav />
+  <div class="layout-shell layout-page">
+    <main class="layout-content">
+      <div class="pt-6 sm:pt-10 pb-6 sm:pb-8 border-b border-border mb-6 sm:mb-8">
+        <h1 class="font-mono text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-[-0.02em] text-text-primary mb-2">Projects</h1>
+        <p class="font-mono text-[0.85rem] text-text-muted">A curated selection of recent work.</p>
+      </div>
+
+      <div class="flex flex-col gap-4 pb-12">
+        {allProjects.map(p => (
+          <ProjectCard
+            title={p.title}
+            description={p.description}
+            image={p.image}
+            href={p.href}
+            theme={p.theme}
+            tags={p.tags}
+          />
+        ))}
+      </div>
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import ToolsSection from "../components/ToolsSection.astro";
+import ProjectsGrid from "../components/ProjectsGrid.astro";
+import Footer from "../components/Footer.astro";
+import ExperienceSection from "@/components/ExperienceSection.astro";
+import ScrollAnimations from "@/components/ScrollAnimations.astro";
+
+const lang = "en" as const;
+---
+
+<BaseLayout
+  title="Farhan Muzaki — Product Designer & Developer"
+  description="Product Designer & Developer based in Jakarta, Indonesia. Currently working at PT. Next TI."
+  lang={lang}
+>
+  <!-- Inject animation styles + observer script -->
+  <ScrollAnimations />
+
+  <Nav />
+
+  <Footer />
+
+  <div class="layout-shell layout-shell--home" data-lang={lang}>
+    <main id="main-content" class="flex-1 flex flex-col gap-1.5">
+      <!-- Hero: fade in on load, no scroll trigger needed -->
+      <div data-animate="up" style="transition-delay: 0.05s;">
+        <Hero time="22:30" lang={lang} />
+      </div>
+
+      <!-- Tools: slides up with slight delay -->
+      <div data-animate="up" style="transition-delay: 0.1s;">
+        <ToolsSection lang={lang} />
+      </div>
+
+      <!-- Projects: children stagger in -->
+      <div data-animate-children>
+        <ProjectsGrid lang={lang} />
+      </div>
+
+      <!-- Experience: slides up -->
+      <div data-animate="up">
+        <ExperienceSection lang={lang} />
+      </div>
+    </main>
+  </div>
+</BaseLayout>

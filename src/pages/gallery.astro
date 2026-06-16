@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const photos = [
+  { id: 1, aspect: 'portrait',   bg: '#1a1a1a', label: 'Urban Geometry' },
+  { id: 2, aspect: 'landscape',  bg: '#141414', label: 'Architecture Study' },
+  { id: 3, aspect: 'square',     bg: '#1e1e1e', label: 'Street Life' },
+  { id: 4, aspect: 'landscape',  bg: '#161616', label: 'Night City' },
+  { id: 5, aspect: 'portrait',   bg: '#1c1c1c', label: 'Minimal Texture' },
+  { id: 6, aspect: 'square',     bg: '#181818', label: 'Light & Shadow' },
+];
+---
+
+<BaseLayout
+  title="Gallery — Farhan Muzaki"
+  description="A visual archive of photography and design experiments."
+>
+  <Nav />
+  <div class="layout-shell layout-page">
+    <main class="layout-content">
+      <div class="pt-6 sm:pt-10 pb-6 sm:pb-8 border-b border-border mb-6 sm:mb-10">
+        <h1 class="font-mono text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-[-0.02em] text-text-primary mb-2">Gallery</h1>
+        <p class="font-mono text-[0.85rem] text-text-muted">A visual archive of photography and design experiments.</p>
+      </div>
+
+      <!-- Masonry-style grid -->
+      <div class="columns-1 xs:columns-2 gap-3 pb-20 sm:pb-24 sm:columns-3">
+        {photos.map(photo => (
+          <div class="break-inside-avoid mb-3 group cursor-pointer">
+            <div
+              class:list={[
+                'w-full rounded-lg overflow-hidden border border-border relative transition-all duration-300 group-hover:border-border-light group-hover:-translate-y-0.5',
+                photo.aspect === 'portrait'  ? 'aspect-[3/4]'  : '',
+                photo.aspect === 'landscape' ? 'aspect-[16/9]' : '',
+                photo.aspect === 'square'    ? 'aspect-square'  : '',
+              ]}
+              style={`background:${photo.bg}`}
+            >
+              <!-- Placeholder shimmer overlay -->
+              <div class="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent"></div>
+              <!-- Label on hover -->
+              <div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <p class="font-mono text-[0.65rem] text-white/80 uppercase tracking-widest">{photo.label}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>

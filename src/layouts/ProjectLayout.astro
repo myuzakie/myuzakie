@@ -1,0 +1,20 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: 'en' | 'id' | 'de';
+}
+
+const { title, description = '', lang = 'en' } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} lang={lang}>
+  <Footer lang={lang} />
+
+  <div class="layout-shell layout-shell--project">
+    <slot />
+  </div>
+</BaseLayout>

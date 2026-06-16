@@ -1,0 +1,50 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+import { getAllProjects, getProjectContent, buildProjectHref } from "../lib/projects";
+
+interface Props {
+  lang?: "en" | "id" | "de";
+}
+const { lang = "en" } = Astro.props;
+
+const i18nKeys: Record<string, { title: string; desc: string }> = {
+  "police-dashboard": { title: "policeTitle", desc: "policeDesc" },
+  "fintech-app": { title: "fintechTitle", desc: "fintechDesc" },
+};
+
+const projects = getAllProjects().map((project) => {
+  const content = getProjectContent(project, lang);
+  const keys = i18nKeys[project.slug];
+
+  return {
+    title: content.title,
+    description: content.description.split("\n\n")[0] ?? content.title,
+    image: project.thumbnail,
+    href: buildProjectHref(project.slug, lang),
+    theme: project.theme,
+    tags: [] as string[],
+    i18nTitle: keys?.title,
+    i18nDesc: keys?.desc,
+  };
+});
+---
+
+<section
+  class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-[18px] px-gutter pt-2.5 pb-10 sm:pb-[54px] max-w-site relative z-[1] mx-auto w-full"
+  aria-label="Featured projects"
+>
+  {
+    projects.map((p) => (
+      <ProjectCard
+        title={p.title}
+        description={p.description}
+        image={p.image}
+        href={p.href}
+        theme={p.theme}
+        tags={p.tags}
+        i18nTitle={p.i18nTitle}
+        i18nDesc={p.i18nDesc}
+      />
+    ))
+  }
+</section>

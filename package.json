@@ -1,0 +1,22 @@
+{
+  "name": "jordi-espinosa-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@scena/ruler": "^0.20.0",
+    "@supabase/supabase-js": "^2.106.2",
+    "astro": "^4.8.0",
+    "mc-icons": "^1.9.1"
+  },
+  "devDependencies": {
+    "@astrojs/tailwind": "^6.0.2",
+    "tailwindcss": "^3.4.19"
+  }
+}

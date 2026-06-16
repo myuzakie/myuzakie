@@ -1,0 +1,118 @@
+<style is:global>
+  /* ─── Base state: semua section mulai hidden ─── */
+  [data-animate] {
+    opacity: 0;
+    will-change: opacity, transform;
+    transition:
+      opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+      filter 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ─── Enter states per direction ─── */
+  [data-animate="up"]    { transform: translateY(28px); }
+  [data-animate="down"]  { transform: translateY(-28px); }
+  [data-animate="left"]  { transform: translateX(-28px); }
+  [data-animate="right"] { transform: translateX(28px); }
+  [data-animate="fade"]  { transform: none; filter: blur(4px); }
+  [data-animate="scale"] { transform: scale(0.96); }
+
+  /* ─── Visible state ─── */
+  [data-animate].in-view {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  /* ─── Exit: scroll past (out of view above) ─── */
+  [data-animate].out-above {
+    opacity: 0;
+    filter: none;
+  }
+  [data-animate="up"].out-above    { transform: translateY(-20px); }
+  [data-animate="down"].out-above  { transform: translateY(20px); }
+  [data-animate="left"].out-above  { transform: translateX(-20px); }
+  [data-animate="right"].out-above { transform: translateX(20px); }
+  [data-animate="fade"].out-above  { transform: none; filter: blur(2px); }
+  [data-animate="scale"].out-above { transform: scale(1.02); }
+
+  /* ─── Stagger children ─── */
+  [data-animate-children] > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  [data-animate-children].in-view > *:nth-child(1)  { transition-delay: 0.05s; }
+  [data-animate-children].in-view > *:nth-child(2)  { transition-delay: 0.12s; }
+  [data-animate-children].in-view > *:nth-child(3)  { transition-delay: 0.19s; }
+  [data-animate-children].in-view > *:nth-child(4)  { transition-delay: 0.26s; }
+  [data-animate-children].in-view > *:nth-child(5)  { transition-delay: 0.33s; }
+  [data-animate-children].in-view > *:nth-child(6)  { transition-delay: 0.40s; }
+
+  [data-animate-children].in-view > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-animate-children].out-above > * {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+</style>
+
+<script>
+  // Prevent flash: mark elements with JS enabled
+  document.documentElement.dataset.jsReady = "true";
+
+  const THRESHOLD_IN  = 0.12;
+  const THRESHOLD_OUT = 0.0;
+
+  // Track scroll direction
+  let lastScrollY = window.scrollY;
+  let scrollDir   = "down";
+  window.addEventListener("scroll", () => {
+    scrollDir   = window.scrollY > lastScrollY ? "down" : "up";
+    lastScrollY = window.scrollY;
+  }, { passive: true });
+
+  // All animated elements
+  const animatedEls = document.querySelectorAll("[data-animate], [data-animate-children]");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const el = entry.target;
+
+        if (entry.isIntersecting) {
+          // Coming into view
+          el.classList.remove("out-above");
+          // Small rAF to ensure transition fires
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => el.classList.add("in-view"));
+          });
+        } else {
+          // Left viewport
+          const rect = entry.boundingClientRect;
+          const isAbove = rect.bottom < 0;
+
+          if (isAbove) {
+            el.classList.add("out-above");
+            el.classList.remove("in-view");
+          } else {
+            // Below viewport: reset to initial state for re-entry
+            el.classList.remove("in-view", "out-above");
+          }
+        }
+      });
+    },
+    {
+      threshold: [THRESHOLD_IN, THRESHOLD_OUT],
+      rootMargin: "0px 0px -5% 0px",
+    }
+  );
+
+  animatedEls.forEach((el) => observer.observe(el));
+</script>

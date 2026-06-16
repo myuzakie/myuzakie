@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { resolveLang, getResumeLabels, getResumeContent } from '../lib/resume';
+
+const lang = resolveLang(Astro.url.searchParams.get('lang'));
+const labels = getResumeLabels(lang);
+const { profile, experience, projects, education, skills } = getResumeContent(lang);
+---
+
+<BaseLayout
+  title={`Resume — ${profile.name}`}
+  description={profile.summary}
+  lang={lang}
+>
+  <Nav />
+  <div class="layout-shell layout-page">
+    <main class="layout-content">
+      <!-- Header -->
+      <div class="pt-6 sm:pt-10 pb-6 sm:pb-8 border-b border-border mb-6 sm:mb-10 flex items-start sm:items-end justify-between flex-wrap gap-4">
+        <div>
+          <h1 class="font-mono text-[clamp(2rem,5vw,3rem)] font-extrabold tracking-[-0.02em] text-text-primary mb-1">
+            {profile.name}
+          </h1>
+          <p class="font-mono text-[0.85rem] text-text-secondary mb-2">{profile.headline}</p>
+          <p class="font-mono text-[0.75rem] text-text-muted">{profile.location}</p>
+          <div class="flex flex-wrap gap-x-3 gap-y-1 mt-2">
+            <a
+              href={`mailto:${profile.email}`}
+              class="font-mono text-[0.72rem] text-text-muted hover:text-text-primary transition-colors duration-fast"
+            >
+              {profile.email}
+            </a>
+            <a
+              href={profile.linkedin.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-mono text-[0.72rem] text-text-muted hover:text-text-primary transition-colors duration-fast"
+            >
+              {profile.linkedin.label}
+            </a>
+            <a
+              href={profile.website.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-mono text-[0.72rem] text-text-muted hover:text-text-primary transition-colors duration-fast"
+            >
+              {profile.website.label}
+            </a>
+          </div>
+        </div>
+        <a
+          href="/resume.pdf"
+          class="inline-flex items-center gap-2 px-4 py-2.5 bg-surface2 border border-border text-text-secondary font-mono text-[0.75rem] font-medium tracking-widest uppercase rounded-md transition-all duration-fast hover:text-text-primary hover:border-border-light"
+          download
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          {labels.downloadCv}
+        </a>
+      </div>
+
+      <!-- Summary -->
+      <section class="mb-12">
+        <p class="font-mono text-[0.82rem] text-text-secondary leading-relaxed">{profile.summary}</p>
+      </section>
+
+      <!-- Experience -->
+      <section class="mb-12">
+        <h2 class="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-text-muted mb-6">{labels.experience}</h2>
+        <div class="flex flex-col gap-0">
+          {experience.map((exp, i) => (
+            <div class:list={['group flex gap-6 py-6', i !== experience.length - 1 ? 'border-b border-border' : '']}>
+              <div class="flex-shrink-0 w-1.5 flex flex-col items-center pt-1.5">
+                <div class="w-1.5 h-1.5 rounded-full bg-border-light group-hover:bg-accent transition-colors duration-base"></div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-baseline justify-between flex-wrap gap-2 mb-3">
+                  <div>
+                    <span class="font-display text-[0.95rem] font-semibold text-text-primary">{exp.role}</span>
+                    <span class="font-display text-[0.95rem] text-text-muted"> · {exp.company}</span>
+                  </div>
+                  <span class="font-mono text-[0.72rem] text-text-muted">{exp.period}</span>
+                </div>
+                <ul class="flex flex-col gap-2">
+                  {exp.highlights.map((item) => (
+                    <li class="font-mono text-[0.78rem] text-text-secondary leading-relaxed pl-3 relative before:content-[''] before:absolute before:left-0 before:top-[0.55em] before:w-1 before:h-1 before:rounded-full before:bg-text-muted">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Selected Projects -->
+      <section class="mb-12">
+        <h2 class="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-text-muted mb-6">{labels.projects}</h2>
+        <div class="flex flex-col gap-0">
+          {projects.map((project, i) => (
+            <div class:list={['group flex gap-6 py-6', i !== projects.length - 1 ? 'border-b border-border' : '']}>
+              <div class="flex-shrink-0 w-1.5 flex flex-col items-center pt-1.5">
+                <div class="w-1.5 h-1.5 rounded-full bg-border-light group-hover:bg-accent transition-colors duration-base"></div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="mb-1">
+                  <span class="font-display text-[0.95rem] font-semibold text-text-primary">{project.title}</span>
+                </div>
+                <p class="font-mono text-[0.72rem] text-text-muted mb-3">{project.meta}</p>
+                <ul class="flex flex-col gap-2">
+                  {project.highlights.map((item) => (
+                    <li class="font-mono text-[0.78rem] text-text-secondary leading-relaxed pl-3 relative before:content-[''] before:absolute before:left-0 before:top-[0.55em] before:w-1 before:h-1 before:rounded-full before:bg-text-muted">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section class="mb-12">
+        <h2 class="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-text-muted mb-6">{labels.education}</h2>
+        <div class="flex flex-col gap-0">
+          {education.map((edu, i) => (
+            <div class:list={['group flex gap-6 py-6', i !== education.length - 1 ? 'border-b border-border' : '']}>
+              <div class="flex-shrink-0 w-1.5 flex flex-col items-center pt-1.5">
+                <div class="w-1.5 h-1.5 rounded-full bg-border-light group-hover:bg-accent transition-colors duration-base"></div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-baseline justify-between flex-wrap gap-2 mb-1">
+                  <span class="font-display text-[0.95rem] font-semibold text-text-primary">{edu.institution}</span>
+                  <span class="font-mono text-[0.72rem] text-text-muted">{edu.period}</span>
+                </div>
+                <p class="font-mono text-[0.78rem] text-text-secondary mb-3">{edu.degree}</p>
+                <ul class="flex flex-col gap-2">
+                  {edu.highlights.map((item) => (
+                    <li class="font-mono text-[0.78rem] text-text-secondary leading-relaxed pl-3 relative before:content-[''] before:absolute before:left-0 before:top-[0.55em] before:w-1 before:h-1 before:rounded-full before:bg-text-muted">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Skills -->
+      <section class="mb-24">
+        <h2 class="font-mono text-[0.65rem] uppercase tracking-[0.12em] text-text-muted mb-6">{labels.skills}</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {skills.map((group) => (
+            <div>
+              <h3 class="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-text-muted mb-3">{group.group}</h3>
+              <div class="flex flex-wrap gap-1.5">
+                {group.items.map((item) => (
+                  <span class="font-mono text-[0.75rem] text-text-secondary bg-surface2 border border-border px-2.5 py-1 rounded-md">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
+    <Footer lang={lang} />
+  </div>
+</BaseLayout>

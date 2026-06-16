@@ -1,0 +1,254 @@
+---
+import { getTranslation } from "../i18n/translations";
+
+interface Props {
+  time?: string;
+  lang?: "en" | "id" | "de";
+}
+const { time = "22:30", lang = "en" } = Astro.props;
+const t = getTranslation(lang as any);
+---
+
+<header
+  class="px-gutter pt-3 sm:pt-[18px] pb-5 sm:pb-[22px] max-w-site mx-auto relative z-[1] mt-[calc(5rem+var(--safe-top,0px))] sm:mt-28 w-full"
+>
+  <!-- Top bar: avatar + time + location + socials -->
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-5 sm:mb-[22px]">
+    <!-- Identity -->
+    <div class="flex items-center gap-3 min-w-0">
+      <div
+        class="w-12 h-12 sm:w-[58px] sm:h-[58px] rounded-[20%] overflow-hidden bg-surface2 border border-border-light flex-shrink-0"
+        style="border-width:1.5px"
+      >
+        <img
+          src="/images/profile_picture.jpg"
+          alt="Farhan Muzaki"
+          width="42"
+          height="42"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="flex flex-col gap-0.5">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span
+            class="font-mono text-[0.85rem] sm:text-[0.9rem] font-semibold text-text-primary tracking-[0.02em]"
+            id="jakarta-time">{time}</span
+          >
+          <span
+            class="font-mono text-[0.65rem] sm:text-[0.7rem] text-text-muted tracking-[0.02em]"
+            >(WIB, GMT+7)</span
+          >
+        </div>
+        <p
+          class="font-mono text-[0.7rem] sm:text-[0.75rem] font-medium text-text-secondary tracking-[0.03em] uppercase m-0"
+        >
+          Jakarta, Indonesia
+        </p>
+      </div>
+    </div>
+
+    <!-- Socials -->
+    <div class="flex gap-2.5 items-center flex-shrink-0">
+      <a
+        href="https://twitter.com/farhanmuzaki"
+        target="_blank"
+        rel="noopener"
+        aria-label="X / Twitter"
+        class="text-text-muted transition-colors duration-fast hover:text-text-primary flex items-center"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"
+            fill="currentColor"></path>
+        </svg>
+      </a>
+      <a
+        href="https://youtube.com/@farhanmuzaki"
+        target="_blank"
+        rel="noopener"
+        aria-label="YouTube"
+        class="text-text-muted transition-colors duration-fast hover:text-text-primary flex items-center"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+            fill="currentColor"></path>
+        </svg>
+      </a>
+      <a
+        href="https://instagram.com/jordiespinosa"
+        target="_blank"
+        rel="noopener"
+        aria-label="Instagram"
+        class="text-text-muted transition-colors duration-fast hover:text-text-primary flex items-center"
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"
+            fill="currentColor"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Bio -->
+  <div class="mb-5 w-full max-w-[580px]">
+    <!-- Main introduction -->
+    <div class="mb-1.5">
+      <p
+        class="text-[clamp(1.25rem,2.3vw,1.6rem)] leading-[1.48] text-text-primary font-mono m-0 flex items-center flex-wrap gap-1.5 font-bold"
+      >
+        <span data-i18n-hero="greeting">
+          {
+            lang === "en"
+              ? "Hi! I'm"
+              : lang === "id"
+                ? "Halo! Saya"
+                : "Hallo! Ich bin"
+          }
+        </span>
+        <a
+          href="/"
+          class="border-b border-current pb-px transition-opacity duration-fast hover:opacity-75 ml-2"
+          >Farhan Muzaki</a
+        >
+      </p>
+    </div>
+
+    <!-- Role and location -->
+    <div class="mb-1.5 w-full max-w-[580px]">
+      <p
+        class="text-[clamp(1.25rem,2.3vw,1.6rem)] leading-[1.48] text-text-primary font-mono m-0 flex items-center flex-wrap gap-1.5"
+      >
+        <span>
+          {lang === "en" ? "a" : lang === "id" ? "seorang" : "ein"}
+        </span>
+        <strong data-i18n-hero="role">{t.hero.role}</strong>
+      </p>
+
+      <p
+        class="text-[clamp(1.25rem,2.3vw,1.6rem)] leading-[1.48] text-text-primary font-mono m-0 flex items-center flex-wrap gap-1.5 font-medium"
+      >
+        <span data-i18n-hero="based">{t.hero.based}</span>
+
+        <a
+          href="https://maps.google.com/?q=Jakarta"
+          target="_blank"
+          class="text-accent-yellow border-b border-current pb-px transition-opacity duration-fast hover:opacity-75 flex items-center gap-2"
+        >
+          <img
+            src="/images/jakarta.png"
+            alt="Location"
+            class="w-8 h-8 object-contain"
+          />
+
+          Jakarta
+        </a>.
+      </p>
+
+      <p
+        class="text-[clamp(1.25rem,2.3vw,1.6rem)] leading-[1.48] text-text-primary font-mono m-0 flex items-center flex-wrap gap-1.5 font-medium italic"
+      >
+        <span data-i18n-hero="working">{t.hero.working}</span>
+        <a
+          href="https://nextti.com"
+          target="_blank"
+          class="text-[oklch(55.8%_0.288_302.321)] border-b border-current pb-px transition-opacity duration-fast hover:opacity-75"
+          >PT. Next TI</a
+        >.
+      </p>
+    </div>
+  </div>
+
+  <!-- Tool badges -->
+  <div class="flex items-center gap-3 sm:gap-4 flex-wrap">
+    <a
+      href="https://pantone.com"
+      target="_blank"
+      rel="noopener"
+      class="inline-flex items-center gap-1.5 text-[0.78rem] font-semibold tracking-[0.04em] text-text-secondary transition-colors duration-fast hover:text-text-primary py-1"
+    >
+      <span
+        class="font-mono text-[0.85rem] font-bold tracking-[0.06em] uppercase text-text-secondary"
+        >PANTONE<sup>®</sup></span
+      >
+    </a>
+    <a
+      href="https://webflow.com"
+      target="_blank"
+      rel="noopener"
+      class="inline-flex items-center gap-1.5 text-[0.78rem] font-semibold tracking-[0.04em] text-text-secondary transition-colors duration-fast hover:text-text-primary py-1"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+        fill="white"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M17.82 8.07c-1.95-.04-3.35 1.05-4.07 2.85-.35.9-.57 1.87-.76 2.84l-.04.14c-.36-1.8-.8-3.57-1.75-5.17C10.32 7.3 9.04 6.53 7.42 6.6c-2.56.1-4.05 2.12-4.42 4.52h2.2c.26-1.18.8-2.3 2.07-2.4.88-.08 1.57.53 2.02 1.37.9 1.67 1.27 3.56 1.57 5.42.07.42.13.84.2 1.27h2.27c.27-1.47.52-2.97 1-4.4.36-1.07.97-2.1 2.1-2.26.86-.13 1.57.35 2.15.95l1.57-1.63c-.82-.93-1.92-1.46-3.15-1.47z"
+        ></path>
+      </svg>
+      Webflow
+    </a>
+    <a
+      href="https://wixstudio.com"
+      target="_blank"
+      rel="noopener"
+      class="inline-flex items-center gap-1.5 text-[0.78rem] font-semibold tracking-[0.04em] text-text-secondary transition-colors duration-fast hover:text-text-primary py-1"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="14"
+        height="14"
+        fill="white"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect width="24" height="24" rx="4" fill="none"></rect>
+        <path
+          d="M3 7h4l2 6 2-6h4l2 6 2-6h4l-4 10h-4l-2-5-2 5H7L3 7z"
+          fill="white"></path>
+      </svg>
+      WIX STUDIO
+    </a>
+  </div>
+</header>
+
+<script>
+  // Update Jakarta time in real-time
+  function updateJakartaTime() {
+    const timeElement = document.getElementById("jakarta-time");
+    if (timeElement) {
+      const jakarta = new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Jakarta",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+      timeElement.textContent = jakarta;
+    }
+  }
+
+  // Update immediately and then every second
+  updateJakartaTime();
+  setInterval(updateJakartaTime, 1000);
+</script>

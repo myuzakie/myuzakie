@@ -1,0 +1,354 @@
+{
+  "labels": {
+    "en": {
+      "experience": "Relevant Experience",
+      "projects": "Selected Projects",
+      "education": "Education",
+      "skills": "Skills",
+      "downloadCv": "Download CV"
+    },
+    "id": {
+      "experience": "Pengalaman Relevan",
+      "projects": "Proyek Terpilih",
+      "education": "Pendidikan",
+      "skills": "Keahlian",
+      "downloadCv": "Unduh CV"
+    },
+    "de": {
+      "experience": "Relevante Erfahrung",
+      "projects": "Ausgewählte Projekte",
+      "education": "Ausbildung",
+      "skills": "Fähigkeiten",
+      "downloadCv": "Lebenslauf herunterladen"
+    }
+  },
+  "content": {
+    "en": {
+      "profile": {
+        "name": "Farhan Muzaki",
+        "headline": "Full-stack Developer at Next TI | Data Science Student at Cakrawala University",
+        "location": "Jakarta, Indonesia",
+        "email": "muzakie.id@gmail.com",
+        "linkedin": {
+          "label": "farhan-muzaki",
+          "url": "https://linkedin.com/in/farhan-muzaki"
+        },
+        "website": {
+          "label": "muzakie.me/apple",
+          "url": "https://muzakie.me/apple"
+        },
+        "summary": "Full-Stack Developer with hands-on experience in enterprise banking systems, customer onboarding workflows, and external service integrations, combining Data Science-driven analytical thinking with product development, user-oriented design, and a strong interest in building meaningful digital products with real-world impact."
+      },
+      "experience": [
+        {
+          "role": "Full-Stack Developer",
+          "company": "PT Next Transformtech Indonesia",
+          "period": "Mar 2025 — Present",
+          "highlights": [
+            "Developed and maintained enterprise banking features for Loan Origination Systems used to support customer onboarding, verification, and loan processing workflows.",
+            "Integrated external services such as identity verification, credit-related services, payment handling, and communication APIs to support banking operations.",
+            "Worked across backend and frontend layers, contributing to API development, database handling, UI implementation, and system debugging.",
+            "Improved system reliability by investigating production-like issues, tracing service flows, analyzing database behavior, and resolving integration problems.",
+            "Collaborated with internal teams and stakeholders to translate business requirements into maintainable technical solutions."
+          ]
+        },
+        {
+          "role": "Full-Stack Developer Trainee",
+          "company": "PT DumbWays Indonesia Teknologi",
+          "period": "Aug 2024 — Jan 2025",
+          "highlights": [
+            "Completed intensive full-stack development training focused on building real-world web applications using modern frontend and backend technologies.",
+            "Developed multiple web-based projects involving authentication, CRUD operations, REST API integration, database design, and responsive user interfaces.",
+            "Practiced collaborative software development using Git, code reviews, documentation, and structured project delivery.",
+            "Strengthened core engineering skills in JavaScript, React, Node.js, Express, database management, and deployment fundamentals."
+          ]
+        },
+        {
+          "role": "Front-End Developer",
+          "company": "PT Matra Hilindo Teknologi",
+          "period": "May 2024 — Aug 2024",
+          "highlights": [
+            "Contributed to enterprise web applications supporting operational workflows in the energy and mining sector.",
+            "Built and refined frontend interfaces with attention to usability, layout consistency, and stakeholder requirements.",
+            "Collaborated with internal users and technical teams to adjust application flows based on business needs.",
+            "Gained practical experience in translating operational processes into functional digital interfaces."
+          ]
+        }
+      ],
+      "projects": [
+        {
+          "title": "Enterprise Loan Origination System",
+          "meta": "Full-Stack Developer · PT Next Transformtech Indonesia",
+          "highlights": [
+            "Built banking workflows that support customer onboarding, verification, and loan processing. Integrated external services to support enterprise banking operations and worked on systems where reliability, clarity, and user flow are critical."
+          ]
+        },
+        {
+          "title": "Web3 Hackathon Product",
+          "meta": "Team Project — 3rd Place · Hackathon BlockDevId",
+          "highlights": [
+            "Collaborated with a multidisciplinary team to turn a product idea into a working prototype under hackathon time constraints.",
+            "Contributed to product direction, development, presentation flow, and final delivery.",
+            "Achieved 3rd place by demonstrating practical execution, teamwork, and problem-solving under limited time."
+          ]
+        }
+      ],
+      "education": [
+        {
+          "institution": "Cakrawala University",
+          "period": "Sep 2025 — Sep 2029",
+          "degree": "Bachelor of Data Science",
+          "highlights": [
+            "Studying data analytics, software engineering, statistics, and technology innovation.",
+            "Combining academic learning with professional experience in enterprise software development.",
+            "Developing stronger foundations in analytical thinking, data-driven decision-making, and product-oriented problem-solving."
+          ]
+        }
+      ],
+      "skills": [
+        {
+          "group": "Programming & Frameworks",
+          "items": ["Java", "JavaScript", "TypeScript", "React", "Vue.js", "Node.js", "Express", "PHP", "Laravel", "Spring Boot"]
+        },
+        {
+          "group": "Backend & Database",
+          "items": ["REST API", "PostgreSQL", "MySQL", "database design", "SQL debugging", "service integration"]
+        },
+        {
+          "group": "Frontend Development",
+          "items": ["Responsive UI", "component-based development", "web application interfaces", "user flow implementation"]
+        },
+        {
+          "group": "Tools & Workflow",
+          "items": ["Git", "GitHub", "Docker", "DBeaver", "IntelliJ IDEA", "VS Code", "Agile collaboration"]
+        },
+        {
+          "group": "Product & Soft Skills",
+          "items": ["Product thinking", "problem-solving", "storytelling", "cross-functional collaboration", "technical communication"]
+        },
+        {
+          "group": "Languages",
+          "items": ["Bahasa Indonesia (native)", "English (intermediate)"]
+        }
+      ]
+    },
+    "id": {
+      "profile": {
+        "name": "Farhan Muzaki",
+        "headline": "Full-stack Developer di Next TI | Mahasiswa Data Science di Universitas Cakrawala",
+        "location": "Jakarta, Indonesia",
+        "email": "muzakie.id@gmail.com",
+        "linkedin": {
+          "label": "farhan-muzaki",
+          "url": "https://linkedin.com/in/farhan-muzaki"
+        },
+        "website": {
+          "label": "muzakie.me/apple",
+          "url": "https://muzakie.me/apple"
+        },
+        "summary": "Full-Stack Developer dengan pengalaman langsung dalam sistem perbankan enterprise, alur onboarding pelanggan, dan integrasi layanan eksternal. Menggabungkan pemikiran analitis berbasis Data Science dengan pengembangan produk, desain berorientasi pengguna, dan minat kuat dalam membangun produk digital bermakna dengan dampak nyata."
+      },
+      "experience": [
+        {
+          "role": "Full-Stack Developer",
+          "company": "PT Next Transformtech Indonesia",
+          "period": "Mar 2025 — Sekarang",
+          "highlights": [
+            "Mengembangkan dan memelihara fitur perbankan enterprise untuk Loan Origination System yang mendukung onboarding pelanggan, verifikasi, dan alur pemrosesan pinjaman.",
+            "Mengintegrasikan layanan eksternal seperti verifikasi identitas, layanan terkait kredit, penanganan pembayaran, dan API komunikasi untuk mendukung operasi perbankan.",
+            "Bekerja di lapisan backend dan frontend, berkontribusi pada pengembangan API, penanganan database, implementasi UI, dan debugging sistem.",
+            "Meningkatkan keandalan sistem dengan menyelidiki isu production-like, melacak alur layanan, menganalisis perilaku database, dan menyelesaikan masalah integrasi.",
+            "Berkolaborasi dengan tim internal dan stakeholder untuk menerjemahkan kebutuhan bisnis menjadi solusi teknis yang mudah dipelihara."
+          ]
+        },
+        {
+          "role": "Full-Stack Developer Trainee",
+          "company": "PT DumbWays Indonesia Teknologi",
+          "period": "Agu 2024 — Jan 2025",
+          "highlights": [
+            "Menyelesaikan pelatihan intensif full-stack development yang berfokus pada pembangunan aplikasi web nyata menggunakan teknologi frontend dan backend modern.",
+            "Mengembangkan berbagai proyek berbasis web meliputi autentikasi, operasi CRUD, integrasi REST API, desain database, dan antarmuka pengguna responsif.",
+            "Berlatih pengembangan software kolaboratif menggunakan Git, code review, dokumentasi, dan pengiriman proyek terstruktur.",
+            "Memperkuat keterampilan engineering inti dalam JavaScript, React, Node.js, Express, manajemen database, dan dasar deployment."
+          ]
+        },
+        {
+          "role": "Front-End Developer",
+          "company": "PT Matra Hilindo Teknologi",
+          "period": "Mei 2024 — Agu 2024",
+          "highlights": [
+            "Berkontribusi pada aplikasi web enterprise yang mendukung alur operasional di sektor energi dan pertambangan.",
+            "Membangun dan menyempurnakan antarmuka frontend dengan perhatian pada usability, konsistensi layout, dan kebutuhan stakeholder.",
+            "Berkolaborasi dengan pengguna internal dan tim teknis untuk menyesuaikan alur aplikasi berdasarkan kebutuhan bisnis.",
+            "Memperoleh pengalaman praktis dalam menerjemahkan proses operasional menjadi antarmuka digital yang fungsional."
+          ]
+        }
+      ],
+      "projects": [
+        {
+          "title": "Enterprise Loan Origination System",
+          "meta": "Full-Stack Developer · PT Next Transformtech Indonesia",
+          "highlights": [
+            "Membangun alur perbankan yang mendukung onboarding pelanggan, verifikasi, dan pemrosesan pinjaman. Mengintegrasikan layanan eksternal untuk mendukung operasi perbankan enterprise pada sistem yang mengutamakan keandalan, kejelasan, dan alur pengguna."
+          ]
+        },
+        {
+          "title": "Produk Web3 Hackathon",
+          "meta": "Proyek Tim — Juara 3 · Hackathon BlockDevId",
+          "highlights": [
+            "Berkolaborasi dengan tim multidisiplin untuk mengubah ide produk menjadi prototipe yang berfungsi dalam batasan waktu hackathon.",
+            "Berkontribusi pada arah produk, pengembangan, alur presentasi, dan pengiriman akhir.",
+            "Meraih juara 3 dengan menunjukkan eksekusi praktis, kerja tim, dan pemecahan masalah dalam waktu terbatas."
+          ]
+        }
+      ],
+      "education": [
+        {
+          "institution": "Universitas Cakrawala",
+          "period": "Sep 2025 — Sep 2029",
+          "degree": "Sarjana Data Science",
+          "highlights": [
+            "Mempelajari analitik data, software engineering, statistika, dan inovasi teknologi.",
+            "Menggabungkan pembelajaran akademik dengan pengalaman profesional dalam pengembangan software enterprise.",
+            "Membangun fondasi yang lebih kuat dalam pemikiran analitis, pengambilan keputusan berbasis data, dan pemecahan masalah berorientasi produk."
+          ]
+        }
+      ],
+      "skills": [
+        {
+          "group": "Pemrograman & Framework",
+          "items": ["Java", "JavaScript", "TypeScript", "React", "Vue.js", "Node.js", "Express", "PHP", "Laravel", "Spring Boot"]
+        },
+        {
+          "group": "Backend & Database",
+          "items": ["REST API", "PostgreSQL", "MySQL", "desain database", "SQL debugging", "integrasi layanan"]
+        },
+        {
+          "group": "Pengembangan Frontend",
+          "items": ["UI responsif", "pengembangan berbasis komponen", "antarmuka aplikasi web", "implementasi alur pengguna"]
+        },
+        {
+          "group": "Tools & Workflow",
+          "items": ["Git", "GitHub", "Docker", "DBeaver", "IntelliJ IDEA", "VS Code", "kolaborasi Agile"]
+        },
+        {
+          "group": "Produk & Soft Skills",
+          "items": ["Product thinking", "pemecahan masalah", "storytelling", "kolaborasi lintas fungsi", "komunikasi teknis"]
+        },
+        {
+          "group": "Bahasa",
+          "items": ["Bahasa Indonesia (native)", "Bahasa Inggris (menengah)"]
+        }
+      ]
+    },
+    "de": {
+      "profile": {
+        "name": "Farhan Muzaki",
+        "headline": "Full-stack Developer bei Next TI | Data-Science-Student an der Cakrawala University",
+        "location": "Jakarta, Indonesien",
+        "email": "muzakie.id@gmail.com",
+        "linkedin": {
+          "label": "farhan-muzaki",
+          "url": "https://linkedin.com/in/farhan-muzaki"
+        },
+        "website": {
+          "label": "muzakie.me/apple",
+          "url": "https://muzakie.me/apple"
+        },
+        "summary": "Full-Stack Developer mit praktischer Erfahrung in Enterprise-Banking-Systemen, Customer-Onboarding-Workflows und externen Service-Integrationen. Verbindet data-science-getriebenes analytisches Denken mit Produktentwicklung, nutzerorientiertem Design und dem Ziel, digitale Produkte mit realem Impact zu schaffen."
+      },
+      "experience": [
+        {
+          "role": "Full-Stack Developer",
+          "company": "PT Next Transformtech Indonesia",
+          "period": "Mär 2025 — Heute",
+          "highlights": [
+            "Entwicklung und Wartung von Enterprise-Banking-Features für Loan Origination Systems zur Unterstützung von Customer Onboarding, Verifizierung und Kreditbearbeitung.",
+            "Integration externer Services wie Identitätsprüfung, kreditbezogene Services, Zahlungsabwicklung und Kommunikations-APIs.",
+            "Arbeit an Backend und Frontend: API-Entwicklung, Datenbankhandling, UI-Implementierung und System-Debugging.",
+            "Verbesserung der Systemzuverlässigkeit durch Analyse von Production-ähnlichen Issues, Service-Flow-Tracing und Lösung von Integrationsproblemen.",
+            "Zusammenarbeit mit internen Teams und Stakeholdern zur Umsetzung wartbarer technischer Lösungen."
+          ]
+        },
+        {
+          "role": "Full-Stack Developer Trainee",
+          "company": "PT DumbWays Indonesia Teknologi",
+          "period": "Aug 2024 — Jan 2025",
+          "highlights": [
+            "Intensives Full-Stack-Training mit Fokus auf reale Webanwendungen mit modernen Frontend- und Backend-Technologien.",
+            "Mehrere Webprojekte mit Authentifizierung, CRUD, REST-API-Integration, Datenbankdesign und responsiven UIs.",
+            "Kollaborative Softwareentwicklung mit Git, Code Reviews, Dokumentation und strukturierter Projektauslieferung.",
+            "Ausbau der Kernkompetenzen in JavaScript, React, Node.js, Express, Datenbankmanagement und Deployment-Grundlagen."
+          ]
+        },
+        {
+          "role": "Front-End Developer",
+          "company": "PT Matra Hilindo Teknologi",
+          "period": "Mai 2024 — Aug 2024",
+          "highlights": [
+            "Mitwirkung an Enterprise-Webanwendungen für operative Workflows im Energie- und Bergbausektor.",
+            "Aufbau und Verfeinerung von Frontend-Oberflächen mit Fokus auf Usability und Layout-Konsistenz.",
+            "Zusammenarbeit mit internen Nutzern und Tech-Teams zur Anpassung von Anwendungsflows.",
+            "Praxiserfahrung in der Übersetzung operativer Prozesse in funktionale digitale Interfaces."
+          ]
+        }
+      ],
+      "projects": [
+        {
+          "title": "Enterprise Loan Origination System",
+          "meta": "Full-Stack Developer · PT Next Transformtech Indonesia",
+          "highlights": [
+            "Banking-Workflows für Onboarding, Verifizierung und Kreditbearbeitung. Integration externer Services für zuverlässige Enterprise-Banking-Systeme."
+          ]
+        },
+        {
+          "title": "Web3 Hackathon Product",
+          "meta": "Teamprojekt — 3. Platz · Hackathon BlockDevId",
+          "highlights": [
+            "Multidisziplinäres Team zur Umsetzung einer Produktidee in einen funktionierenden Prototyp unter Hackathon-Zeitdruck.",
+            "Beitrag zu Produktrichtung, Entwicklung, Präsentationsflow und finaler Auslieferung.",
+            "3. Platz durch praktische Umsetzung, Teamarbeit und Problemlösung unter Zeitdruck."
+          ]
+        }
+      ],
+      "education": [
+        {
+          "institution": "Cakrawala University",
+          "period": "Sep 2025 — Sep 2029",
+          "degree": "Bachelor of Data Science",
+          "highlights": [
+            "Studium von Data Analytics, Software Engineering, Statistik und Technologieinnovation.",
+            "Verbindung von akademischem Lernen mit professioneller Erfahrung in Enterprise-Softwareentwicklung.",
+            "Aufbau starker Grundlagen in analytischem Denken, datengetriebener Entscheidungsfindung und produktorientierter Problemlösung."
+          ]
+        }
+      ],
+      "skills": [
+        {
+          "group": "Programmierung & Frameworks",
+          "items": ["Java", "JavaScript", "TypeScript", "React", "Vue.js", "Node.js", "Express", "PHP", "Laravel", "Spring Boot"]
+        },
+        {
+          "group": "Backend & Datenbank",
+          "items": ["REST API", "PostgreSQL", "MySQL", "Datenbankdesign", "SQL-Debugging", "Service-Integration"]
+        },
+        {
+          "group": "Frontend-Entwicklung",
+          "items": ["Responsive UI", "komponentenbasierte Entwicklung", "Web-App-Interfaces", "User-Flow-Implementierung"]
+        },
+        {
+          "group": "Tools & Workflow",
+          "items": ["Git", "GitHub", "Docker", "DBeaver", "IntelliJ IDEA", "VS Code", "Agile-Zusammenarbeit"]
+        },
+        {
+          "group": "Produkt & Soft Skills",
+          "items": ["Produktdenken", "Problemlösung", "Storytelling", "funktionsübergreifende Zusammenarbeit", "technische Kommunikation"]
+        },
+        {
+          "group": "Sprachen",
+          "items": ["Bahasa Indonesia (Muttersprache)", "Englisch (mittel)"]
+        }
+      ]
+    }
+  }
+}

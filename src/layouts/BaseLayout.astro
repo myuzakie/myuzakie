@@ -1,0 +1,193 @@
+---
+import '../styles/global.css';
+import LanguageSwitcher from '../components/LanguageSwitcher.astro';
+import CommentLayer from '../components/CommentLayer.astro';
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL ?? '';
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY ?? '';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: 'en' | 'id' | 'de';
+}
+
+const {
+  title = 'Jordi Espinosa — SaaS Product Designer',
+  description = 'SaaS Product Designer based in Barcelona. Currently working at Factorial.',
+  lang = 'en',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang} data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="mx-auto w-full md:w-site max-w-full relative">
+    <!-- Inject Supabase credentials to window for CommentLayer -->
+    <script is:inline define:vars={{ supabaseUrl, supabaseKey }}>
+      window.__SUPABASE_URL__ = supabaseUrl;
+      window.__SUPABASE_KEY__ = supabaseKey;
+    </script>
+
+    <!-- Layout rulers (overlay) — hidden on mobile -->
+    <div class="layout-rulers fixed inset-0 pointer-events-none z-[9999]" aria-hidden="true">
+      <div id="ruler-horizontal" class="fixed top-0 left-0 right-0 h-[26px] bg-bg overflow-visible border-b border-border w-full"></div>
+      <div id="ruler-vertical" class="fixed top-0 left-0 bottom-0 w-[26px] bg-bg overflow-visible border-r border-border h-full"></div>
+    </div>
+
+    <!-- Comment system overlay (markers rendered dynamically from Supabase) -->
+    <CommentLayer />
+
+    <slot />
+    <script>
+      const drawRuler = () => {
+        const horizontalEl = document.getElementById("ruler-horizontal");
+        const verticalEl = document.getElementById("ruler-vertical");
+
+        if (!horizontalEl || !verticalEl) return;
+
+        // Create horizontal ruler
+        const hCanvas = document.createElement('canvas');
+        hCanvas.width = window.innerWidth;
+        hCanvas.height = 26;
+        const hCtx = hCanvas.getContext('2d');
+
+        // Create vertical ruler
+        const vCanvas = document.createElement('canvas');
+        vCanvas.width = 26;
+        vCanvas.height = window.innerHeight;
+        const vCtx = vCanvas.getContext('2d');
+
+        const drawHorizontal = (scrollX = 0) => {
+          hCtx.fillStyle = '#0b0b0b';
+          hCtx.fillRect(0, 0, hCanvas.width, hCanvas.height);
+
+          hCtx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+          hCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+          hCtx.font = '9px "DM Mono", monospace';
+          hCtx.textBaseline = 'top';
+          hCtx.textAlign = 'center';
+
+          const startPos = Math.floor(scrollX / 50) * 50;
+          const offsetX = startPos - scrollX;
+
+          for (let i = 0; i < hCanvas.width + 50; i += 50) {
+            const x = offsetX + i;
+            const value = startPos + i;
+
+            if (x < 0 || x > hCanvas.width) continue;
+
+            hCtx.fillRect(x, 22, 1, 4);
+
+            if (value % 100 === 0) {
+              hCtx.fillRect(x, 20, 1, 6);
+              hCtx.fillText(value.toString(), x, 8);
+            }
+          }
+        };
+
+        const drawVertical = (scrollY = 0) => {
+          vCtx.fillStyle = '#0b0b0b';
+          vCtx.fillRect(0, 0, vCanvas.width, vCanvas.height);
+
+          vCtx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+          vCtx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+          vCtx.font = '9px "DM Mono", monospace';
+          vCtx.textBaseline = 'middle';
+          vCtx.textAlign = 'right';
+
+          const startPos = Math.floor(scrollY / 50) * 50;
+          const offsetY = startPos - scrollY;
+
+          for (let i = 0; i < vCanvas.height + 50; i += 50) {
+            const y = offsetY + i;
+            const value = startPos + i;
+
+            if (y < 0 || y > vCanvas.height) continue;
+
+            vCtx.fillRect(22, y, 4, 1);
+
+            if (value % 100 === 0) {
+              vCtx.fillRect(20, y, 6, 1);
+              vCtx.save();
+              vCtx.translate(8, y);
+              vCtx.rotate(-Math.PI / 2);
+              vCtx.fillText(value.toString(), 0, 0);
+              vCtx.restore();
+            }
+          }
+        };
+
+        horizontalEl.appendChild(hCanvas);
+        verticalEl.appendChild(vCanvas);
+
+        const update = () => {
+          drawHorizontal(window.scrollX || 0);
+          drawVertical(window.scrollY || 0);
+        };
+
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', () => {
+          hCanvas.width = window.innerWidth;
+          vCanvas.height = window.innerHeight;
+          update();
+        });
+
+        update();
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", drawRuler);
+      } else {
+        drawRuler();
+      }
+    </script>
+
+    <LanguageSwitcher />
+
+    <script is:inline>
+      (function initTheme() {
+        function applyTheme(theme) {
+          document.documentElement.setAttribute('data-theme', theme);
+          try { localStorage.setItem('preferred-theme', theme); } catch (e) {}
+        }
+
+        function getTheme() {
+          try {
+            const stored = localStorage.getItem('preferred-theme');
+            if (stored === 'light' || stored === 'dark') return stored;
+          } catch (e) {}
+          return 'dark';
+        }
+
+        function bindThemeToggle() {
+          const btn = document.querySelector('[data-theme-toggle]');
+          if (!btn || btn.dataset.themeBound === 'true') return;
+          btn.dataset.themeBound = 'true';
+          btn.addEventListener('click', function () {
+            const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            applyTheme(next);
+          });
+        }
+
+        applyTheme(getTheme());
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bindThemeToggle);
+        } else {
+          bindThemeToggle();
+        }
+      })();
+    </script>
+  </body>
+</html>

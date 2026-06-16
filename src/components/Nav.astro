@@ -1,0 +1,171 @@
+---
+const pathname = Astro.url.pathname;
+
+const homeIcon =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house-icon lucide-house"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>';
+const galleryIcon =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gallery-thumbnails-icon lucide-gallery-thumbnails"><rect width="18" height="14" x="3" y="3" rx="2"/><path d="M4 21h1"/><path d="M9 21h1"/><path d="M14 21h1"/><path d="M19 21h1"/></svg>';
+const projectsIcon =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-app-window-mac-icon lucide-app-window-mac"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/></svg>';
+const resumeIcon =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-newspaper-icon lucide-newspaper"><path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="10" y="6" rx="1"/></svg>';
+
+const navLinks = [
+  { id: "home", label: "", href: "/", image: "/images/myuzakie.jpg" },
+  { id: "gallery", label: "Gallery", href: "/gallery", icon: galleryIcon },
+  { id: "projects", label: "Projects", href: "/projects", icon: projectsIcon },
+  { id: "resume", label: "Resume", href: "/resume", icon: resumeIcon },
+];
+
+function isActive(href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname.startsWith(href);
+}
+---
+
+<!-- Floating nav bar -->
+<nav
+  id="main-nav"
+  class="fixed top-[calc(0.75rem+var(--safe-top,0px))] sm:top-5 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-var(--gutter)*2)] max-w-fit sm:mt-6"
+  aria-label="Main navigation"
+>
+  <ul
+    id="nav-list"
+    class="relative flex items-center gap-0.5 bg-surface/80 backdrop-blur-xl border border-border rounded-sm px-1 py-1 shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-x-auto scrollbar-none max-w-full"
+  >
+    <!-- Sliding active indicator (moved by JS) -->
+    <!-- <div
+      id="nav-indicator"
+      class="absolute top-1 h-[calc(100%-6px)] bg-surface2 border border-border-light rounded-sm transition-[left,width] duration-300 ease-out pointer-events-none"
+      aria-hidden="true"
+    >
+    </div> -->
+
+    {
+      navLinks.map((link) => (
+        <li class="relative z-10">
+          <a
+            href={link.href}
+            data-nav-id={link.id}
+            class:list={[
+              "nav-link flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-sm font-display text-[0.7rem] sm:text-[0.76rem] font-semibold transition-all duration-fast select-none whitespace-nowrap flex-shrink-0",
+              link.id === "resume"
+                ? "bg-white text-[#0b0b0b] hover:bg-[#ededed] hover:text-[#0b0b0b] shadow-[0_6px_18px_rgba(255,255,255,0.08)]"
+                : isActive(link.href)
+                  ? "text-text-primary"
+                  : "text-text-secondary hover:text-text-primary",
+            ]}
+            aria-current={isActive(link.href) ? "page" : undefined}
+          >
+            {link.id === "home" ? (
+              <span class="inline-flex h-7 w-7 overflow-hidden rounded-full border border-border-light ring-1 ring-black/20">
+                <img
+                  src={link.image}
+                  alt="Farhan Muzaki"
+                  class="h-full w-full object-cover"
+                />
+              </span>
+            ) : (
+              <span
+                class="inline-flex h-4 w-4 items-center justify-center opacity-60 leading-none [&_svg]:h-4 [&_svg]:w-4"
+                set:html={link.icon}
+              />
+            )}
+            {link.label && (
+              <span class="nav-label max-[380px]:hidden">{link.label}</span>
+            )}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  function initNav() {
+    const list = document.getElementById("nav-list") as HTMLUListElement | null;
+    const indicator = document.getElementById(
+      "nav-indicator",
+    ) as HTMLDivElement | null;
+    if (!list || !indicator) return;
+
+    // Position indicator under the active link
+    function positionIndicator(anchor: HTMLAnchorElement, animate: boolean) {
+      if (!animate) {
+        indicator!.style.transition = "none";
+      } else {
+        indicator!.style.transition =
+          "left 300ms cubic-bezier(0.4,0,0.2,1), width 300ms cubic-bezier(0.4,0,0.2,1)";
+      }
+
+      const listRect = list!.getBoundingClientRect();
+      const linkRect = anchor.getBoundingClientRect();
+
+      indicator!.style.left = `${linkRect.left - listRect.left}px`;
+      indicator!.style.width = `${linkRect.width}px`;
+    }
+
+    // Detect active link from current URL
+    function getActiveLink(): HTMLAnchorElement | null {
+      const pathname = window.location.pathname;
+      const links = list!.querySelectorAll<HTMLAnchorElement>("a[data-nav-id]");
+      let active: HTMLAnchorElement | null = null;
+
+      links.forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        const isMatch =
+          href === "/" ? pathname === "/" : pathname.startsWith(href);
+        if (isMatch) {
+          active = link;
+          link.setAttribute("aria-current", "page");
+          link.classList.remove("text-text-secondary");
+          link.classList.add("text-text-primary");
+        } else {
+          link.removeAttribute("aria-current");
+          link.classList.remove("text-text-primary");
+          link.classList.add("text-text-secondary");
+        }
+      });
+
+      return active;
+    }
+
+    // Initial position — no animation
+    const activeLink = getActiveLink();
+    if (activeLink) {
+      // Need a paint before measuring
+      requestAnimationFrame(() => {
+        positionIndicator(activeLink, false);
+        // Force reflow so next transition works
+        indicator!.getBoundingClientRect();
+        indicator!.style.transition =
+          "left 300ms cubic-bezier(0.4,0,0.2,1), width 300ms cubic-bezier(0.4,0,0.2,1)";
+      });
+    }
+
+    // Hover: slide indicator to hovered link
+    const allLinks = list.querySelectorAll<HTMLAnchorElement>("a[data-nav-id]");
+    allLinks.forEach((link) => {
+      link.addEventListener("mouseenter", () => {
+        positionIndicator(link, true);
+      });
+
+      link.addEventListener("mouseleave", () => {
+        // Return to active link
+        const current = getActiveLink();
+        if (current) positionIndicator(current, true);
+      });
+
+      // On click: slide before navigation for visual feedback
+      link.addEventListener("click", (e) => {
+        positionIndicator(link, true);
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initNav);
+  } else {
+    initNav();
+  }
+</script>
