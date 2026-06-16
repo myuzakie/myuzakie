@@ -1,0 +1,90 @@
+---
+import type { ReviewNote } from '../../lib/reviewProjects';
+
+interface Props {
+  notes: ReviewNote[];
+  'data-tour'?: string;
+}
+
+const { notes, 'data-tour': dataTour = 'review-notes' } = Astro.props;
+---
+
+<section class="reviewer-notes" data-tour={dataTour} aria-label="Reviewer notes">
+  <p class="reviewer-notes__label">Reviewer Notes</p>
+  <h2 class="reviewer-notes__title">Project explanation</h2>
+
+  <div class="reviewer-notes__grid">
+    {notes.map((note) => (
+      <article class="reviewer-notes__card">
+        <h3>{note.title}</h3>
+        <p>{note.body}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .reviewer-notes {
+    margin: 1rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid #262626;
+  }
+
+  .reviewer-notes__label {
+    margin: 0 0 0.35rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #f0f0f0);
+  }
+
+  .reviewer-notes__title {
+    margin: 0 0 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--color-text-muted, #5e5e5e);
+  }
+
+  .reviewer-notes__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .reviewer-notes__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+  }
+
+  .reviewer-notes__card {
+    padding: 1rem;
+    border: 1px solid #262626;
+    border-radius: 6px;
+    background: #141414;
+  }
+
+  html[data-theme='light'] .reviewer-notes__card {
+    background: #ffffff;
+    border-color: #d4d4d4;
+  }
+
+  .reviewer-notes__card h3 {
+    margin: 0 0 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #f0f0f0);
+  }
+
+  .reviewer-notes__card p {
+    margin: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary, #9a9a9a);
+  }
+
+</style>

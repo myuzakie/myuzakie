@@ -6,12 +6,13 @@ interface Props {
   title: string;
   description?: string;
   lang?: 'en' | 'id' | 'de';
+  noindex?: boolean;
 }
 
-const { title, description = '', lang = 'en' } = Astro.props;
+const { title, description = '', lang = 'en', noindex = false } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} lang={lang}>
+<BaseLayout title={title} description={description} lang={lang} noindex={noindex}>
   <Footer lang={lang} />
 
   <div class="layout-shell layout-shell--project">

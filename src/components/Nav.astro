@@ -10,6 +10,8 @@ const projectsIcon =
 const resumeIcon =
   '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-newspaper-icon lucide-newspaper"><path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="10" y="6" rx="1"/></svg>';
 
+const appleAcademyLogoUrl = "https://media.licdn.com/dms/image/v2/C510BAQHyTIzJP41l9w/company-logo_200_200/company-logo_200_200/0/1631406350980/apple_developer_academy_indonesia_logo?e=2147483647&v=beta&t=SzBY5ZD_hAVR52ptR0sSodtvakY1abxaYnm-7qoV7Q8";
+
 const navLinks = [
   { id: "home", label: "", href: "/", image: "/images/myuzakie.jpg" },
   { id: "gallery", label: "Gallery", href: "/gallery", icon: galleryIcon },
@@ -29,57 +31,116 @@ function isActive(href: string) {
   class="fixed top-[calc(0.75rem+var(--safe-top,0px))] sm:top-5 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-var(--gutter)*2)] max-w-fit sm:mt-6"
   aria-label="Main navigation"
 >
-  <ul
-    id="nav-list"
-    class="relative flex items-center gap-0.5 bg-surface/80 backdrop-blur-xl border border-border rounded-sm px-1 py-1 shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-x-auto scrollbar-none max-w-full"
-  >
-    <!-- Sliding active indicator (moved by JS) -->
-    <!-- <div
-      id="nav-indicator"
-      class="absolute top-1 h-[calc(100%-6px)] bg-surface2 border border-border-light rounded-sm transition-[left,width] duration-300 ease-out pointer-events-none"
-      aria-hidden="true"
+  <div class="nav-wrapper">
+    <ul
+      id="nav-list"
+      class="relative flex items-center gap-0.5 bg-surface/80 backdrop-blur-xl border border-border rounded-sm px-1 py-1 shadow-[0_8px_32px_rgba(0,0,0,0.4)] overflow-x-auto scrollbar-none max-w-full"
     >
-    </div> -->
-
-    {
-      navLinks.map((link) => (
-        <li class="relative z-10">
-          <a
-            href={link.href}
-            data-nav-id={link.id}
-            class:list={[
-              "nav-link flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-sm font-display text-[0.7rem] sm:text-[0.76rem] font-semibold transition-all duration-fast select-none whitespace-nowrap flex-shrink-0",
-              link.id === "resume"
-                ? "bg-white text-[#0b0b0b] hover:bg-[#ededed] hover:text-[#0b0b0b] shadow-[0_6px_18px_rgba(255,255,255,0.08)]"
-                : isActive(link.href)
-                  ? "text-text-primary"
-                  : "text-text-secondary hover:text-text-primary",
-            ]}
-            aria-current={isActive(link.href) ? "page" : undefined}
-          >
-            {link.id === "home" ? (
-              <span class="inline-flex h-7 w-7 overflow-hidden rounded-full border border-border-light ring-1 ring-black/20">
-                <img
-                  src={link.image}
-                  alt="Farhan Muzaki"
-                  class="h-full w-full object-cover"
+      {
+        navLinks.map((link) => (
+          <li class="relative z-10">
+            <a
+              href={link.href}
+              data-nav-id={link.id}
+              class:list={[
+                "nav-link flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-sm font-display text-[0.7rem] sm:text-[0.76rem] font-semibold transition-all duration-fast select-none whitespace-nowrap flex-shrink-0",
+                link.id === "resume"
+                  ? "bg-white text-[#0b0b0b] hover:bg-[#ededed] hover:text-[#0b0b0b] shadow-[0_6px_18px_rgba(255,255,255,0.08)]"
+                  : isActive(link.href)
+                    ? "text-text-primary"
+                    : "text-text-secondary hover:text-text-primary",
+              ]}
+              aria-current={isActive(link.href) ? "page" : undefined}
+            >
+              {link.id === "home" ? (
+                <span class="inline-flex h-7 w-7 overflow-hidden rounded-full border border-border-light ring-1 ring-black/20">
+                  <img
+                    src={link.image}
+                    alt="Farhan Muzaki"
+                    class="h-full w-full object-cover"
+                  />
+                </span>
+              ) : (
+                <span
+                  class="inline-flex h-4 w-4 items-center justify-center opacity-60 leading-none [&_svg]:h-4 [&_svg]:w-4"
+                  set:html={link.icon}
                 />
-              </span>
-            ) : (
-              <span
-                class="inline-flex h-4 w-4 items-center justify-center opacity-60 leading-none [&_svg]:h-4 [&_svg]:w-4"
-                set:html={link.icon}
-              />
-            )}
-            {link.label && (
-              <span class="nav-label max-[380px]:hidden">{link.label}</span>
-            )}
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+              )}
+              {link.label && (
+                <span class="nav-label max-[380px]:hidden">{link.label}</span>
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- Apple Developer Academy Indonesia logo badge -->
+    <a
+      href="https://www.linkedin.com/school/apple-developer-academy-indonesia/"
+      target="_blank"
+      rel="noopener"
+      class="nav-academy-logo"
+      title="Apple Developer Academy Indonesia"
+      aria-label="Apple Developer Academy Indonesia"
+    >
+      <img
+        src={appleAcademyLogoUrl}
+        alt="Apple Developer Academy Indonesia"
+        width="26"
+        height="26"
+        class="nav-academy-img"
+        loading="eager"
+      />
+    </a>
+  </div>
 </nav>
+
+<style>
+  .nav-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-academy-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    transition: border-color 0.15s ease, transform 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  /* light mode */
+  html[data-theme='light'] .nav-academy-logo {
+    border-color: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .nav-academy-logo:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.06);
+  }
+
+  html[data-theme='light'] .nav-academy-logo:hover {
+    border-color: rgba(0, 0, 0, 0.18);
+  }
+
+  .nav-academy-img {
+    width: 26px;
+    height: 26px;
+    object-fit: cover;
+    border-radius: 7px;
+    display: block;
+  }
+</style>
 
 <script>
   function initNav() {

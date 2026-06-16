@@ -29,7 +29,7 @@
       "back": "← Back to Projects",
       "counter": "Project {current} of {total}",
       "footerName": "Your name",
-      "footerUniversity": "Your university/school name (Student or Alumni)",
+      "footerUniversity": "Student Of Cakrwala Student",
       "footerContact": "Your contact information"
     },
     "id": {
@@ -59,34 +59,43 @@
   },
   "projects": [
     {
-      "slug": "police-dashboard",
+      "slug": "web3-builder-journey",
       "theme": "dark",
       "thumbnail": "/images/project-1-thumbnail.webp",
       "heroImage": "/images/project-1-thumbnail.webp",
+      "media": [
+        "1.png",
+        "2.png",
+        "3.png",
+        "4.png",
+        "5.png",
+        "6.png",
+        "7.png"
+      ],
       "i18n": {
         "en": {
-          "title": "Police Station Dashboard",
-          "year": "2024",
-          "role": "UI/UX Designer & Frontend Developer",
-          "publicationLink": "https://example.com/police-dashboard",
-          "publicationLabel": "View live prototype",
-          "description": "A control panel for law enforcement analytics and daily operations. The dashboard consolidates incident reports, officer assignments, and real-time district metrics into a single interface designed for clarity under pressure.\n\nThe project focused on information hierarchy, accessible color systems, and responsive layouts that work across desktop command centers and field tablets."
+          "title": "Web3 Builder Journey",
+          "year": "2025",
+          "role": "Full-stack Developer",
+          "publicationLink": "https://github.com/myuzakie",
+          "publicationLabel": "View on GitHub",
+          "description": "A hands-on journey through blockchain product design and development. Starting from BlockDevId's offline Web3 bootcamp, I collaborated with a team to design and build LiquidArena — a DeFi battle platform where users connect wallets, select LP positions, and compete in liquidity battles.\n\nThe project pushed me to translate abstract blockchain mechanics into a clear, step-by-step user flow: connect wallet → select LP position → create or join battle → approve transfer → monitor battle → resolve winner."
         },
         "id": {
-          "title": "Dasbor Kantor Polisi",
+          "title": "Web3 Builder Journey",
           "year": "2024",
-          "role": "Desainer UI/UX & Frontend Developer",
-          "publicationLink": "https://example.com/police-dashboard",
-          "publicationLabel": "Lihat prototipe",
-          "description": "Panel kontrol untuk analitik penegakan hukum dan operasi harian. Dasbor ini menggabungkan laporan insiden, penugasan petugas, dan metrik distrik secara real-time dalam satu antarmuka yang dirancang untuk kejelasan di bawah tekanan.\n\nProyek ini berfokus pada hierarki informasi, sistem warna yang aksesibel, dan tata letak responsif yang berfungsi di pusat komando desktop maupun tablet lapangan."
+          "role": "Product Designer & Web3 Builder",
+          "publicationLink": "https://github.com/myuzakie",
+          "publicationLabel": "Lihat di GitHub",
+          "description": "Sebuah perjalanan langsung dalam desain dan pengembangan produk blockchain. Dimulai dari bootcamp offline Web3 BlockDevId, saya berkolaborasi dengan tim untuk mendesain dan membangun LiquidArena — platform battle DeFi di mana pengguna menghubungkan dompet, memilih posisi LP, dan bersaing dalam liquidity battle.\n\nProyek ini mendorong saya untuk menerjemahkan mekanisme blockchain yang abstrak menjadi alur pengguna yang jelas: connect wallet → pilih posisi LP → buat atau gabung battle → approve transfer → pantau battle → selesaikan pemenang. Produk kedua, Relynk, juga diprototiping dalam sprint hackathon yang sama."
         },
         "de": {
-          "title": "Polizeistation-Dashboard",
+          "title": "Web3 Builder Journey",
           "year": "2024",
-          "role": "UI/UX-Designer & Frontend-Entwickler",
-          "publicationLink": "https://example.com/police-dashboard",
-          "publicationLabel": "Live-Prototyp ansehen",
-          "description": "Ein Kontrollpanel für Strafverfolgungsanalysen und tägliche Einsätze. Das Dashboard bündelt Vorfallberichte, Einsatzplanung und Echtzeit-Bezirkskennzahlen in einer Oberfläche, die unter Druck Klarheit schafft.\n\nDer Schwerpunkt lag auf Informationshierarchie, barrierefreien Farbsystemen und responsiven Layouts für Desktop-Leitstellen und Feldtablets."
+          "role": "Produktdesigner & Web3 Builder",
+          "publicationLink": "https://github.com/myuzakie",
+          "publicationLabel": "Auf GitHub ansehen",
+          "description": "Eine praktische Reise durch Blockchain-Produktdesign und -entwicklung. Ausgehend vom Offline-Web3-Bootcamp von BlockDevId habe ich mit einem Team zusammengearbeitet, um LiquidArena zu entwerfen und zu bauen — eine DeFi-Battle-Plattform, auf der Nutzer Wallets verbinden, LP-Positionen auswählen und in Liquiditätskämpfen antreten.\n\nDas Projekt hat mich dazu gebracht, abstrakte Blockchain-Mechanismen in einen klaren, schrittweisen User Flow zu übersetzen: Wallet verbinden → LP-Position wählen → Battle erstellen oder beitreten → Transfer genehmigen → Battle beobachten → Gewinner bestimmen."
         }
       }
     },
@@ -95,6 +104,11 @@
       "theme": "light",
       "thumbnail": "/images/project-2-thumbnail.webp",
       "heroImage": "/images/project-2-thumbnail.webp",
+      "media": [
+        "01.webp",
+        "02.gif",
+        "03.webp"
+      ],
       "i18n": {
         "en": {
           "title": "Fintech Mobile App",

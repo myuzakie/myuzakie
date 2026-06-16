@@ -16,7 +16,18 @@ export interface Project {
   theme: 'dark' | 'light';
   thumbnail: string;
   heroImage: string;
+  /** Optional list of filenames inside public/projects/{slug}/ */
+  media?: string[];
   i18n: Record<ProjectLang, ProjectContent>;
+}
+
+/** Returns full public paths for all media files of a project.
+ *  Falls back to heroImage if no media array defined. */
+export function getProjectMediaPaths(project: Project): string[] {
+  if (project.media && project.media.length > 0) {
+    return project.media.map((file) => `/projects/${project.slug}/${file}`);
+  }
+  return [project.heroImage];
 }
 
 export interface ProfileInfo {
