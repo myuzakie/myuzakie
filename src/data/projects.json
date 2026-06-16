@@ -63,6 +63,12 @@
       "theme": "dark",
       "thumbnail": "/images/project-1-thumbnail.webp",
       "heroImage": "/images/project-1-thumbnail.webp",
+      "media": [
+        "01.webp",
+        "02.gif",
+        "03.webp",
+        "04.gif"
+      ],
       "i18n": {
         "en": {
           "title": "Web3 Builder Journey",
@@ -95,6 +101,11 @@
       "theme": "light",
       "thumbnail": "/images/project-2-thumbnail.webp",
       "heroImage": "/images/project-2-thumbnail.webp",
+      "media": [
+        "01.webp",
+        "02.gif",
+        "03.webp"
+      ],
       "i18n": {
         "en": {
           "title": "Fintech Mobile App",
