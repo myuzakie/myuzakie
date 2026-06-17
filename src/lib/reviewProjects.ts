@@ -31,7 +31,8 @@ export interface ReviewProjectView {
 /** Slugs included in the Apple Academy reviewer landing page. */
 export const REVIEW_PROJECT_SLUGS = [
   "web3-builder-journey",
-  "fintech-app",
+  "sportan",
+  "q-rush",
 ] as const;
 
 const enrichments: Record<string, ReviewProjectEnrichment> = {
@@ -57,7 +58,7 @@ const enrichments: Record<string, ReviewProjectEnrichment> = {
     reviewNotes: [
       {
         title: "Learning Context",
-        body: "I joined BlockDevId’s offline Web3 bootcamp to understand how blockchain products are designed, built, deployed, and pitched in a real builder environment.",
+        body: "I joined BlockDevId's offline Web3 bootcamp to understand how blockchain products are designed, built, deployed, and pitched in a real builder environment.",
       },
       {
         title: "Product Execution",
@@ -69,27 +70,63 @@ const enrichments: Record<string, ReviewProjectEnrichment> = {
       },
     ],
   },
-  "fintech-app": {
-    techStack: ["SwiftUI", "iOS", "Product Design"],
+  sportan: {
+    techStack: [
+      "Product Direction",
+      "Editorial Systems",
+      "Web Development",
+      "Sports Media",
+      "Audience Strategy",
+    ],
     features: [
-      "Savings tracking",
-      "Portfolio overview",
-      "Goal-based planning",
-      "Calm finance-first UI",
-      "Progressive data disclosure",
+      "Sports storytelling platform",
+      "Structured editorial delivery",
+      "Analysis-focused content experience",
+      "Web-based media interface",
+      "Long-term audience-building strategy",
+    ],
+    reviewNotes: [
+      {
+        title: "Product Context",
+        body: "Sportan is a personal digital product exploring sports storytelling, analysis, and structured content delivery through a web-based media platform.",
+      },
+      {
+        title: "Role & Execution",
+        body: "As founder and full-stack developer, I connected product direction, editorial structure, web development, and audience-building strategy into one media product direction.",
+      },
+      {
+        title: "Review Material",
+        body: "The full case study, visuals, and supporting materials are available through the publication link shown in the project metadata.",
+      },
+    ],
+  },
+  "q-rush": {
+    techStack: [
+      "UI/UX Design",
+      "Product Design",
+      "QR Ordering",
+      "Payment Flow",
+      "Restaurant UX",
+    ],
+    features: [
+      "QR-based dine-in ordering",
+      "One Bill shared payment flow",
+      "Split Bill separate payment flow",
+      "Menu browsing and order confirmation",
+      "QR transaction proof and final invoice",
     ],
     reviewNotes: [
       {
         title: "Problem Context",
-        body: "This project addresses daily financial check-ins by combining savings and stock portfolio visibility in one mobile experience.",
+        body: "Q Rush is designed to make the dine-in ordering process faster, clearer, and more flexible for customers using a QR-based restaurant ordering flow.",
       },
       {
-        title: "Design Direction",
-        body: "Legibility of numbers, trust-building motion, and progressive disclosure guide users through complex financial data calmly.",
+        title: "Ordering Scenarios",
+        body: "The product supports One Bill for a single shared payment flow and Split Bill for customers who want to separate their orders and payments while dining together.",
       },
       {
-        title: "Technical Approach",
-        body: "Native iOS patterns and component-driven UI keep interactions consistent while supporting iterative product exploration.",
+        title: "Journey Focus",
+        body: "The design simplifies the restaurant journey from table entry, menu browsing, order confirmation, payment, QR transaction proof, and final invoice.",
       },
     ],
   },
