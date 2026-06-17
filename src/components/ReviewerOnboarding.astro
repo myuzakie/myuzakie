@@ -53,7 +53,7 @@ const caseTourTemplate: TourTemplateStep[] = [
 // One guide video per project. Set each `at` value to the second where the UI focus should change.
 const projectGuides: Record<string, ProjectGuideConfig> = {
   'web3-builder-journey': {
-    video: `https://sportan.sgp1.cdn.digitaloceanspaces.com/guide_01.mp4`,
+    video: `/projects/web3-builder-journey/guide/guide.mp4`,
     steps: [
       { at: 0, title: 'Web3 Bootcamp Context' },
       { at: 15, title: 'LiquidArena - Product Case' },
@@ -61,13 +61,22 @@ const projectGuides: Record<string, ProjectGuideConfig> = {
       { at: 50, title: 'Reflection & Closing' },
     ],
   },
-  'fintech-app': {
-    video: `/projects/fintech-app/guide/guide.mp4`,
+  sportan: {
+    video: `/projects/sportan/guide/guide.mp4`,
     steps: [
-      { at: 0, title: 'The Problem' },
-      { at: 14, title: 'Design Direction' },
-      { at: 28, title: 'SwiftUI Implementation' },
-      { at: 42, title: 'Closing Details' },
+      { at: 0, title: 'Sportan Project Context' },
+      { at: 15, title: 'Sports Media Narrative' },
+      { at: 32, title: 'Sportan Interface Preview' },
+      { at: 50, title: 'Publication & Supporting Material' },
+    ],
+  },
+  'q-rush': {
+    video: `/projects/q-rush/guide/guide.mp4`,
+    steps: [
+      { at: 0, title: 'Q Rush Project Context' },
+      { at: 15, title: 'Ordering Flow Structure' },
+      { at: 32, title: 'Restaurant Interface Preview' },
+      { at: 50, title: 'Payment Proof & Final Invoice' },
     ],
   },
 };

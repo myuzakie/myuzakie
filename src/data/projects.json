@@ -1,140 +1,173 @@
 {
-  "profile": {
-    "en": {
-      "name": "Farhan Muzaki",
-      "university": "Apple Developer Academy Indonesia · Alumni",
-      "contact": "farhanmuzaki@gmail.com · linkedin.com/in/farhanmuzaki",
-      "footerNote": "Portfolio Submission for Apple Developer Academy Indonesia"
-    },
-    "id": {
-      "name": "Farhan Muzaki",
-      "university": "Apple Developer Academy Indonesia · Alumni",
-      "contact": "farhanmuzaki@gmail.com · linkedin.com/in/farhanmuzaki",
-      "footerNote": "Portofolio untuk Apple Developer Academy Indonesia"
-    },
-    "de": {
-      "name": "Farhan Muzaki",
-      "university": "Apple Developer Academy Indonesia · Alumni",
-      "contact": "farhanmuzaki@gmail.com · linkedin.com/in/farhanmuzaki",
-      "footerNote": "Portfolio-Einreichung für Apple Developer Academy Indonesia"
-    }
-  },
-  "labels": {
-    "en": {
-      "title": "Artwork/Project Title",
-      "year": "Year Accomplished",
-      "role": "Role/Position",
-      "link": "Publication Link",
-      "description": "Artwork/project Description",
-      "back": "← Back to Projects",
-      "counter": "Project {current} of {total}",
-      "footerName": "Your name",
-      "footerUniversity": "Student Of Cakrwala Student",
-      "footerContact": "Your contact information"
-    },
-    "id": {
-      "title": "Judul Karya/Proyek",
-      "year": "Tahun Diselesaikan",
-      "role": "Peran/Posisi",
-      "link": "Tautan Publikasi",
-      "description": "Deskripsi Karya/Proyek",
-      "back": "← Kembali ke Proyek",
-      "counter": "Proyek {current} dari {total}",
-      "footerName": "Nama Anda",
-      "footerUniversity": "Nama universitas/sekolah (Mahasiswa atau Alumni)",
-      "footerContact": "Informasi kontak Anda"
-    },
-    "de": {
-      "title": "Kunstwerk/Projekttitel",
-      "year": "Abschlussjahr",
-      "role": "Rolle/Position",
-      "link": "Veröffentlichungslink",
-      "description": "Kunstwerk/Projektbeschreibung",
-      "back": "← Zurück zu Projekten",
-      "counter": "Projekt {current} von {total}",
-      "footerName": "Ihr Name",
-      "footerUniversity": "Name Ihrer Universität/Schule (Student oder Alumni)",
-      "footerContact": "Ihre Kontaktinformationen"
-    }
-  },
-  "projects": [
-    {
-      "slug": "web3-builder-journey",
-      "theme": "dark",
-      "thumbnail": "/images/project-1-thumbnail.webp",
-      "heroImage": "/images/project-1-thumbnail.webp",
-      "media": [
-        "1.png",
-        "2.png",
-        "3.png",
-        "4.png",
-        "5.png",
-        "6.png",
-        "7.png"
-      ],
-      "i18n": {
-        "en": {
-          "title": "Web3 Builder Journey",
-          "year": "2025",
-          "role": "Full-stack Developer",
-          "publicationLink": "https://github.com/myuzakie",
-          "publicationLabel": "View on GitHub",
-          "description": "A hands-on journey through blockchain product design and development. Starting from BlockDevId's offline Web3 bootcamp, I collaborated with a team to design and build LiquidArena — a DeFi battle platform where users connect wallets, select LP positions, and compete in liquidity battles.\n\nThe project pushed me to translate abstract blockchain mechanics into a clear, step-by-step user flow: connect wallet → select LP position → create or join battle → approve transfer → monitor battle → resolve winner."
-        },
-        "id": {
-          "title": "Web3 Builder Journey",
-          "year": "2024",
-          "role": "Product Designer & Web3 Builder",
-          "publicationLink": "https://github.com/myuzakie",
-          "publicationLabel": "Lihat di GitHub",
-          "description": "Sebuah perjalanan langsung dalam desain dan pengembangan produk blockchain. Dimulai dari bootcamp offline Web3 BlockDevId, saya berkolaborasi dengan tim untuk mendesain dan membangun LiquidArena — platform battle DeFi di mana pengguna menghubungkan dompet, memilih posisi LP, dan bersaing dalam liquidity battle.\n\nProyek ini mendorong saya untuk menerjemahkan mekanisme blockchain yang abstrak menjadi alur pengguna yang jelas: connect wallet → pilih posisi LP → buat atau gabung battle → approve transfer → pantau battle → selesaikan pemenang. Produk kedua, Relynk, juga diprototiping dalam sprint hackathon yang sama."
-        },
-        "de": {
-          "title": "Web3 Builder Journey",
-          "year": "2024",
-          "role": "Produktdesigner & Web3 Builder",
-          "publicationLink": "https://github.com/myuzakie",
-          "publicationLabel": "Auf GitHub ansehen",
-          "description": "Eine praktische Reise durch Blockchain-Produktdesign und -entwicklung. Ausgehend vom Offline-Web3-Bootcamp von BlockDevId habe ich mit einem Team zusammengearbeitet, um LiquidArena zu entwerfen und zu bauen — eine DeFi-Battle-Plattform, auf der Nutzer Wallets verbinden, LP-Positionen auswählen und in Liquiditätskämpfen antreten.\n\nDas Projekt hat mich dazu gebracht, abstrakte Blockchain-Mechanismen in einen klaren, schrittweisen User Flow zu übersetzen: Wallet verbinden → LP-Position wählen → Battle erstellen oder beitreten → Transfer genehmigen → Battle beobachten → Gewinner bestimmen."
-        }
-      }
-    },
-    {
-      "slug": "fintech-app",
-      "theme": "light",
-      "thumbnail": "/images/project-2-thumbnail.webp",
-      "heroImage": "/images/project-2-thumbnail.webp",
-      "media": [
-        "01.webp",
-        "02.gif",
-        "03.webp"
-      ],
-      "i18n": {
-        "en": {
-          "title": "Fintech Mobile App",
-          "year": "2025",
-          "role": "Product Designer & iOS Developer",
-          "publicationLink": "https://example.com/fintech-app",
-          "publicationLabel": "View case study",
-          "description": "A savings and stock portfolio app for modern banking. Users can track balances, set recurring goals, and explore market trends through a calm, finance-first interface built for daily check-ins.\n\nDesign decisions prioritized legibility of numbers, progressive disclosure of complex data, and motion that reinforces trust rather than distraction."
-        },
-        "id": {
-          "title": "Aplikasi Fintech Seluler",
-          "year": "2025",
-          "role": "Product Designer & iOS Developer",
-          "publicationLink": "https://example.com/fintech-app",
-          "publicationLabel": "Lihat studi kasus",
-          "description": "Aplikasi tabungan dan portofolio saham untuk perbankan modern. Pengguna dapat melacak saldo, menetapkan target berulang, dan mengeksplorasi tren pasar melalui antarmuka yang tenang dan berfokus pada keuangan.\n\nKeputusan desain mengutamakan keterbacaan angka, pengungkapan data kompleks secara bertahap, dan animasi yang memperkuat kepercayaan."
-        },
-        "de": {
-          "title": "Fintech-Mobile-App",
-          "year": "2025",
-          "role": "Produktdesigner & iOS-Entwickler",
-          "publicationLink": "https://example.com/fintech-app",
-          "publicationLabel": "Fallstudie ansehen",
-          "description": "Eine Spar- und Aktienportfolio-App für modernes Banking. Nutzer verfolgen Kontostände, setzen wiederkehrende Ziele und erkunden Markttrends über eine ruhige, finanzorientierte Oberfläche für den täglichen Check-in.\n\nIm Design standen Lesbarkeit von Zahlen, schrittweise Offenlegung komplexer Daten und Bewegungen im Vordergrund, die Vertrauen stärken."
-        }
-      }
-    }
-  ]
+    "profile":  {
+                    "en":  {
+                               "name":  "Farhan Muzaki",
+                               "university":  "Apple Developer Academy Indonesia · Alumni",
+                               "contact":  "farhanmuzaki@gmail.com · linkedin.com/in/farhanmuzaki",
+                               "footerNote":  "Portfolio Submission for Apple Developer Academy Indonesia"
+                           },
+                    "id":  {
+                               "name":  "Farhan Muzaki",
+                               "university":  "Apple Developer Academy Indonesia · Alumni",
+                               "contact":  "farhanmuzaki@gmail.com · linkedin.com/in/farhanmuzaki",
+                               "footerNote":  "Portofolio untuk Apple Developer Academy Indonesia"
+                           },
+                    "de":  {
+                               "name":  "Farhan Muzaki",
+                               "university":  "Apple Developer Academy Indonesia · Alumni",
+                               "contact":  "farhanmuzaki@gmail.com · linkedin.com/in/farhanmuzaki",
+                               "footerNote":  "Portfolio-Einreichung für Apple Developer Academy Indonesia"
+                           }
+                },
+    "labels":  {
+                   "en":  {
+                              "title":  "Artwork/Project Title",
+                              "year":  "Year Accomplished",
+                              "role":  "Role/Position",
+                              "link":  "Publication Link",
+                              "description":  "Artwork/project Description",
+                              "back":  "← Back to Projects",
+                              "counter":  "Project {current} of {total}",
+                              "footerName":  "Your name",
+                              "footerUniversity":  "Student Of Cakrwala Student",
+                              "footerContact":  "Your contact information"
+                          },
+                   "id":  {
+                              "title":  "Judul Karya/Proyek",
+                              "year":  "Tahun Diselesaikan",
+                              "role":  "Peran/Posisi",
+                              "link":  "Tautan Publikasi",
+                              "description":  "Deskripsi Karya/Proyek",
+                              "back":  "← Kembali ke Proyek",
+                              "counter":  "Proyek {current} dari {total}",
+                              "footerName":  "Nama Anda",
+                              "footerUniversity":  "Nama universitas/sekolah (Mahasiswa atau Alumni)",
+                              "footerContact":  "Informasi kontak Anda"
+                          },
+                   "de":  {
+                              "title":  "Kunstwerk/Projekttitel",
+                              "year":  "Abschlussjahr",
+                              "role":  "Rolle/Position",
+                              "link":  "Veröffentlichungslink",
+                              "description":  "Kunstwerk/Projektbeschreibung",
+                              "back":  "← Zurück zu Projekten",
+                              "counter":  "Projekt {current} von {total}",
+                              "footerName":  "Ihr Name",
+                              "footerUniversity":  "Name Ihrer Universität/Schule (Student oder Alumni)",
+                              "footerContact":  "Ihre Kontaktinformationen"
+                          }
+               },
+    "projects":  [
+                     {
+                         "slug":  "web3-builder-journey",
+                         "theme":  "dark",
+                         "thumbnail":  "/images/project-1-thumbnail.webp",
+                         "heroImage":  "/images/project-1-thumbnail.webp",
+                         "media":  [
+                                       "1.png",
+                                       "2.png",
+                                       "3.png",
+                                       "4.png",
+                                       "5.png",
+                                       "6.png",
+                                       "7.png"
+                                   ],
+                         "i18n":  {
+                                      "en":  {
+                                                 "title":  "Web3 Builder Journey",
+                                                 "year":  "2025",
+                                                 "role":  "Full-stack Developer",
+                                                 "publicationLink":  "https://github.com/myuzakie",
+                                                 "publicationLabel":  "View on GitHub",
+                                                 "description":  "A hands-on journey through blockchain product design and development. Starting from BlockDevId\u0027s offline Web3 bootcamp, I collaborated with a team to design and build LiquidArena — a DeFi battle platform where users connect wallets, select LP positions, and compete in liquidity battles.\n\nThe project pushed me to translate abstract blockchain mechanics into a clear, step-by-step user flow: connect wallet → select LP position → create or join battle → approve transfer → monitor battle → resolve winner."
+                                             },
+                                      "id":  {
+                                                 "title":  "Web3 Builder Journey",
+                                                 "year":  "2025",
+                                                 "role":  "Full-stack Developer",
+                                                 "publicationLink":  "https://github.com/myuzakie",
+                                                 "publicationLabel":  "Lihat di GitHub",
+                                                 "description":  "Sebuah perjalanan langsung dalam desain dan pengembangan produk blockchain. Dimulai dari bootcamp offline Web3 BlockDevId, saya berkolaborasi dengan tim untuk mendesain dan membangun LiquidArena — platform battle DeFi di mana pengguna menghubungkan dompet, memilih posisi LP, dan bersaing dalam liquidity battle.\n\nProyek ini mendorong saya untuk menerjemahkan mekanisme blockchain yang abstrak menjadi alur pengguna yang jelas: connect wallet → pilih posisi LP → buat atau gabung battle → approve transfer → pantau battle → selesaikan pemenang."
+                                             },
+                                      "de":  {
+                                                 "title":  "Web3 Builder Journey",
+                                                 "year":  "2025",
+                                                 "role":  "Full-stack Developer",
+                                                 "publicationLink":  "https://github.com/myuzakie",
+                                                 "publicationLabel":  "Auf GitHub ansehen",
+                                                 "description":  "Eine praktische Reise durch Blockchain-Produktdesign und -entwicklung. Ausgehend vom Offline-Web3-Bootcamp von BlockDevId habe ich mit einem Team zusammengearbeitet, um LiquidArena zu entwerfen und zu bauen — eine DeFi-Battle-Plattform, auf der Nutzer Wallets verbinden, LP-Positionen auswählen und in Liquiditätskämpfen antreten.\n\nDas Projekt hat mich dazu gebracht, abstrakte Blockchain-Mechanismen in einen klaren, schrittweisen User Flow zu übersetzen: Wallet verbinden → LP-Position wählen → Battle erstellen oder beitreten → Transfer genehmigen → Battle beobachten → Gewinner bestimmen."
+                                             }
+                                  }
+                     },
+                     {
+                         "slug":  "sportan",
+                         "theme":  "dark",
+                         "thumbnail":  "/projects/sportan/1.png",
+                         "heroImage":  "/projects/sportan/1.png",
+                         "media":  [
+                                       "1.png"
+                                   ],
+                         "i18n":  {
+                                      "en":  {
+                                                 "title":  "Sportan — Sports Media",
+                                                 "year":  "2026",
+                                                 "role":  "Founder / Full-stack Developer",
+                                                 "publicationLink":  "https://www.muzakie.me/projects",
+                                                 "publicationLabel":  "muzakie.me/projects",
+                                                 "description":  "A personal digital product exploring sports storytelling, analysis, and structured content delivery through a web-based media platform. The project combines product direction, editorial structure, web development, and long-term audience-building strategy.\n\nNote: Full case study, visuals, and supporting materials are available through the publication link."
+                                             },
+                                      "id":  {
+                                                 "title":  "Sportan — Sports Media",
+                                                 "year":  "2026",
+                                                 "role":  "Founder / Full-stack Developer",
+                                                 "publicationLink":  "https://www.muzakie.me/projects",
+                                                 "publicationLabel":  "muzakie.me/projects",
+                                                 "description":  "Produk digital personal yang mengeksplorasi storytelling olahraga, analisis, dan penyajian konten terstruktur melalui platform media berbasis web. Proyek ini menggabungkan arahan produk, struktur editorial, pengembangan web, dan strategi membangun audiens jangka panjang.\n\nCatatan: Studi kasus lengkap, visual, dan materi pendukung tersedia melalui tautan publikasi."
+                                             },
+                                      "de":  {
+                                                 "title":  "Sportan — Sports Media",
+                                                 "year":  "2026",
+                                                 "role":  "Founder / Full-stack Developer",
+                                                 "publicationLink":  "https://www.muzakie.me/projects",
+                                                 "publicationLabel":  "muzakie.me/projects",
+                                                 "description":  "Ein persönliches digitales Produkt, das Sport-Storytelling, Analyse und strukturierte Content-Bereitstellung über eine webbasierte Medienplattform untersucht. Das Projekt verbindet Produktleitung, redaktionelle Struktur, Webentwicklung und langfristige Strategie zum Aufbau eines Publikums.\n\nHinweis: Die vollständige Fallstudie, Visuals und unterstützende Materialien sind über den Veröffentlichungslink verfügbar."
+                                             }
+                                  }
+                     },
+                     {
+                         "slug":  "q-rush",
+                         "theme":  "light",
+                         "thumbnail":  "/projects/q-rush/1.png",
+                         "heroImage":  "/projects/q-rush/1.png",
+                         "media":  [
+                                       "1.png"
+                                   ],
+                         "i18n":  {
+                                      "en":  {
+                                                 "title":  "Q Rush — QR Restaurant",
+                                                 "year":  "2025-2026",
+                                                 "role":  "UI/UX Designer / Product Designer",
+                                                 "publicationLink":  "https://www.muzakie.me/projects",
+                                                 "publicationLabel":  "muzakie.me/projects",
+                                                 "description":  "Q Rush is a QR-based restaurant ordering app designed to make the dine-in ordering process faster, clearer, and more flexible for customers.\n\nThe app supports two ordering scenarios: One Bill for a single shared payment flow, and Split Bill for customers who want to separate their orders and payments while dining together.\n\nThis project focuses on simplifying the restaurant journey from table entry, menu browsing, order confirmation, payment, QR transaction proof, and final invoice."
+                                             },
+                                      "id":  {
+                                                 "title":  "Q Rush — QR Restaurant",
+                                                 "year":  "2025-2026",
+                                                 "role":  "UI/UX Designer / Product Designer",
+                                                 "publicationLink":  "https://www.muzakie.me/projects",
+                                                 "publicationLabel":  "muzakie.me/projects",
+                                                 "description":  "Q Rush adalah aplikasi pemesanan restoran berbasis QR yang dirancang untuk membuat proses pemesanan dine-in lebih cepat, jelas, dan fleksibel bagi pelanggan.\n\nAplikasi ini mendukung dua skenario pemesanan: One Bill untuk alur pembayaran bersama, dan Split Bill untuk pelanggan yang ingin memisahkan pesanan serta pembayaran saat makan bersama.\n\nProyek ini berfokus menyederhanakan perjalanan restoran mulai dari masuk ke meja, menjelajah menu, konfirmasi pesanan, pembayaran, bukti transaksi QR, hingga invoice akhir."
+                                             },
+                                      "de":  {
+                                                 "title":  "Q Rush — QR Restaurant",
+                                                 "year":  "2025-2026",
+                                                 "role":  "UI/UX Designer / Product Designer",
+                                                 "publicationLink":  "https://www.muzakie.me/projects",
+                                                 "publicationLabel":  "muzakie.me/projects",
+                                                 "description":  "Q Rush ist eine QR-basierte Restaurant-Bestell-App, die den Bestellprozess beim Essen vor Ort schneller, klarer und flexibler für Kunden macht.\n\nDie App unterstützt zwei Bestellszenarien: One Bill für einen gemeinsamen Zahlungsfluss und Split Bill für Kunden, die ihre Bestellungen und Zahlungen beim gemeinsamen Essen trennen möchten.\n\nDas Projekt konzentriert sich darauf, die Restaurantreise vom Tischzugang über Menüauswahl, Bestellbestätigung, Zahlung, QR-Transaktionsnachweis bis zur finalen Rechnung zu vereinfachen."
+                                             }
+                                  }
+                     }
+                 ]
 }

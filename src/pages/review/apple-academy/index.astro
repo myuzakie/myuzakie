@@ -4,74 +4,7 @@ import { getReviewProjects } from '../../../lib/reviewProjects';
 
 const reviewProjects = getReviewProjects('en').slice(0, 4);
 ---
-
-<ReviewLayout
-  title="Apple Developer Academy Review — Muzakie Portfolio"
-  description="A focused portfolio review page prepared for Apple Developer Academy reviewers."
->
-  <div class="rp-root">
-
-    <!-- Nav bar -->
-    <header class="rp-nav">
-      <div class="rp-nav-inner">
-        <a class="rp-brand" href="/">
-          <div class="rp-brand-avatar">
-            <img src="/images/profile_picture.jpg" alt="Farhan Muzaki" />
-          </div>
-          <span class="rp-brand-name">Muzakie</span>
-        </a>
-
-        <div class="rp-nav-right">
-          <!-- Apple Academy logo badge -->
-          <a
-            href="https://www.linkedin.com/school/apple-developer-academy-indonesia/"
-            target="_blank"
-            rel="noopener"
-            class="rp-academy-badge"
-            title="Apple Developer Academy Indonesia"
-          >
-            <img
-              src="https://media.licdn.com/dms/image/v2/C510BAQHyTIzJP41l9w/company-logo_200_200/company-logo_200_200/0/1631406350980/apple_developer_academy_indonesia_logo?e=2147483647&v=beta&t=SzBY5ZD_hAVR52ptR0sSodtvakY1abxaYnm-7qoV7Q8"
-              alt="Apple Developer Academy Indonesia"
-              width="24"
-              height="24"
-            />
-            <span>Apple Developer Academy</span>
-          </a>
-
-          <span class="rp-pill">Reviewer Access</span>
-        </div>
-      </div>
-    </header>
-
-    <!-- Hero section -->
-    <section class="rp-hero">
-      <div class="rp-hero-inner">
-        <p class="rp-eyebrow">Portfolio Review · 2025</p>
-        <h1 class="rp-headline">
-          Built with<br />
-          purpose.<br />
-          Designed<br />
-          to ship.
-        </h1>
-        <p class="rp-subhead">
-          Farhan Muzaki — Product Designer &amp; Developer.
-          These works show how I think through problems,
-          make interface decisions, and bring ideas to life
-          in production.
-        </p>
-
-        <!-- Why this page exists -->
-        <div class="rp-context-card">
-          <p class="rp-context-label">Why this page?</p>
-          <p class="rp-context-body">
-            This is a curated, reviewer-focused view of my portfolio.
-            Each case study is structured to walk you through
-            problem → process → outcome — not just final screens.
-          </p>
-        </div>
-      </div>
-    </section>
+<ReviewLayout title="Apple Developer Academy Application Review — Farhan Muzaki" description="A focused review page for Apple Developer Academy reviewers, highlighting selected projects, product thinking, design process, and technical execution." > <div class="rp-root"> <!-- Nav bar --> <header class="rp-nav"> <div class="rp-nav-inner"> <a class="rp-brand" href="/"> <div class="rp-brand-avatar"> <img src="/images/profile_picture.jpg" alt="Farhan Muzaki" /> </div> <span class="rp-brand-name">Farhan Muzaki</span> </a> <div class="rp-nav-right"> <a href="https://www.linkedin.com/school/apple-developer-academy-indonesia/" target="_blank" rel="noopener" class="rp-academy-badge" title="Apple Developer Academy Indonesia" > <img src="https://media.licdn.com/dms/image/v2/C510BAQHyTIzJP41l9w/company-logo_200_200/company-logo_200_200/0/1631406350980/apple_developer_academy_indonesia_logo?e=2147483647&v=beta&t=SzBY5ZD_hAVR52ptR0sSodtvakY1abxaYnm-7qoV7Q8" alt="Apple Developer Academy Indonesia" width="24" height="24" /> <span>Apple Developer Academy</span> </a> <span class="rp-pill">Reviewer Access</span> </div> </div> </header> <!-- Hero section --> <section class="rp-hero"> <div class="rp-hero-inner"> <p class="rp-eyebrow">Apple Developer Academy Application · Portfolio Review</p> <h1 class="rp-headline"> Selected work<br /> that shows<br /> how I think,<br /> design, and build. </h1> <p class="rp-subhead"> Farhan Muzaki — Full-stack Developer with a product-minded approach. This page presents selected projects that show my problem-solving process, interface decisions, technical execution, and ability to turn ideas into usable digital products. </p> <!-- Why this page exists --> <div class="rp-context-card"> <p class="rp-context-label">Why this page exists</p> <p class="rp-context-body"> The submitted PDF provides a concise project summary. This page gives reviewers a clearer path to explore the full context behind each work: the problem, design reasoning, development process, final outcome, and what I learned from building it. </p> </div> </div> </section>
 
     <!-- Divider -->
     <div class="rp-divider"></div>
@@ -84,12 +17,6 @@ const reviewProjects = getReviewProjects('en').slice(0, 4);
             <p class="rp-section-label">Selected Work</p>
             <h2 class="rp-section-title">Case Studies</h2>
           </div>
-          <a href="/review/apple-academy/projects" class="rp-see-all">
-            View all
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
         </div>
 
         <!-- Why these projects -->
@@ -125,29 +52,6 @@ const reviewProjects = getReviewProjects('en').slice(0, 4);
 
     <!-- Divider -->
     <div class="rp-divider"></div>
-
-    <!-- About me for reviewers -->
-    <section class="rp-about">
-      <div class="rp-about-inner">
-        <div class="rp-about-label-col">
-          <p class="rp-section-label">About</p>
-        </div>
-        <div class="rp-about-content">
-          <h2 class="rp-about-title">Who I am</h2>
-          <p class="rp-about-body">
-            I'm Farhan Muzaki — a Product Designer and Developer based in Jakarta, Indonesia.
-            I bridge design and engineering: I design in Figma, and I build in React, Webflow, and TypeScript.
-            Currently working at PT. Next TI.
-          </p>
-          <div class="rp-about-tags">
-            <span>UI Design</span>
-            <span>Product Thinking</span>
-            <span>Front-end Dev</span>
-            <span>Jakarta, Indonesia</span>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Footer -->
     <footer class="rp-footer">
