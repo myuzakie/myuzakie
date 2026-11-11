@@ -1,1 +1,24 @@
-![Metrics](https://metrics.lecoq.io/myuzakie?template=classic&pagespeed=1&calendar=1&languages=1&achievements=1&projects=1&introduction=1&isocalendar=1&base=header%2C%20activity%2C%20community%2C%20repositories%2C%20metadata&base.indepth=false&base.hireable=false&base.skip=false&isocalendar=false&isocalendar.duration=half-year&languages=false&languages.limit=8&languages.threshold=0%25&languages.other=false&languages.colors=github&languages.sections=most-used&languages.indepth=false&languages.analysis.timeout=15&languages.analysis.timeout.repositories=7.5&languages.categories=markup%2C%20programming&languages.recent.categories=markup%2C%20programming&languages.recent.load=300&languages.recent.days=14&calendar=false&calendar.limit=1&achievements=false&achievements.threshold=C&achievements.secrets=true&achievements.display=detailed&achievements.limit=0&projects=false&projects.limit=4&projects.descriptions=false&introduction=false&introduction.title=true&pagespeed=false&pagespeed.url=https%3A%2F%2Fmuzakie.tech%2F&pagespeed.detailed=false&pagespeed.screenshot=false&pagespeed.pwa=true&config.timezone=Asia%2FJakarta)
+# Farhan Muzaki — Portfolio
+
+A portfolio for Farhan Muzaki, a product designer and developer based in Jakarta, Indonesia. The site highlights selected work in product design, full-stack development, and visual experiments.
+
+## Featured work
+
+- **Web3 Builder Journey** — a DeFi battle platform built with a team during a Web3 bootcamp.
+- **Sportan** — a digital sports media product focused on storytelling and analysis.
+- **Q Rush** — a QR-based restaurant ordering experience with shared and split bill options.
+
+## Pages
+
+- `/` — introduction and selected work
+- `/projects` — project portfolio
+- `/gallery` — photography and design experiments
+
+## Run locally
+
+```sh
+npm ci
+npm run dev
+```
+
+Build the static site with `npm run build`.

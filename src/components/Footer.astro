@@ -3,14 +3,20 @@ import { getTranslation } from '../i18n/translations';
 
 interface Props {
   lang?: 'en' | 'id' | 'de';
+  placement?: 'dock' | 'nav';
 }
-const { lang = 'en' } = Astro.props;
+const { lang = 'en', placement = 'dock' } = Astro.props;
 const t = getTranslation(lang as any);
 ---
 
-<footer class="fixed bottom-0 left-0 right-0 z-[100] pointer-events-none">
+<footer class:list={['z-[100] pointer-events-none', placement === 'dock' && 'fixed bottom-0 left-0 right-0']}>
   <!-- Floating dock bar -->
-  <div class="pointer-events-auto flex items-center justify-between bg-surface border border-border rounded-full px-2 sm:px-3.5 py-1.5 sm:py-2 w-fit max-w-[calc(100%-var(--gutter)*2)] gap-1 sm:gap-2 fixed left-1/2 bottom-[calc(1rem+var(--safe-bottom,0px))] sm:bottom-7 -translate-x-1/2 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-[8px]">
+  <div class:list={[
+    'pointer-events-auto flex items-center gap-1 sm:gap-2',
+    placement === 'nav'
+      ? 'home-controls'
+      : 'justify-between bg-surface border border-border rounded-full px-2 sm:px-3.5 py-1.5 sm:py-2 w-fit max-w-[calc(100%-var(--gutter)*2)] fixed left-1/2 bottom-[calc(1rem+var(--safe-bottom,0px))] sm:bottom-7 -translate-x-1/2 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-[8px]',
+  ]}>
     <!-- Left icons -->
     <div class="flex gap-0.5 flex-shrink-0">
       <!-- Sun / brightness -->
@@ -65,3 +71,19 @@ const t = getTranslation(lang as any);
     </div>
   </div>
 </footer>
+
+<style>
+  .home-controls {
+    justify-content: flex-end;
+    gap: 0.65rem;
+  }
+
+  .home-controls > div:first-child {
+    gap: 0;
+  }
+
+  .home-controls .lang-switch-btn {
+    padding: 0.35rem 0.45rem;
+    font-size: 0.6rem;
+  }
+</style>

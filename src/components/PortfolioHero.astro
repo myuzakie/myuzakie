@@ -1,0 +1,327 @@
+---
+import { getTranslation } from '../i18n/translations';
+
+interface Props {
+  lang?: 'en' | 'id' | 'de';
+}
+
+const { lang = 'en' } = Astro.props;
+const t = getTranslation(lang);
+---
+
+<section class="portfolio-hero" aria-labelledby="portfolio-title">
+  <img class="portfolio-hero__portrait" src="/images/portfolio-profile.png" alt="" fetchpriority="high" decoding="async" />
+  <div class="portfolio-hero__shade" aria-hidden="true"></div>
+  <div class="portfolio-hero__monogram" aria-hidden="true">FM</div>
+
+  <div class="portfolio-hero__content">
+    <div class="portfolio-hero__identity">
+      <div class="portfolio-hero__profile">
+        <img src="/images/profile_picture.jpg" alt="Farhan Muzaki" width="56" height="56" />
+        <div>
+          <p class="portfolio-hero__name">Farhan Muzaki</p>
+          <p class="portfolio-hero__location">Jakarta, Indonesia <span>·</span> <time>GMT+7</time></p>
+        </div>
+      </div>
+      <div class="portfolio-hero__socials" aria-label="Social profiles">
+        <a href="https://twitter.com/farhanmuzaki" target="_blank" rel="noopener noreferrer">X</a>
+        <a href="https://youtube.com/@farhanmuzaki" target="_blank" rel="noopener noreferrer">YouTube</a>
+        <a href="https://instagram.com/jordiespinosa" target="_blank" rel="noopener noreferrer">Instagram</a>
+      </div>
+    </div>
+
+    <div class="portfolio-hero__main">
+      <div class="portfolio-hero__intro">
+        <p class="portfolio-hero__role" data-i18n-hero="role">{t.hero.role}</p>
+        <h1 id="portfolio-title">Design &amp;<br />Engineering</h1>
+        <p class="portfolio-hero__summary">
+          Product Designer &amp; Developer based in Jakarta. Currently working at
+          <a href="https://nextti.com" target="_blank" rel="noopener noreferrer">PT. Next TI</a>.
+        </p>
+      </div>
+
+      <aside class="portfolio-hero__services" aria-label="Services">
+        <h2>What I create</h2>
+        <p>Digital products</p>
+        <p>Product experiences</p>
+        <p>Full-stack web applications</p>
+      </aside>
+    </div>
+
+    <p class="portfolio-hero__statement">A product-minded approach, from first idea to working software.</p>
+  </div>
+
+  <div class="portfolio-hero__fragments"><slot name="fragments" /></div>
+</section>
+
+<script>
+  function updateJakartaTime() {
+    const time = document.getElementById('jakarta-time');
+    if (!time) return;
+    time.textContent = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Jakarta',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(new Date());
+  }
+
+  updateJakartaTime();
+  setInterval(updateJakartaTime, 60_000);
+</script>
+
+<style>
+  .portfolio-hero {
+    position: relative;
+    min-height: max(760px, 100svh);
+    overflow: hidden;
+    isolation: isolate;
+    background: #080808;
+    color: #f1f0ed;
+  }
+
+  .portfolio-hero__portrait,
+  .portfolio-hero__shade {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .portfolio-hero__portrait {
+    object-fit: cover;
+    object-position: center 43%;
+    opacity: 0.88;
+  }
+
+  .portfolio-hero__shade {
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(4, 4, 4, 0.56) 0%, rgba(4, 4, 4, 0.24) 34%, rgba(4, 4, 4, 0.16) 58%, rgba(4, 4, 4, 0.48) 100%),
+      linear-gradient(180deg, rgba(4, 4, 4, 0.72) 0%, rgba(4, 4, 4, 0.05) 32%, rgba(4, 4, 4, 0.08) 57%, #080808 100%);
+  }
+
+  .portfolio-hero__monogram {
+    position: absolute;
+    top: 38%;
+    left: 53%;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 255, 255, 0.1);
+    font: 700 clamp(9rem, 22vw, 21rem)/0.8 'Syne', sans-serif;
+    letter-spacing: -0.105em;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .portfolio-hero__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(82%, 1500px);
+    min-height: max(760px, 100svh);
+    margin: 0 auto;
+    padding: clamp(8rem, 15vh, 11.5rem) 0 14rem;
+  }
+
+  .portfolio-hero__identity,
+  .portfolio-hero__profile,
+  .portfolio-hero__socials,
+  .portfolio-hero__main {
+    display: flex;
+    align-items: center;
+  }
+
+  .portfolio-hero__identity {
+    justify-content: space-between;
+  }
+
+  .portfolio-hero__profile {
+    gap: 0.8rem;
+  }
+
+  .portfolio-hero__profile img {
+    width: 3.4rem;
+    height: 3.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    border-radius: 0.5rem;
+    object-fit: cover;
+    filter: grayscale(1);
+  }
+
+  .portfolio-hero__name,
+  .portfolio-hero__location,
+  .portfolio-hero__role,
+  .portfolio-hero__services h2,
+  .portfolio-hero__services p,
+  .portfolio-hero__statement {
+    margin: 0;
+  }
+
+  .portfolio-hero__name {
+    font: 600 0.78rem/1.4 'Syne', sans-serif;
+  }
+
+  .portfolio-hero__location,
+  .portfolio-hero__role,
+  .portfolio-hero__services h2,
+  .portfolio-hero__services p,
+  .portfolio-hero__statement {
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+  }
+
+  .portfolio-hero__location {
+    margin-top: 0.25rem;
+    color: rgba(241, 240, 237, 0.67);
+    font-size: 0.58rem;
+  }
+
+  .portfolio-hero__location span {
+    padding: 0 0.2rem;
+  }
+
+  .portfolio-hero__socials {
+    gap: 1.2rem;
+  }
+
+  .portfolio-hero__socials a {
+    color: rgba(241, 240, 237, 0.75);
+    font: 500 0.58rem/1.4 'DM Mono', monospace;
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
+
+  .portfolio-hero__socials a:hover,
+  .portfolio-hero__socials a:focus-visible {
+    color: #fff;
+  }
+
+  .portfolio-hero__main {
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: clamp(4rem, 9vh, 7rem) 0 0 17%;
+  }
+
+  .portfolio-hero__intro {
+    max-width: 39rem;
+  }
+
+  .portfolio-hero__role {
+    margin-bottom: 0.8rem;
+    color: rgba(241, 240, 237, 0.68);
+    font-size: 0.59rem;
+  }
+
+  .portfolio-hero__intro h1 {
+    margin: 0;
+    color: #f1f0ed;
+    font: 600 clamp(3.2rem, 5.1vw, 5.8rem)/0.98 'Syne', sans-serif;
+    letter-spacing: -0.065em;
+  }
+
+  .portfolio-hero__summary {
+    max-width: 28rem;
+    margin: 1.35rem 0 0;
+    color: rgba(241, 240, 237, 0.78);
+    font: 400 0.76rem/1.8 'DM Mono', monospace;
+  }
+
+  .portfolio-hero__summary a {
+    color: #f1f0ed;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(241, 240, 237, 0.6);
+  }
+
+  .portfolio-hero__services {
+    width: 14rem;
+    margin: 1rem 0 0 auto;
+    padding-top: 0.6rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.34);
+  }
+
+  .portfolio-hero__services h2 {
+    margin-bottom: 0.75rem;
+    color: rgba(241, 240, 237, 0.75);
+    font-size: 0.54rem;
+    font-weight: 400;
+  }
+
+  .portfolio-hero__services p {
+    padding: 0.35rem 0;
+    color: rgba(241, 240, 237, 0.88);
+    font-size: 0.59rem;
+    letter-spacing: 0.025em;
+    text-transform: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .portfolio-hero__statement {
+    position: absolute;
+    right: 0;
+    bottom: 12.3rem;
+    left: 0;
+    color: rgba(241, 240, 237, 0.78);
+    font-size: 0.56rem;
+    text-align: center;
+  }
+
+  .portfolio-hero__fragments {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  @media (max-width: 900px) {
+    .portfolio-hero,
+    .portfolio-hero__content {
+      min-height: max(880px, 100svh);
+    }
+
+    .portfolio-hero__content {
+      width: min(88%, 42rem);
+      padding-top: 10rem;
+    }
+
+    .portfolio-hero__main {
+      display: block;
+      margin: 4rem 0 0;
+    }
+
+    .portfolio-hero__services {
+      width: min(100%, 24rem);
+      margin: 2.5rem 0 0;
+    }
+
+    .portfolio-hero__statement {
+      bottom: 14rem;
+      padding: 0 1rem;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .portfolio-hero__content {
+      padding-top: 11.5rem;
+    }
+
+    .portfolio-hero__socials {
+      gap: 0.6rem;
+    }
+
+    .portfolio-hero__socials a {
+      font-size: 0.5rem;
+    }
+
+    .portfolio-hero__intro h1 {
+      font-size: clamp(2.8rem, 14vw, 4.1rem);
+    }
+
+    .portfolio-hero__monogram {
+      top: 45%;
+      left: 48%;
+    }
+  }
+</style>
