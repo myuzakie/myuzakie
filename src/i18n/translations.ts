@@ -12,7 +12,7 @@ export const translations = {
     // Hero section
     hero: {
       greeting: 'Hi! I\'m',
-      role: 'Full-Stack Stack Developer',
+      role: 'Full-stack Developer & Product Designer',
       location: 'Jakarta',
       company: 'Next TI',
       based: 'based from',
@@ -98,7 +98,7 @@ export const translations = {
     // Hero section
     hero: {
       greeting: 'Halo! Saya',
-      role: 'Desainer Produk SaaS',
+      role: 'Pengembang Full-stack & Desainer Produk',
       location: 'Jakarta',
       company: 'Next TI',
       based: 'berbasis dari',
@@ -201,7 +201,7 @@ export const translations = {
     // Hero section
     hero: {
       greeting: 'Hallo! Ich bin',
-      role: 'SaaS-Produktdesigner',
+      role: 'Full-Stack-Entwickler & Produktdesigner',
       location: 'Jakarta',
       company: 'Next TI',
       based: 'ansässig in',

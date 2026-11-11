@@ -1,49 +1,155 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Nav from "../components/Nav.astro";
-import Hero from "../components/Hero.astro";
-import ToolsSection from "../components/ToolsSection.astro";
-import ProjectsGrid from "../components/ProjectsGrid.astro";
-import Footer from "../components/Footer.astro";
-import ExperienceSection from "@/components/ExperienceSection.astro";
-import ScrollAnimations from "@/components/ScrollAnimations.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PortfolioNav from '../components/PortfolioNav.astro';
+import PortfolioHero from '../components/PortfolioHero.astro';
+import ProjectFragments from '../components/ProjectFragments.astro';
+import ToolsSection from '../components/ToolsSection.astro';
+import ExperienceSection from '../components/ExperienceSection.astro';
 
-const lang = "en" as const;
+const lang = 'en' as const;
 ---
 
 <BaseLayout
   title="Farhan Muzaki — Product Designer & Developer"
   description="Product Designer & Developer based in Jakarta, Indonesia. Currently working at PT. Next TI."
   lang={lang}
+  fullWidth
+  showRulers={false}
 >
-  <!-- Inject animation styles + observer script -->
-  <ScrollAnimations />
+  <PortfolioNav />
 
-  <Nav />
+  <main id="main-content" class="portfolio-page" data-lang={lang}>
+    <PortfolioHero lang={lang}>
+      <ProjectFragments slot="fragments" />
+    </PortfolioHero>
 
-  <Footer />
+    <div class="portfolio-lower">
+      <section id="about" class="portfolio-about" aria-labelledby="about-title">
+        <div>
+          <p class="portfolio-section-label">About</p>
+          <h2 id="about-title">Farhan Muzaki</h2>
+        </div>
+        <div class="portfolio-about__copy">
+          <p>Product Designer &amp; Developer based in Jakarta, Indonesia.</p>
+          <p>Currently working at <a href="https://nextti.com" target="_blank" rel="noopener noreferrer">PT. Next TI</a>, bringing product thinking and full-stack development together.</p>
+        </div>
+      </section>
 
-  <div class="layout-shell layout-shell--home" data-lang={lang}>
-    <main id="main-content" class="flex-1 flex flex-col gap-1.5">
-      <!-- Hero: fade in on load, no scroll trigger needed -->
-      <div data-animate="up" style="transition-delay: 0.05s;">
-        <Hero time="22:30" lang={lang} />
-      </div>
-
-      <!-- Tools: slides up with slight delay -->
-      <div data-animate="up" style="transition-delay: 0.1s;">
-        <ToolsSection lang={lang} />
-      </div>
-
-      <!-- Projects: children stagger in -->
-      <div data-animate-children>
-        <ProjectsGrid lang={lang} />
-      </div>
-
-      <!-- Experience: slides up -->
-      <div data-animate="up">
-        <ExperienceSection lang={lang} />
-      </div>
-    </main>
-  </div>
+      <section id="approach" class="portfolio-approach" aria-labelledby="approach-title">
+        <div class="portfolio-approach__intro">
+          <p class="portfolio-section-label">Approach</p>
+          <h2 id="approach-title">Product thinking, carried through to the build.</h2>
+          <p>From shaping the experience to implementing the details, I work across design and development.</p>
+        </div>
+        <div class="portfolio-approach__content">
+          <ToolsSection lang={lang} />
+          <ExperienceSection lang={lang} />
+        </div>
+      </section>
+    </div>
+  </main>
 </BaseLayout>
+
+<style>
+  .portfolio-page {
+    min-height: 100vh;
+    background: #080808;
+    color: #f1f0ed;
+  }
+
+  .portfolio-lower {
+    width: min(82%, 1500px);
+    margin: 0 auto;
+    padding: 5rem 0 8rem;
+  }
+
+  .portfolio-about {
+    display: grid;
+    grid-template-columns: minmax(16rem, 0.85fr) minmax(24rem, 1.15fr);
+    align-items: start;
+    gap: 4rem;
+    padding: 1rem 0 4.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .portfolio-section-label {
+    margin: 0 0 0.8rem;
+    color: rgba(241, 240, 237, 0.58);
+    font: 400 0.58rem/1.5 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .portfolio-about h2,
+  .portfolio-approach h2 {
+    margin: 0;
+    color: #f1f0ed;
+    font: 500 clamp(2rem, 3vw, 3.25rem)/1.05 'Syne', sans-serif;
+    letter-spacing: -0.055em;
+  }
+
+  .portfolio-about__copy {
+    max-width: 37rem;
+    padding-top: 1.6rem;
+  }
+
+  .portfolio-about__copy p,
+  .portfolio-approach__intro > p:last-child {
+    margin: 0 0 0.9rem;
+    color: rgba(241, 240, 237, 0.75);
+    font: 400 0.76rem/1.8 'DM Mono', monospace;
+  }
+
+  .portfolio-about__copy a {
+    color: #f1f0ed;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+
+  .portfolio-approach {
+    display: grid;
+    grid-template-columns: minmax(16rem, 0.85fr) minmax(24rem, 1.15fr);
+    gap: 4rem;
+    padding-top: 4.5rem;
+  }
+
+  .portfolio-approach__intro > p:last-child {
+    max-width: 29rem;
+    margin-top: 1rem;
+  }
+
+  .portfolio-approach__content {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 2rem;
+  }
+
+  .portfolio-approach__content :global(section) {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width: 900px) {
+    .portfolio-lower {
+      width: min(88%, 42rem);
+      padding-top: 3.5rem;
+    }
+
+    .portfolio-about,
+    .portfolio-approach {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .portfolio-about__copy {
+      padding-top: 0;
+    }
+
+    .portfolio-approach__content {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

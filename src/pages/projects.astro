@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Footer from '../components/Footer.astro';
-import { getAllProjects, getProjectContent, buildProjectHref } from '../lib/projects';
+import { getAllProjects, getProjectContent } from '../lib/projects';
 
 const langParam = Astro.url.searchParams.get('lang');
 const lang = langParam === 'id' || langParam === 'de' ? langParam : 'en';
@@ -14,7 +14,7 @@ const allProjects = getAllProjects().map((project) => {
     title: content.title,
     description: content.description.split('\n\n')[0] ?? content.title,
     image: project.thumbnail,
-    href: buildProjectHref(project.slug, lang),
+    href: content.publicationLink,
     theme: project.theme,
     tags: [] as string[],
   };

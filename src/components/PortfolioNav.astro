@@ -1,0 +1,184 @@
+---
+import Footer from './Footer.astro';
+
+const links = [
+  { label: 'Fragments', href: '/gallery' },
+  { label: 'Cases', href: '/projects' },
+  { label: 'About', href: '#about' },
+  { label: 'Approach', href: '#approach' },
+  { label: 'Contacts', href: 'mailto:farhanmuzaki@gmail.com' },
+];
+---
+
+<nav class="portfolio-nav" aria-label="Main navigation">
+  <div class="portfolio-nav__main">
+    <a class="portfolio-brand" href="/" aria-label="Farhan Muzaki, home">
+      <span class="portfolio-brand__mark" aria-hidden="true">FM</span>
+      <span class="portfolio-brand__copy">
+        <strong>Farhan Muzaki</strong>
+        <small>Product design &amp; development</small>
+      </span>
+    </a>
+
+    <ul class="portfolio-nav__links">
+      {links.map((link) => (
+        <li><a href={link.href}>{link.label}</a></li>
+      ))}
+    </ul>
+
+    <div class="portfolio-nav__actions">
+      <a class="portfolio-email" href="mailto:farhanmuzaki@gmail.com">Email me</a>
+      <Footer placement="nav" lang="en" />
+    </div>
+  </div>
+
+  <div class="portfolio-nav__meta">
+    <p>Digital products <span>/</span> Product design <span>/</span> Full-stack development</p>
+    <p><span>Jakarta, Indonesia</span><span class="portfolio-nav__separator">·</span><span>WIB <time id="jakarta-time">--:--</time></span></p>
+  </div>
+</nav>
+
+<style>
+  .portfolio-nav {
+    position: fixed;
+    z-index: 100;
+    inset: 0 0 auto;
+    padding: 1.05rem max(4.5vw, 1.5rem) 0;
+    color: #f1f0ed;
+    background: linear-gradient(180deg, rgba(7, 7, 7, 0.96), rgba(7, 7, 7, 0.82));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .portfolio-nav__main,
+  .portfolio-nav__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .portfolio-nav__main {
+    min-height: 3.1rem;
+  }
+
+  .portfolio-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 16rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .portfolio-brand__mark {
+    display: grid;
+    place-items: center;
+    width: 2.55rem;
+    aspect-ratio: 1;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    font: 600 0.7rem/1 'DM Mono', monospace;
+    letter-spacing: -0.06em;
+  }
+
+  .portfolio-brand__copy {
+    display: grid;
+    gap: 0.18rem;
+  }
+
+  .portfolio-brand__copy strong {
+    font: 600 0.78rem/1.2 'Syne', sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  .portfolio-brand__copy small,
+  .portfolio-nav__meta,
+  .portfolio-email {
+    color: rgba(241, 240, 237, 0.63);
+    font: 400 0.57rem/1.4 'DM Mono', monospace;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+  }
+
+  .portfolio-nav__links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1rem, 2.2vw, 2.75rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .portfolio-nav__links a {
+    color: rgba(241, 240, 237, 0.72);
+    font: 500 0.62rem/1.2 'Syne', sans-serif;
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+
+  .portfolio-nav__links a:hover,
+  .portfolio-nav__links a:focus-visible {
+    color: #fff;
+  }
+
+  .portfolio-nav__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    min-width: 16rem;
+  }
+
+  .portfolio-email {
+    color: #f1f0ed;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(241, 240, 237, 0.36);
+    padding-bottom: 0.15rem;
+  }
+
+  .portfolio-nav__meta {
+    min-height: 2.25rem;
+    margin-top: 0.65rem;
+    padding: 0.45rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    font-size: 0.52rem;
+  }
+
+  .portfolio-nav__meta p {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0;
+  }
+
+  .portfolio-nav__meta p:first-child span {
+    color: rgba(241, 240, 237, 0.35);
+  }
+
+  .portfolio-nav__separator {
+    color: rgba(241, 240, 237, 0.35);
+  }
+
+  @media (max-width: 1100px) {
+    .portfolio-nav__main {
+      flex-wrap: wrap;
+      row-gap: 0.9rem;
+    }
+
+    .portfolio-brand,
+    .portfolio-nav__actions {
+      min-width: 0;
+    }
+
+    .portfolio-nav__links {
+      order: 3;
+      width: 100%;
+      justify-content: flex-start;
+      padding: 0.35rem 0 0.55rem;
+    }
+  }
+</style>
